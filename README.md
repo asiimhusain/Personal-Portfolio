@@ -52,9 +52,9 @@ A modern, responsive portfolio website showcasing my expertise in AI/ML engineer
 - **Google Fonts** - Typography (Ubuntu, Raleway, Poppins)
 
 ### Deployment & Infrastructure
-- **Azure Static Web Apps** - Hosting and global CDN
-- **GitHub Actions** - CI/CD automated deployments
-- **Name.com** - Domain registration and DNS management
+- **Azure Static Web Apps** - Hosting and global CDN.
+- **GitHub Actions** - CI/CD automated deployments.
+- **Name.com** - Domain registration and DNS management.
 
 ---
 
