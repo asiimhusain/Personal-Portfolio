@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -99,265 +99,209 @@
                 <div>
                     <button type="button" class="gooey-btn" data-target="#about">ABOUT&nbsp;ME</button>
                     <button type="button" class="gooey-btn" data-target="#projects">MY&nbsp;WORK</button>
+                    <div class="header-dropdown-wrap">
+                      <button type="button" class="gooey-btn header-dropdown-btn" id="headerDropdownBtn" aria-haspopup="true" aria-expanded="false">MORE <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:4px;"><path d="m19 9-7 7-7-7"/></svg></button>
+                      <div class="header-dropdown-menu" id="headerDropdownMenu">
+                        <button type="button" class="header-dropdown-item" data-action="recruiter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="5" width="14" height="14" rx="2.5"/><path d="M9 10h6" stroke-linecap="round"/><path d="M9 14h6" stroke-linecap="round"/></svg>Recruiter Mode</button>
+                        <button type="button" class="header-dropdown-item" data-action="tech-radar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12l5-3" stroke-linecap="round"/></svg>Domain Radar</button>
+                        <button type="button" class="header-dropdown-item" data-action="courses"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 5.5h15" stroke-linecap="round"/><path d="M4.5 12h15" stroke-linecap="round"/><path d="M4.5 18.5h15" stroke-linecap="round"/></svg>Courses Notes</button>
+                        <button type="button" class="header-dropdown-item" data-action="games"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="7.5" width="17" height="9" rx="4.5"/><path d="M8 12h4" stroke-linecap="round"/><path d="M10 10v4" stroke-linecap="round"/></svg>Play Games</button>
+                        <button type="button" class="header-dropdown-item" data-action="cosmic-clock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v4.5" stroke-linecap="round"/><path d="M12 12.5l3 1.8" stroke-linecap="round"/></svg>Clock</button>
+                      </div>
+                    </div>
                     <a id="resume-trigger" class="gooey-btn" href="files/resume.pdf" target="_blank" rel="noopener" aria-label="Resume">RESUME</a>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- Recruiter Mode Focus Panel -->
+    <!-- Recruiter Mode Focus Panel - SaaS Dashboard -->
     <section id="recruiterModePanel" class="recruiter-mode-panel" aria-labelledby="recruiterModeTitle">
-        <div class="recruiter-mode-inner">
-            <h2 id="recruiterModeTitle">Asim Husain · Software Engineer & AI/ML Engineer</h2>
-            <p class="recruiter-summary">
-                I’m a Software Engineer and B.Tech Computer Science student specializing in AI and ML, with hands-on experience building scalable, data-driven software systems. Proficient in Python, SQL, and machine learning, with strong foundations in backend development, system design, and modern software engineering practices. Seeking software engineering or AI-focused roles to deliver reliable, high-performance solutions.
-            </p>
+      <div class="recruiter-mode-inner rec-dashboard">
 
-            <div class="recruiter-metrics-grid" aria-label="Key recruiting metrics">
-                <article class="recruiter-metric-card" aria-label="Live projects count">
-                    <p class="recruiter-metric-number" data-value="4" data-suffix="+">0</p>
-                    <p class="recruiter-metric-label">Live Projects</p>
-                </article>
-                <article class="recruiter-metric-card" aria-label="Certifications count">
-                    <p class="recruiter-metric-number" data-value="5" data-suffix="+">0</p>
-                    <p class="recruiter-metric-label">Certifications</p>
-                </article>
-                <article class="recruiter-metric-card recruiter-tools-card" aria-label="Tools used">
-                    <p class="recruiter-metric-label recruiter-tools-title">Tools</p>
-                    <div class="recruiter-tools-grid" role="list" aria-label="Tools list">
-                        <span role="listitem">Microsoft Azure</span>
-                        <span role="listitem">Git</span>
-                        <span role="listitem">Github</span>
-                        <span role="listitem">Github Copilot</span>
-                        <span role="listitem">Replit</span>
-                        <span role="listitem">Gemini</span>
-                        <span role="listitem">Slack</span>
-                        <span role="listitem">Gitlab</span>
-                        <span role="listitem">Docker</span>
-                        <span role="listitem">Vs Code</span>
-                        <span role="listitem">Jupyter Notebook</span>
-                        <span role="listitem">Kaggle</span>
-                        <span role="listitem">Linux</span>
-                    </div>
-                </article>
+        <!-- â”€â”€â”€ Left Sidebar Nav â”€â”€â”€ -->
+        <nav class="rec-sidebar" aria-label="Recruiter dashboard navigation">
+          <div class="rec-sidebar-brand">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span>RecruiterOS</span>
+          </div>
+          <div class="rec-sidebar-projects">
+            <h4 class="rec-sidebar-section-title">Projects</h4>
+            <a href="https://www.curehelplus.me" target="_blank" rel="noopener" class="rec-sidebar-project-link">
+              <span class="rec-sidebar-proj-dot" style="--dot-color:#2755d2"></span><span>CureHelp+</span>
+            </a>
+            <a href="https://intervbot.vercel.app" target="_blank" rel="noopener" class="rec-sidebar-project-link">
+              <span class="rec-sidebar-proj-dot" style="--dot-color:#14b8a6"></span><span>IntervBot</span>
+            </a>
+            <a href="https://tinyurl-chvx.onrender.com" target="_blank" rel="noopener" class="rec-sidebar-project-link">
+              <span class="rec-sidebar-proj-dot" style="--dot-color:#7c3aed"></span><span>TinyURL</span>
+            </a>
+            <a href="https://predictrade.streamlit.app/" target="_blank" rel="noopener" class="rec-sidebar-project-link">
+              <span class="rec-sidebar-proj-dot" style="--dot-color:#10b981"></span><span>PredicTrade</span>
+            </a>
+            <a href="https://validleads.azurewebsites.net/" target="_blank" rel="noopener" class="rec-sidebar-project-link">
+              <span class="rec-sidebar-proj-dot" style="--dot-color:#f59e0b"></span><span>Lead Validation</span>
+            </a>
+            <a href="https://www.asimhusain.dev" target="_blank" rel="noopener" class="rec-sidebar-project-link">
+              <span class="rec-sidebar-proj-dot" style="--dot-color:#ef4444"></span><span>Personal Website</span>
+            </a>
+          </div>
+          <button type="button" id="recruiterCloseBtn" class="rec-sidebar-exit" aria-label="Exit recruiter mode" title="Exit Recruiter Mode">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            <span>Exit Mode</span>
+          </button>
+        </nav>
+
+        <!-- â”€â”€â”€ Main Content Area â”€â”€â”€ -->
+        <div class="rec-main">
+
+          <!-- Top Header Bar -->
+          <header class="rec-header">
+            <div class="rec-header-left">
+              <h2 id="recruiterModeTitle" class="rec-header-title">Asim Husain</h2>
+              <span class="rec-header-subtitle">SWE &nbsp;&amp;&nbsp; AI | ML</span>
             </div>
-
-            <div class="recruiter-top-projects">
-                <article class="recruiter-project-card">
-                    <h3>CureHelp+</h3>
-                    <p>AI-assisted health companion focused on symptom-aware guidance and user-centric care access.</p>
-                </article>
-                <article class="recruiter-project-card">
-                    <h3>IntervBot</h3>
-                    <p>Interview prep system with AI-generated questions and structured feedback for measurable improvement.</p>
-                </article>
-                <article class="recruiter-project-card">
-                    <h3>PredicTrade</h3>
-                    <p>Forecasting application that converts historical market behavior into clear decision support insights.</p>
-                </article>
+            <div class="rec-header-right">
+              <span class="rec-header-badge">
+                <span class="rec-status-dot"></span>Open to Work
+              </span>
             </div>
+          </header>
 
-            <div class="recruiter-insights-grid" aria-label="Delivery strengths">
-                <article class="recruiter-insight-card">
-                    <h3>Engineering Ownership</h3>
-                    <p>Takes products from idea to deployment with clean implementation, UX polish, and stable delivery cadence.</p>
-                </article>
-                <article class="recruiter-insight-card">
-                    <h3>AI in Production Mindset</h3>
-                    <p>Focuses on practical ML outcomes with observability, reliability, and scalable cloud-first architecture.</p>
-                </article>
-                <article class="recruiter-insight-card">
-                    <h3>Communication & Clarity</h3>
-                    <p>Explains technical complexity clearly, enabling faster decisions for stakeholders and engineering teams.</p>
-                </article>
-            </div>
+          <!-- â”€â”€â”€ DASHBOARD VIEW â”€â”€â”€ -->
+          <div class="rec-view rec-view--dashboard is-active" data-rec-view="dashboard">
 
-            <div class="recruiter-skill-actions">
-                <div class="recruiter-skill-stack" aria-label="Core skill confidence">
-                    <h3>Core Skill Confidence</h3>
-                    <div class="recruiter-skill-row">
-                        <span class="recruiter-skill-name">Software Engineering</span>
-                        <div class="recruiter-skill-track"><span class="recruiter-skill-fill" data-level="92"></span></div>
-                        <span class="recruiter-skill-value">92%</span>
-                    </div>
-                    <div class="recruiter-skill-row">
-                        <span class="recruiter-skill-name">AI / ML Engineering</span>
-                        <div class="recruiter-skill-track"><span class="recruiter-skill-fill" data-level="90"></span></div>
-                        <span class="recruiter-skill-value">90%</span>
-                    </div>
-                    <div class="recruiter-skill-row">
-                        <span class="recruiter-skill-name">Cloud & Deployment</span>
-                        <div class="recruiter-skill-track"><span class="recruiter-skill-fill" data-level="88"></span></div>
-                        <span class="recruiter-skill-value">88%</span>
-                    </div>
-                    <div class="recruiter-skill-row">
-                        <span class="recruiter-skill-name">Data & Analytics</span>
-                        <div class="recruiter-skill-track"><span class="recruiter-skill-fill" data-level="86"></span></div>
-                        <span class="recruiter-skill-value">86%</span>
-                    </div>
-                    <div class="recruiter-subskills" aria-label="Core sub-skills">
-                        <span class="recruiter-subskill">Python</span>
-                        <span class="recruiter-subskill">SQL</span>
-                        <span class="recruiter-subskill">Flask</span>
-                        <span class="recruiter-subskill">REST APIs</span>
-                        <span class="recruiter-subskill">Web Services</span>
-                        <span class="recruiter-subskill">Data Analytics</span>
-                        <span class="recruiter-subskill">HTML CSS</span>
-                        <span class="recruiter-subskill">MySQL</span>
-                        <span class="recruiter-subskill">System Design</span>
-                        <span class="recruiter-subskill">JavaScript (Basics)</span>
-                        <span class="recruiter-subskill">AI Integration</span>
-                        <span class="recruiter-subskill">Automation Testing</span>
+            <!-- Summary Line -->
+            <p class="recruiter-summary">Software Engineer and B.Tech CS student specializing in AI/ML. Builds scalable, data-driven systems with Python, SQL, and modern engineering practices. Seeking SWE or AI-focused roles.</p>
 
-                    </div>
+            <!-- Metric Cards Row -->
+            <div class="recruiter-metrics-grid" aria-label="Key metrics">
+              <article class="recruiter-metric-card">
+                <div class="rec-metric-icon rec-metric-icon--blue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 </div>
-
-                <div class="recruiter-cert-card" aria-label="Certifications">
-                    <h3>Certifications</h3>
-                    <ul class="recruiter-cert-list">
-                        <li>
-                            <span>GitHub Foundations (Microsoft)</span>
-                            <a href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/AFAA28471679E673?sharingId=AF5276DA5CCA289D" target="_blank" rel="noopener">Check</a>
-                        </li>
-                        <li>
-                            <span>GitHub Copilot (Microsoft)</span>
-                            <a href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/B28390E691C3D95F?sharingId=AF5276DA5CCA289D" target="_blank" rel="noopener">Check</a>
-                        </li>
-                        <li>
-                            <span>SQL Basics (HackerRank)</span>
-                            <a href="https://www.hackerrank.com/certificates/278da06f2f91" target="_blank" rel="noopener">Check</a>
-                        </li>
-                        <li>
-                            <span>Python (Codedex)</span>
-                            <a href="https://www.codedex.io/certificates/aeb2023c-d71b-4463-b827-5d8de9eb62dc" target="_blank" rel="noopener">Check</a>
-                        </li>
-                        <li>
-                            <span>Big Data (NPTEL)</span>
-                            <a href="https://archive.nptel.ac.in/content/noc/NOC24/SEM2/Ecertificates/106/noc24-cs130/Course/NPTEL24CS130S46430016304336111.pdf" target="_blank" rel="noopener">Check</a>
-                        </li>
-                        <li>
-                            <span>Machine Learning Training (Internshala)</span>
-                            <a href="https://trainings.internshala.com/verify-certificate/?certificate_number=3c8qenodme0" target="_blank" rel="noopener">Check</a>
-                        </li>
-                        <li>
-                            <span>AWS ML Engineer Associate</span>
-                            <a href="https://www.linkedin.com/learning/certificates/31ea6f32d2f5c379a0703f2677c6444c548c2186cf4f523bda714f480ac5f687" target="_blank" rel="noopener">Check</a>
-                        </li>
-                    </ul>
+                <p class="recruiter-metric-number" data-value="4" data-suffix="+">0</p>
+                <p class="recruiter-metric-label">Live Projects</p>
+              </article>
+              <article class="recruiter-metric-card">
+                <div class="rec-metric-icon rec-metric-icon--green">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 </div>
-
-                <div class="recruiter-cta-row">
-                    <a class="gooey-btn" href="files/resume.pdf" target="_blank" rel="noopener" aria-label="Open Resume">View Resume</a>
-                    <button type="button" id="recruiterViewProjectsBtn" class="gooey-btn">View Projects</button>
-                    <button type="button" id="recruiterContactBtn" class="gooey-btn">Contact Me</button>
+                <p class="recruiter-metric-number" data-value="7" data-suffix="">0</p>
+                <p class="recruiter-metric-label">Certifications</p>
+              </article>
+              <article class="recruiter-metric-card">
+                <div class="rec-metric-icon rec-metric-icon--purple">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
+                <p class="recruiter-metric-number" data-value="92" data-suffix="%">0</p>
+                <p class="recruiter-metric-label">Skill Match</p>
+              </article>
+              <article class="recruiter-metric-card">
+                <div class="rec-metric-icon rec-metric-icon--orange">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                </div>
+                <p class="recruiter-metric-number" data-value="96" data-suffix="%">0</p>
+                <p class="recruiter-metric-label">AI Score</p>
+              </article>
             </div>
-        </div>
+
+            <!-- Charts Row -->
+            <div class="rec-charts-row">
+              <!-- Skills Card (replaces Hiring Pipeline) -->
+              <div class="rec-card rec-card--chart rec-skills-card">
+                <div class="rec-card-header">
+                  <h3>Skills</h3>
+                  <span class="rec-card-badge">Live</span>
+                </div>
+                <div class="rec-skills-layout">
+                  <ul class="rec-skills-list" aria-label="Skills list">
+                    <li>Python</li><li>SQL</li><li>Flask</li><li>REST APIs</li>
+                    <li>Web Services</li><li>Data Analytics</li><li>HTML CSS</li><li>MySQL</li>
+                    <li>System Design</li><li>JavaScript</li><li>AI Integration</li><li>Automation Testing</li>
+                    <li>Azure DevOps</li><li>Machine Learning</li><li>Deep Learning</li><li>Prompt Engineering</li>
+                    <li>Automation Agentic</li><li>Vercel</li><li>Azure</li><li>Git</li>
+                    <li>Github</li><li>Github Copilot</li><li>CI/CD</li>
+                  </ul>
+                  <div class="rec-donut-wrapper">
+                    <canvas id="recDonutChart" width="200" height="200" aria-label="Skills donut chart"></canvas>
+                    <div class="rec-donut-center">
+                      <span class="rec-donut-total" data-value="23">0</span>
+                      <span class="rec-donut-label">Total</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- GitHub-style Yearly Contribution Bar Chart -->
+              <div class="rec-card rec-card--chart">
+                <div class="rec-card-header">
+                  <h3>GitHub Contributions</h3>
+                  <span class="rec-card-badge">Yearly</span>
+                </div>
+                <div class="rec-bar-chart rec-contrib-chart" aria-label="Yearly GitHub contributions">
+                  <div class="rec-bar-col"><span class="rec-bar-value">1</span><div class="rec-bar rec-bar-wide" data-height="1" style="--bar-color:#2755d2"></div><span>2022</span></div>
+                  <div class="rec-bar-col"><span class="rec-bar-value">60</span><div class="rec-bar rec-bar-wide" data-height="8" style="--bar-color:#14b8a6"></div><span>2023</span></div>
+                  <div class="rec-bar-col"><span class="rec-bar-value">268</span><div class="rec-bar rec-bar-wide" data-height="35" style="--bar-color:#7c3aed"></div><span>2024</span></div>
+                  <div class="rec-bar-col"><span class="rec-bar-value">763</span><div class="rec-bar rec-bar-wide" data-height="100" style="--bar-color:#10b981"></div><span>2025</span></div>
+                  <div class="rec-bar-col"><span class="rec-bar-value">115</span><div class="rec-bar rec-bar-wide" data-height="15" style="--bar-color:#f59e0b"></div><span>2026</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Core Skill Confidence + Credentials Row -->
+            <div class="rec-charts-row">
+              <!-- Core Skill Confidence (replaces Hiring Funnel) -->
+              <div class="rec-card rec-card--funnel">
+                <div class="rec-card-header"><h3>Core Skill Confidence</h3></div>
+                <div class="rec-funnel" aria-label="Core skill confidence levels">
+                  <div class="rec-funnel-step" data-width="92" style="--funnel-color:#2755d2"><span>Software Engineering</span><b>92%</b></div>
+                  <div class="rec-funnel-step" data-width="90" style="--funnel-color:#14b8a6"><span>AI / ML Engineering</span><b>90%</b></div>
+                  <div class="rec-funnel-step" data-width="88" style="--funnel-color:#7c3aed"><span>Cloud &amp; Deployment</span><b>88%</b></div>
+                  <div class="rec-funnel-step" data-width="86" style="--funnel-color:#f59e0b"><span>Data &amp; Analytics</span><b>86%</b></div>
+                  <div class="rec-funnel-step" data-width="85" style="--funnel-color:#10b981"><span>Problem Solving</span><b>85%</b></div>
+                </div>
+              </div>
+
+              <!-- Credentials (replaces Recent Activity) -->
+              <div class="rec-card rec-card--timeline">
+                <div class="rec-card-header"><h3>Credentials</h3></div>
+                <ul class="recruiter-cert-list">
+                  <li><span>AI ML Engineering (Coursera)</span><a href="https://coursera.org/share/a56bcb83964565c6e94da4ce709b6269" target="_blank" rel="noopener">Verify</a></li>
+                  <li><span>GitHub Foundations (Microsoft)</span><a href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/AFAA28471679E673?sharingId=AF5276DA5CCA289D" target="_blank" rel="noopener">Verify</a></li>
+                  <li><span>GitHub Copilot (Microsoft)</span><a href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/B28390E691C3D95F?sharingId=AF5276DA5CCA289D" target="_blank" rel="noopener">Verify</a></li>
+                  <li><span>SQL Basics (HackerRank)</span><a href="https://www.hackerrank.com/certificates/278da06f2f91" target="_blank" rel="noopener">Verify</a></li>
+                  <li><span>Python (Codedex)</span><a href="https://www.codedex.io/certificates/aeb2023c-d71b-4463-b827-5d8de9eb62dc" target="_blank" rel="noopener">Verify</a></li>
+                  <li><span>Big Data (NPTEL)</span><a href="https://archive.nptel.ac.in/content/noc/NOC24/SEM2/Ecertificates/106/noc24-cs130/Course/NPTEL24CS130S46430016304336111.pdf" target="_blank" rel="noopener">Verify</a></li>
+                  <li><span>ML Training (Internshala)</span><a href="https://trainings.internshala.com/verify-certificate/?certificate_number=3c8qenodme0" target="_blank" rel="noopener">Verify</a></li>
+                </ul>
+              </div>
+            </div>
+
+        </div><!-- .rec-main -->
+      </div><!-- .recruiter-mode-inner -->
     </section>
 
-    <!-- Right Side Quick Sidebar -->
-    <aside class="right-sidebar" aria-label="Quick navigation sidebar">
-        <button type="button" class="right-sidebar-link" data-action="recruiter" data-label="Recruiter Mode" aria-label="Recruiter Mode" title="Recruiter Mode">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="5" y="5" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M9 10h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M9 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-        </button>
-        <button type="button" class="right-sidebar-link" data-action="tech-radar" data-label="Domain Radar" aria-label="Domain Radar" title="Domain Radar">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/>
-                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M12 12l5-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-        </button>
-        <button type="button" class="right-sidebar-link" data-action="availability" data-label="Availability + Voice" aria-label="Availability and Voice Introduction" title="Availability and Voice Introduction">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.8"/>
-                <circle cx="12" cy="12" r="2.4" fill="currentColor"/>
-            </svg>
-        </button>
-        <button type="button" class="right-sidebar-link" data-action="courses" data-label="Courses Notes" aria-label="Courses Notes" title="Courses Notes">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4.5 5.5h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M4.5 12h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M4.5 18.5h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <circle cx="6.8" cy="5.5" r="1" fill="currentColor"/>
-                <circle cx="6.8" cy="12" r="1" fill="currentColor"/>
-                <circle cx="6.8" cy="18.5" r="1" fill="currentColor"/>
-            </svg>
-        </button>
-        <button type="button" class="right-sidebar-link" data-action="games" data-label="Play Games" aria-label="Play Games" title="Play Games">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="3.5" y="7.5" width="17" height="9" rx="4.5" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M8 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M10 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <circle cx="15.8" cy="11" r="1.1" fill="currentColor"/>
-                <circle cx="17.8" cy="13" r="1.1" fill="currentColor"/>
-            </svg>
-        </button>
-        <button type="button" class="right-sidebar-link" data-action="cosmic-clock" data-label="Clock" aria-label="Clock" title="Clock">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M12 8v4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M12 12.5l3 1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-        </button>
-        <button type="button" class="right-sidebar-link sidebar-toggle-link" data-action="toggle-sidebar" data-label="Hide Sidebar" aria-label="Hide sidebar" title="Hide Sidebar">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15.5 6.5L9.5 12l6 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-
-        <div class="sidebar-mini-panels" aria-live="polite">
-            <section id="sidebarAvailabilityCard" class="sidebar-mini-card sidebar-presence-card" aria-hidden="true">
-                <div class="sidebar-presence-header">
-                    <h4>Availability &amp; Voice Introduction</h4>
-                    <span class="sidebar-presence-badge">Live</span>
-                </div>
-
-                <div class="sidebar-presence-grid">
-                    <div class="sidebar-presence-block" aria-label="Availability details">
-                        <h5>Live Availability</h5>
-                        <p class="sidebar-mini-line"><span class="availability-dot" aria-hidden="true"></span>Open for internships, freelance, and full-time roles</p>
-                        <p class="sidebar-mini-sub">Typical response time: within 2 hours</p>
-                        <div class="sidebar-mini-pills" role="list" aria-label="Availability roles">
-                            <span class="sidebar-mini-pill" role="listitem">Internship</span>
-                            <span class="sidebar-mini-pill" role="listitem">Freelance</span>
-                            <span class="sidebar-mini-pill" role="listitem">Full-time</span>
-                        </div>
-                        <div class="sidebar-mini-meta" aria-label="Availability details">
-                            <p><strong>Address:</strong> Sambhal, Uttar Pradesh, India</p>
-                            <p><strong>Work type:</strong> Hybrid / Onsite</p>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-presence-block sidebar-voice-block" aria-label="Voice introduction details">
-                        <h5>Voice Introduction</h5>
-                        <p class="sidebar-mini-sub">Listen to my full About section in a clear spoken format.</p>
-                        <button type="button" id="sidebarVoicePlayBtn" class="sidebar-mini-btn">Play Intro</button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="sidebarTechRadarCard" class="sidebar-mini-card" aria-hidden="true">
-                <h4>Tech Stack Radar</h4>
-                <canvas id="sidebarTechRadarCanvas" width="340" height="230" aria-label="Tech stack radar chart"></canvas>
-                <div class="sidebar-mini-metrics" aria-label="Tech strengths">
-                    <div class="sidebar-mini-metric"><span>AI/ML</span><strong>92%</strong></div>
-                    <div class="sidebar-mini-metric"><span>Web</span><strong>88%</strong></div>
-                    <div class="sidebar-mini-metric"><span>Backend</span><strong>84%</strong></div>
-                    <div class="sidebar-mini-metric"><span>Deployment</span><strong>80%</strong></div>
-                </div>
-                <p class="sidebar-mini-sub">AI/ML · Web · Backend · Deployment</p>
-            </section>
-        </div>
-    </aside>
+    <!-- Domain Radar Modal -->
+    <div id="miniCardOverlay" class="mini-card-overlay" aria-hidden="true">
+        <section id="sidebarTechRadarCard" class="mini-card-modal" role="dialog" aria-modal="true" aria-label="Domain Radar" aria-hidden="true">
+            <button type="button" class="mini-card-close" aria-label="Close">&times;</button>
+            <h4>Tech Stack Radar</h4>
+            <canvas id="sidebarTechRadarCanvas" width="340" height="230" aria-label="Tech stack radar chart"></canvas>
+            <div class="sidebar-mini-metrics" aria-label="Tech strengths">
+                <div class="sidebar-mini-metric"><span>AI/ML</span><strong>92%</strong></div>
+                <div class="sidebar-mini-metric"><span>Web</span><strong>88%</strong></div>
+                <div class="sidebar-mini-metric"><span>Backend</span><strong>84%</strong></div>
+                <div class="sidebar-mini-metric"><span>Deployment</span><strong>80%</strong></div>
+            </div>
+            <p class="sidebar-mini-sub">AI/ML &middot; Web &middot; Backend &middot; Deployment</p>
+        </section>
+    </div>
 
         <!-- Cosmic Clock Popup -->
         <div id="cosmicClockOverlay" class="cosmic-clock-overlay" aria-hidden="true">
                 <section id="cosmicClockPopup" class="cosmic-clock-popup" role="dialog" aria-modal="true" aria-label="Cosmic Clock">
-                        <button type="button" id="cosmicClockCloseBtn" class="cosmic-clock-close" aria-label="Close clock">×</button>
+                        <button type="button" id="cosmicClockCloseBtn" class="cosmic-clock-close" aria-label="Close clock">&times;</button>
                         <div class="cosmic-clock-root">
                                 <canvas id="canvas"></canvas>
 
@@ -438,20 +382,6 @@
                     <path d="M15.8 8.6a1.1 1.1 0 0 1 1.6 0l2.2 2.2 2.2-2.2a1.1 1.1 0 1 1 1.6 1.6l-2.2 2.2 2.2 2.2a1.1 1.1 0 1 1-1.6 1.6l-2.2-2.2-2.2 2.2a1.1 1.1 0 1 1-1.6-1.6l2.2-2.2-2.2-2.2a1.1 1.1 0 0 1 0-1.6z"/>
                 </svg>
             </a>
-            <!-- Facebook -->
-            <a class="social-icon" href="https://www.facebook.com/profile.php?id=61556569334216" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true">
-                    <!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                    <path d="M240 363.3L240 576L356 576L356 363.3L442.5 363.3L460.5 265.5L356 265.5L356 230.9C356 179.2 376.3 159.4 428.7 159.4C445 159.4 458.1 159.8 465.7 160.6L465.7 71.9C451.4 68 416.4 64 396.2 64C289.3 64 240 114.5 240 223.4L240 265.5L174 265.5L174 363.3L240 363.3z"/>
-                </svg>
-            </a>
-            <!-- Instagram -->
-            <a class="social-icon" href="https://www.instagram.com/_asim_sarkar_" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true">
-                    <!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                    <path d="M320.3 205C256.8 204.8 205.2 256.2 205 319.7C204.8 383.2 256.2 434.8 319.7 435C383.2 435.2 434.8 383.8 435 320.3C435.2 256.8 383.8 205.2 320.3 205zM319.7 245.4C360.9 245.2 394.4 278.5 394.6 319.7C394.8 360.9 361.5 394.4 320.3 394.6C279.1 394.8 245.6 361.5 245.4 320.3C245.2 279.1 278.5 245.6 319.7 245.4zM413.1 200.3C413.1 185.5 425.1 173.5 439.9 173.5C454.7 173.5 466.7 185.5 466.7 200.3C466.7 215.1 454.7 227.1 439.9 227.1C425.1 227.1 413.1 215.1 413.1 200.3zM542.8 227.5C541.1 191.6 532.9 159.8 506.6 133.6C480.4 107.4 448.6 99.2 412.7 97.4C375.7 95.3 264.8 95.3 227.8 97.4C192 99.1 160.2 107.3 133.9 133.5C107.6 159.7 99.5 191.5 97.7 227.4C95.6 264.4 95.6 375.3 97.7 412.3C99.4 448.2 107.6 480 133.9 506.2C160.2 532.4 191.9 540.6 227.8 542.4C264.8 544.5 375.7 544.5 412.7 542.4C448.6 540.7 480.4 532.5 506.6 506.2C532.8 480 541 448.2 542.8 412.3C544.9 375.3 544.9 264.5 542.8 227.5zM495 452C487.2 471.6 472.1 486.7 452.4 494.6C422.9 506.3 352.9 503.6 320.3 503.6C287.7 503.6 217.6 506.2 188.2 494.6C168.6 486.8 153.5 471.7 145.6 452C133.9 422.5 136.6 352.5 136.6 319.9C136.6 287.3 134 217.2 145.6 187.8C153.4 168.2 168.5 153.1 188.2 145.2C217.7 133.5 287.7 136.2 320.3 136.2C352.9 136.2 423 133.6 452.4 145.2C472 153 487.1 168.1 495 187.8C506.7 217.3 504 287.3 504 319.9C504 352.5 506.7 422.6 495 452z"/>
-                </svg>
-            </a>
             <!-- Email -->
             <a class="social-icon" href="https://mail.google.com/mail/?view=cm&fs=1&to=studyboyasim01@gmail.com" target="_blank" rel="noopener" aria-label="Email" title="Email">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -489,7 +419,7 @@
             <div class="about-text-container">
                 <div class="about-card">
                     <h2>
-                        About Me
+                        About Me
                         <button id="aboutSpeakBtn" class="speak-btn" aria-label="Speak description" title="Speak description" type="button">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
                                 <path d="M3 10v4a1 1 0 0 0 1 1h3l4 3V6L7 9H4a1 1 0 0 0-1 1z"></path>
@@ -498,7 +428,7 @@
                             </svg>
                         </button>
                     </h2>
-                    <p id="aboutDescription">I’m an AI/ML Engineer, currently pursuing a B.Tech in Computer Science and Engineering with a specialization in Artificial Intelligence, Machine Learning, and Deep Learning. Skilled in Python, SQL, HTML, and CSS, with a solid understanding of systems and modern software development practices, along with a foundational knowledge of JavaScript. I thrive at the intersection of artificial intelligence, machine learning, cloud computing, and modern software engineering. I specialize in building end-to-end ML pipelines, scalable backend systems, and cloud-integrated applications that blend intelligence with performance. My technical stack includes Docker, Azure, CI/CD pipelines, data pipelines, and workflow automation tools, enabling me to design and deploy solutions that learn, adapt, and scale efficiently. Passionate about clean engineering, data-driven problem solving, and continuous innovation, I actively explore emerging technologies in Generative AI, cloud-native architectures, and autonomous ML workflows with the goal of building systems that not only work, but also think, evolve, and create impact.</p>
+                    <p id="aboutDescription">I'm an AI/ML Engineer, currently pursuing a B.Tech in Computer Science and Engineering with a specialization in Artificial Intelligence, Machine Learning, and Deep Learning. Skilled in Python, SQL, HTML, and CSS, with a solid understanding of systems and modern software development practices, along with a foundational knowledge of JavaScript. I thrive at the intersection of artificial intelligence, machine learning, cloud computing, and modern software engineering. I specialize in building end-to-end ML pipelines, scalable backend systems, and cloud-integrated applications that blend intelligence with performance. My technical stack includes Docker, Azure, CI/CD pipelines, data pipelines, and workflow automation tools, enabling me to design and deploy solutions that learn, adapt, and scale efficiently. Passionate about clean engineering, data-driven problem solving, and continuous innovation, I actively explore emerging technologies in Generative AI, cloud-native architectures, and autonomous ML workflows with the goal of building systems that not only work, but also think, evolve, and create impact.</p>
                     <button class="gooey-btn" id="hireMeBtn">Hire&nbsp;Me</button>
                 </div>
             </div>
@@ -515,8 +445,22 @@
             </svg>
         </button>
         <ul class="seq-canvas">
-
-            <li class="step1 valign seq-in">
+                        <li class="step1 valign seq-in">
+                <div class="vcenter">
+                    <div class="cert-grid">
+                        <div class="cert-info">
+                            <h2 data-seq class="certificate-title">Microsoft AI ML Engineering (Coursera)</h2>
+                            <p class="certificate-description">
+                               Developed practical expertise in AI and machine learning systems, covering core ML algorithms, model training, feature engineering, and evaluation techniques. Built intelligent AI solutions using Microsoft Azure services, applied advanced ML methods, and completed a capstone project implementing the end-to-end machine learning lifecycle from data processing to deployment.
+                            </p>
+                        </div>
+                        <div class="cert-visual">
+                            <img data-seq class="certificate-feature" src="certificate/certificate1.jpg" alt="Certificate 1" loading="lazy" decoding="async" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="step2 valign seq-in">
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
@@ -526,38 +470,22 @@
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate1.jpg" alt="Certificate 1" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate2.jpg" alt="Certificate 1" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
             </li>
-            <li class="step2 valign">
+            <li class="step3 valign">
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
                             <h2 data-seq class="certificate-title">Github Copilot (Microsoft)</h2>
                             <p class="certificate-description">
-                                 Gained expertise in leveraging AI-powered code completion to enhance productivity, code quality, and collaboration. Mastered Copilot’s integration within IDEs, prompt engineering for accurate code suggestions, secure coding practices, and workflow optimization through GitHub Copilot for Individuals and Business.
+                                 Gained expertise in leveraging AI-powered code completion to enhance productivity, code quality, and collaboration. Mastered Copilot's integration within IDEs, prompt engineering for accurate code suggestions, secure coding practices, and workflow optimization through GitHub Copilot for Individuals and Business.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate13.jpg" alt="Certificate 2" loading="lazy" decoding="async" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="step3 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Junior Data Analyst (CETPA)</h2>
-                            <p class="certificate-description">
-                                Executed data wrangling, transformation, and visualization using Excel (PivotTables, XLOOKUP) and SQL (JOIN, GROUP BY, AGGREGATE). Designed analytical dashboards and optimized data pipelines to deliver insight-driven reporting and performance monitoring.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate2.jpg" alt="Certificate 3" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate3.jpg" alt="Certificate 2" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -567,13 +495,13 @@
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Azure Cognitive Services (Coursera)</h2>
+                            <h2 data-seq class="certificate-title">Big Data Computing (NPTEL)</h2>
                             <p class="certificate-description">
-                                Developed intelligent applications leveraging Azure AI APIs for Vision, Language, and Search. Implemented OCR, sentiment analysis, entity recognition, and translation models with secured Azure authentication and responsible AI integration.
+                                Studied distributed data processing with Hadoop and Apache Spark (RDDs, DataFrames). Gained expertise in partitioning, shuffling, fault tolerance, and optimization techniques for scalable big data analytics and cluster-based computation.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate3.jpg" alt="Certificate 4" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate4.jpg" alt="Certificate 7" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -583,13 +511,13 @@
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Machine Learning Trainee (Internshala)</h2>
+                            <h2 data-seq class="certificate-title">SQL Basics (HackerRank)</h2>
                             <p class="certificate-description">
-                                Implemented end-to-end ML pipelines using Scikit-learn - preprocessing, model training, and hyperparameter tuning. Applied regression and classification algorithms with metrics such as F1-Score, ROC-AUC, and cross-validation for performance optimization.
+                                Built and optimized relational queries using subqueries, window functions, and complex JOINs. Enhanced query performance with indexing and execution plan analysis to ensure scalable and efficient database operations.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate4.jpg" alt="Certificate 5" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate5.jpg" alt="Certificate 12" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -599,13 +527,13 @@
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Technology Day Winner (TMU)</h2>
+                            <h2 data-seq class="certificate-title">Python (Codedex)</h2>
                             <p class="certificate-description">
-                                Engineered and deployed an innovative prototype demonstrating applied AI and data-driven problem-solving. Led requirements gathering, implementation, benchmarking, and technical presentation, earning recognition for innovation and execution excellence.
+                                Built strong proficiency in Python programming, including core syntax, data structures, functions, and object-oriented programming concepts. Applied Python for problem solving, automation, and data handling while implementing best coding practices, debugging techniques, and writing clean, efficient, and scalable code.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate5.jpg" alt="Certificate 6" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate6.jpg" alt="Certificate 12" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -615,13 +543,13 @@
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Big Data Computing (NPTEL)</h2>
+                            <h2 data-seq class="certificate-title">Junior Data Analyst (CETPA)</h2>
                             <p class="certificate-description">
-                                Studied distributed data processing with Hadoop and Apache Spark (RDDs, DataFrames). Gained expertise in partitioning, shuffling, fault tolerance, and optimization techniques for scalable big data analytics and cluster-based computation.
+                                Executed data wrangling, transformation, and visualization using Excel (PivotTables, XLOOKUP) and SQL (JOIN, GROUP BY, AGGREGATE). Designed analytical dashboards and optimized data pipelines to deliver insight-driven reporting and performance monitoring.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate6.jpg" alt="Certificate 7" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate7.jpg" alt="Certificate 3" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -631,13 +559,13 @@
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Data Analysis Using MS Excel (Coursera)</h2>
+                            <h2 data-seq class="certificate-title">Machine Learning Trainee (Internshala)</h2>
                             <p class="certificate-description">
-                                Performed comprehensive data analysis using advanced Excel functions. Power Query, PivotTables, and What-If Analysis. Built automated KPI dashboards to visualize trends, patterns, and business metrics with data-driven accuracy.
+                                Implemented end-to-end ML pipelines using Scikit-learn - preprocessing, model training, and hyperparameter tuning. Applied regression and classification algorithms with metrics such as F1-Score, ROC-AUC, and cross-validation for performance optimization.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate7.jpg" alt="Certificate 8" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate8.jpg" alt="Certificate 5" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -647,13 +575,13 @@
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Data Analytics Trainee (CETPA)</h2>
+                            <h2 data-seq class="certificate-title">Technology Day Winner (TMU)</h2>
                             <p class="certificate-description">
-                                Conducted real-world data analytics using Python (NumPy, Pandas, Matplotlib, Seaborn). Focused on data wrangling, feature engineering, and visualization to generate actionable insights and reproducible analytical reports.
+                                Engineered and deployed an innovative prototype demonstrating applied AI and data-driven problem-solving. Led requirements gathering, implementation, benchmarking, and technical presentation, earning recognition for innovation and execution excellence.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate8.jpg" alt="Certificate 9" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate9.jpg" alt="Certificate 6" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -663,77 +591,13 @@
                 <div class="vcenter">
                     <div class="cert-grid">
                         <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Fundamentals of ML Engineering (LinkedIn)</h2>
-                            <p class="certificate-description">
-                                Gained practical understanding of MLOps fundamentals, dataset versioning, experiment tracking, model packaging, CI/CD pipelines, and monitoring for production-level ML systems ensuring reproducibility and governance.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate9.jpg" alt="Certificate 10" loading="lazy" decoding="async" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="step11 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">ML Associate Engineer (LinkedIn)</h2>
-                            <p class="certificate-description">
-                                Strengthened model evaluation and deployment workflows, implementing precision/recall optimization, bias detection, drift monitoring, and REST-based inference systems with robust logging and observability frameworks.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate10.jpg" alt="Certificate 11" loading="lazy" decoding="async" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="step12 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">SQL Basics (HackerRank)</h2>
-                            <p class="certificate-description">
-                                Built and optimized relational queries using subqueries, window functions, and complex JOINs. Enhanced query performance with indexing and execution plan analysis to ensure scalable and efficient database operations.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate13.jpg" alt="Certificate 12" loading="lazy" decoding="async" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="step13 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Google Analytics (Skillshop)</h2>
-                            <p class="certificate-description">
-                                Configured and optimized GA4 properties, events, and conversion tracking. Implemented UTM tagging, funnel visualization, and audience segmentation for data-driven campaign performance measurement and optimization.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate12.jpg" alt="Certificate 13" loading="lazy" decoding="async" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="step14 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
                             <h2 data-seq class="certificate-title">TeamEverest NGO (Volunteer)</h2>
                             <p class="certificate-description">
                                 Contributed to data-driven community initiatives through structured reporting, event coordination, and analytics using Excel and Google Sheets. Focused on measurable outreach impact, documentation clarity, and collaborative workflow.
                             </p>
                         </div>
                         <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate11.jpg" alt="Certificate 14" loading="lazy" decoding="async" />
+                            <img data-seq class="certificate-feature" src="certificate/certificate10.jpg" alt="Certificate 14" loading="lazy" decoding="async" />
                         </div>
                     </div>
                 </div>
@@ -750,7 +614,7 @@
 
     <!-- Services Section -->
     <section class="services-section">
-        <h2 class="section-title">Areas of Expertise</h2>
+        <h2 class="section-title">Areas of Expertise</h2>
         <div class="services-grid">
             <div class="service-card">
                 <div class="service-icon"><img src="images/developer.png" alt="Developer Icon" loading="lazy" decoding="async" /></div>
@@ -811,13 +675,13 @@
     <!-- Projects Section -->
     <section id="projects" class="projects-section">
         <div class="projects-container">
-            <h2 class="section-title">Featured Projects</h2>
+            <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
                 <a href="https://www.curehelplus.me" target="_blank" class="project-link">
                     <div class="project-card">
                         <img src="images/curehelp.png" alt="CureHelp+" class="project-image" loading="lazy" decoding="async">
                         <p class="project-title">CureHelp+</p>
-                        <p class="project-description">An AI‑assisted health companion offering preliminary insights, symptom‑based guidance, and smarter access to care.</p>
+                        <p class="project-description">An AI-assisted health companion offering preliminary insights, symptom-based guidance, and smarter access to care.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
@@ -826,7 +690,7 @@
                     <div class="project-card">
                         <img src="images/interview.png" alt="Interview Project" class="project-image" loading="lazy" decoding="async">
                         <p class="project-title">IntervBot</p>
-                        <p class="project-description">Practice interviews with AI‑generated questions and structured feedback to build confidence and improve answers.</p>
+                        <p class="project-description">Practice interviews with AI-generated questions and structured feedback to build confidence and improve answers.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
@@ -835,7 +699,7 @@
                     <div class="project-card">
                         <img src="images/url.png" alt="URL Project" class="project-image" loading="lazy" decoding="async">
                         <p class="project-title">TinyURL</p>
-                        <p class="project-description">Blazing‑fast link toolkit: shorten and unshorten URLs, and generate QR codes for effortless sharing anywhere.</p>
+                        <p class="project-description">Blazing-fast link toolkit: shorten and unshorten URLs, and generate QR codes for effortless sharing anywhere.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
@@ -844,7 +708,7 @@
                     <div class="project-card">
                         <img src="images/stock.png" alt="Stock Project" class="project-image" loading="lazy" decoding="async">
                         <p class="project-title">PredicTrade</p>
-                        <p class="project-description">AI‑driven market forecasting that turns historical trends and live signals into clear, actionable insights for smarter investing.</p>
+                        <p class="project-description">AI-driven market forecasting that turns historical trends and live signals into clear, actionable insights for smarter investing.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
@@ -853,7 +717,7 @@
                     <div class="project-card">
                         <img src="images/letter.png" alt="Lead Project" class="project-image" loading="lazy" decoding="async">
                         <p class="project-title">Lead Validation Suite</p>
-                        <p class="project-description">Cleans and verifies lead data to remove junk and keep only accurate, high‑quality contacts in your pipeline.</p>
+                        <p class="project-description">Cleans and verifies lead data to remove junk and keep only accurate, high-quality contacts in your pipeline.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
@@ -862,7 +726,7 @@
                     <div class="project-card">
                         <img src="images/favicon.png" alt="Website Project" class="project-image" loading="lazy" decoding="async">
                         <p class="project-title">Personal Website</p>
-                        <p class="project-description">A clean, responsive portfolio showcasing projects, writing, and skills across AI, ML, and full‑stack development.</p>
+                        <p class="project-description">A clean, responsive portfolio showcasing projects, writing, and skills across AI, ML, and full-stack development.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
@@ -916,7 +780,7 @@
     <!-- Privacy Popup -->
     <div class="privacy-popup" id="privacyPopup">
         <div class="privacy-content">
-            <span class="privacy-close" id="closePrivacyPopup">×</span>
+            <span class="privacy-close" id="closePrivacyPopup">&times;</span>
             <h2>Privacy Policy</h2>
             <p><strong>I Respect Your Privacy.</strong><br>I don't collect any personal information unless you choose to share it, like when you fill out the contact form to connect or ask questions.<br>There are no hidden trackers, cookies, or background scripts running unless clearly mentioned for transparency.<br>This site is built purely for personal use and creative expression, and your data is never sold, shared, or misused in any way.<br>You're safe, valued, and always in control here.</p>
         </div>
@@ -944,7 +808,7 @@
                 <label for="hpField" class="visually-hidden">Website</label>
                 <input type="text" id="hpField" name="website" tabindex="-1" autocomplete="off" />
             </div>
-            <p class="form-hint">I’ll get back within 0 – 2 hours.</p>
+            <p class="form-hint">I'll get back within 0 - 2 hours.</p>
             <button id="sendMessageBtn" class="gooey-btn">Send</button>
         </div>
     </div>
@@ -954,7 +818,7 @@
         <section id="coursesModal" class="courses-modal" role="dialog" aria-modal="true" aria-labelledby="coursesTitle">
             <header class="courses-header">
                 <h2 id="coursesTitle">Courses</h2>
-                <button type="button" id="coursesCloseBtn" class="courses-close-btn" aria-label="Close courses">×</button>
+                <button type="button" id="coursesCloseBtn" class="courses-close-btn" aria-label="Close courses">&times;</button>
             </header>
 
             <div class="courses-body">
@@ -965,7 +829,7 @@
 
                 <main class="courses-viewer-panel" aria-label="Course file viewer">
                     <div id="coursesViewerState" class="courses-viewer-state">Select a file from Notes to open it here.</div>
-                    <div id="coursesViewerLoading" class="courses-viewer-loading" aria-live="polite">Loading file…</div>
+                    <div id="coursesViewerLoading" class="courses-viewer-loading" aria-live="polite">Loading file...</div>
                     <iframe id="coursesPdfViewer" class="courses-pdf-viewer" title="PDF Viewer"></iframe>
                     <article id="coursesTextViewer" class="courses-text-viewer"></article>
                 </main>
@@ -983,7 +847,7 @@
                 </div>
                 <div class="games-header-actions">
                     <button type="button" id="gamesSoundToggle" class="games-header-btn" aria-pressed="true" title="Toggle sound">Sound: On</button>
-                    <button type="button" id="gamesCloseBtn" class="games-header-btn games-close-btn" aria-label="Close games">×</button>
+                    <button type="button" id="gamesCloseBtn" class="games-header-btn games-close-btn" aria-label="Close games">&times;</button>
                 </div>
             </header>
 
@@ -1004,7 +868,7 @@
             <main id="gamesViewport" class="games-viewport" tabindex="0">
                 <canvas id="gamesCanvas" class="games-canvas" width="1280" height="720" aria-label="Game canvas"></canvas>
                 <div id="gamesStartOverlay" class="games-start-overlay" aria-hidden="true">
-                    <button type="button" id="gamesStartBtn" class="games-start-btn" aria-label="Play current game">▶ Play</button>
+                    <button type="button" id="gamesStartBtn" class="games-start-btn" aria-label="Play current game">â–¶ Play</button>
                 </div>
             </main>
 
@@ -1020,6 +884,11 @@
 
     <!-- Global Toast -->
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top" title="Back to top">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
 
     <!-- JavaScript -->
     <script src="js/script.js"></script>

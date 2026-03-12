@@ -317,8 +317,8 @@ function initializeCursor() {
         cursorDot.style.left = `${mouseX}px`;
         cursorDot.style.top = `${mouseY}px`;
 
-        outlineX += (mouseX - outlineX) * 0.1;
-        outlineY += (mouseY - outlineY) * 0.1;
+        outlineX += (mouseX - outlineX) * 0.15;
+        outlineY += (mouseY - outlineY) * 0.15;
         cursorOutline.style.left = `${outlineX}px`;
         cursorOutline.style.top = `${outlineY}px`;
 
@@ -380,10 +380,10 @@ function initializeSmoothCursor() {
     let smVx = 0, smVy = 0;
 
     // Tuning constants (smaller = smoother, more lag)
-    const POS_LERP = 0.16;
-    const ROT_LERP = 0.12;
-    const SCALE_LERP = 0.18;
-    const VEL_LERP = 0.18;
+    const POS_LERP = 0.22;
+    const ROT_LERP = 0.16;
+    const SCALE_LERP = 0.22;
+    const VEL_LERP = 0.22;
     const SPEED_THRESHOLD = 0.10; 
 
     function onMouseMove(e) {
@@ -453,6 +453,7 @@ function initializePage() {
     initializeHeroNameWave();
     initializeIconSideReveal();
     initializeRightSidebar();
+    initializeMiniCards();
     initializeTopControlsReveal();
     initializeSectionTitlesWave();
     initializeBlogs();
@@ -495,19 +496,11 @@ function initializeEventListeners() {
     const closeContactPopup = byId('closeContactPopup');
     const sendMessageBtn = byId('sendMessageBtn');
     const hireBtn = byId('hireMeBtn');
-    const recruiterContactBtn = byId('recruiterContactBtn');
-    const recruiterViewProjectsBtn = byId('recruiterViewProjectsBtn');
 
     addListener(footerContactTrigger, 'click', openContactForm);
     addListener(closeContactPopup, 'click', closeContactForm);
     addListener(sendMessageBtn, 'click', submitContactForm);
     addListener(hireBtn, 'click', openContactForm);
-    addListener(recruiterContactBtn, 'click', openContactForm);
-    addListener(recruiterViewProjectsBtn, 'click', () => {
-        setRecruiterMode(false);
-        const projects = byId('projects');
-        if (projects) projects.scrollIntoView({ behavior: 'smooth' });
-    });
     
     // Privacy popup
     addListener(byId('privacy-trigger'), 'click', openPrivacyPopup);
@@ -525,6 +518,62 @@ function initializeEventListeners() {
 
     // About section speaker
     setupAboutSpeaker();
+
+    // Header dropdown
+    initializeHeaderDropdown();
+}
+
+function initializeHeaderDropdown() {
+    const btn = byId('headerDropdownBtn');
+    const menu = byId('headerDropdownMenu');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = menu.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && e.target !== btn) {
+            menu.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    menu.querySelectorAll('.header-dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const action = item.getAttribute('data-action');
+            menu.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+
+            if (action === 'tech-radar') {
+                if (window._miniCards) window._miniCards.toggle('radar');
+                return;
+            }
+            if (action === 'cosmic-clock') {
+                if (window._miniCards) window._miniCards.close();
+                openCosmicClockPopup();
+                return;
+            }
+            if (action === 'courses') {
+                if (window._miniCards) window._miniCards.close();
+                openCoursesExplorer();
+                return;
+            }
+            if (action === 'recruiter') {
+                if (window._miniCards) window._miniCards.close();
+                const enabled = !document.body.classList.contains('recruiter-mode');
+                setRecruiterMode(enabled);
+                return;
+            }
+            if (action === 'games') {
+                if (window._miniCards) window._miniCards.close();
+                openGameHub();
+                return;
+            }
+        });
+    });
 }
 
 /* ========================================================================== */
@@ -834,197 +883,68 @@ function initializeIconSideReveal() {
 function initializeRightSidebar() {
     const sidebar = document.querySelector('.right-sidebar');
     if (!sidebar) return;
+}
 
-    const items = Array.from(sidebar.querySelectorAll('.right-sidebar-link'));
-    const recruiterItem = sidebar.querySelector('[data-action="recruiter"]');
-    const sidebarToggleItem = sidebar.querySelector('[data-action="toggle-sidebar"]');
-    const availabilityCard = byId('sidebarAvailabilityCard');
+// Global mini-card manager – works independently of the right sidebar
+function initializeMiniCards() {
+    const overlay = byId('miniCardOverlay');
     const techRadarCard = byId('sidebarTechRadarCard');
-    const voicePlayBtn = byId('sidebarVoicePlayBtn');
     const radarCanvas = byId('sidebarTechRadarCanvas');
-    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const cards = {
-        availability: availabilityCard,
-        radar: techRadarCard
-    };
+    if (!overlay) return;
+
+    const cards = { radar: techRadarCard };
     let activeCard = null;
     let radarRafId = null;
     let radarPhase = 0;
-    let voiceUtterance = null;
-    let voiceCancelRequested = false;
-
-    const voiceIntroFallbackText = 'Hi, I am Asim Husain, an AI and software engineer. I design end to end machine learning workflows, build clean web interfaces, and create robust backend services with cloud deployment. I focus on practical products that are responsive, maintainable, and impact driven. I enjoy turning ideas into scalable systems that combine performance, automation, and strong user experience.';
-
-    const getVoiceIntroText = () => {
-        const aboutDesc = byId('aboutDescription');
-        const fullAbout = (aboutDesc?.innerText || aboutDesc?.textContent || '').replace(/\s+/g, ' ').trim();
-        return fullAbout || voiceIntroFallbackText;
-    };
-
-    const buildVoiceChunks = (text, maxLen = 1200) => {
-        const trimmed = (text || '').trim();
-        if (!trimmed) return [];
-
-        const sentences = trimmed.split(/(?<=[.!?])\s+/);
-        const chunks = [];
-        let current = '';
-
-        for (let i = 0; i < sentences.length; i++) {
-            const sentence = sentences[i];
-            if (!sentence) continue;
-            const merged = (current ? `${current} ${sentence}` : sentence).trim();
-            if (merged.length > maxLen && current) {
-                chunks.push(current.trim());
-                current = sentence;
-            } else {
-                current = merged;
-            }
-        }
-
-        if (current.trim()) {
-            chunks.push(current.trim());
-        }
-
-        return chunks;
-    };
-
-    const closeVoiceIntro = () => {
-        voiceCancelRequested = true;
-        try {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
-        } catch (_) {}
-        voiceUtterance = null;
-        if (voicePlayBtn) {
-            voicePlayBtn.textContent = 'Play Intro';
-            voicePlayBtn.setAttribute('aria-pressed', 'false');
-        }
-    };
-
-    const speakVoiceChunks = (chunks, index = 0) => {
-        if (!Array.isArray(chunks) || chunks.length === 0 || voiceCancelRequested) {
-            closeVoiceIntro();
-            return;
-        }
-
-        if (index >= chunks.length) {
-            closeVoiceIntro();
-            return;
-        }
-
-        voiceUtterance = new SpeechSynthesisUtterance(chunks[index]);
-        const voice = typeof selectPreferredVoice === 'function' ? selectPreferredVoice() : null;
-        if (voice) {
-            voiceUtterance.voice = voice;
-            if (voice.lang) voiceUtterance.lang = voice.lang;
-        } else {
-            voiceUtterance.lang = 'en-US';
-        }
-        voiceUtterance.rate = 1;
-        voiceUtterance.pitch = 1;
-        voiceUtterance.onend = () => {
-            if (voiceCancelRequested) {
-                closeVoiceIntro();
-                return;
-            }
-            if (index + 1 < chunks.length) {
-                speakVoiceChunks(chunks, index + 1);
-                return;
-            }
-            if (voicePlayBtn) {
-                voicePlayBtn.textContent = 'Play Intro';
-                voicePlayBtn.setAttribute('aria-pressed', 'false');
-            }
-            voiceUtterance = null;
-        };
-        voiceUtterance.onerror = () => {
-            closeVoiceIntro();
-        };
-
-        try {
-            window.speechSynthesis.speak(voiceUtterance);
-        } catch (_) {
-            closeVoiceIntro();
-        }
-    };
 
     const drawRadar = () => {
         if (!radarCanvas || !techRadarCard || !techRadarCard.classList.contains('show')) return;
         const ctx = radarCanvas.getContext('2d');
         if (!ctx) return;
-
-        const width = radarCanvas.width;
-        const height = radarCanvas.height;
-        const cx = width / 2;
-        const cy = height / 2;
+        const width = radarCanvas.width, height = radarCanvas.height;
+        const cx = width / 2, cy = height / 2;
         const radius = Math.min(width, height) * 0.34;
         const labels = ['AI/ML', 'Web', 'Backend', 'Deploy'];
         const values = [0.92, 0.88, 0.84, 0.8];
         radarPhase += 0.025;
         const pulse = 0.96 + Math.sin(radarPhase) * 0.04;
-
         ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = 'rgba(0,0,0,0)';
-        ctx.fillRect(0, 0, width, height);
-
         for (let ring = 1; ring <= 4; ring++) {
             const r = (radius * ring) / 4;
             ctx.beginPath();
             for (let i = 0; i < 4; i++) {
                 const angle = (-Math.PI / 2) + (i * Math.PI * 2 / 4);
-                const x = cx + Math.cos(angle) * r;
-                const y = cy + Math.sin(angle) * r;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+                const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
             ctx.closePath();
             ctx.strokeStyle = 'rgba(148, 163, 184, 0.26)';
             ctx.lineWidth = 1;
             ctx.stroke();
         }
-
         for (let i = 0; i < 4; i++) {
             const angle = (-Math.PI / 2) + (i * Math.PI * 2 / 4);
-            const x = cx + Math.cos(angle) * radius;
-            const y = cy + Math.sin(angle) * radius;
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.26)';
-            ctx.stroke();
-
-            ctx.fillStyle = '#000000';
-            ctx.font = '600 10px Poppins';
-            ctx.textAlign = 'center';
+            const x = cx + Math.cos(angle) * radius, y = cy + Math.sin(angle) * radius;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y);
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.26)'; ctx.stroke();
+            ctx.fillStyle = '#000000'; ctx.font = '600 10px Poppins'; ctx.textAlign = 'center';
             ctx.fillText(labels[i], cx + Math.cos(angle) * (radius + 15), cy + Math.sin(angle) * (radius + 15));
         }
-
         ctx.beginPath();
         values.forEach((value, i) => {
             const angle = (-Math.PI / 2) + (i * Math.PI * 2 / 4);
             const r = radius * value * pulse;
-            const x = cx + Math.cos(angle) * r;
-            const y = cy + Math.sin(angle) * r;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
+            const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         });
         ctx.closePath();
         ctx.fillStyle = 'rgba(39, 85, 210, 0.35)';
         ctx.strokeStyle = 'rgba(39, 85, 210, 0.9)';
-        ctx.lineWidth = 1.5;
-        ctx.fill();
-        ctx.stroke();
-
+        ctx.lineWidth = 1.5; ctx.fill(); ctx.stroke();
         radarRafId = requestAnimationFrame(drawRadar);
     };
 
-    const stopRadar = () => {
-        if (radarRafId) {
-            cancelAnimationFrame(radarRafId);
-            radarRafId = null;
-        }
-    };
+    const stopRadar = () => { if (radarRafId) { cancelAnimationFrame(radarRafId); radarRafId = null; } };
 
     const closeMiniCards = () => {
         Object.values(cards).forEach((card) => {
@@ -1032,154 +952,41 @@ function initializeRightSidebar() {
             card.classList.remove('show');
             card.setAttribute('aria-hidden', 'true');
         });
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
         activeCard = null;
         stopRadar();
-        closeVoiceIntro();
     };
 
     const toggleMiniCard = (name) => {
         const card = cards[name];
         if (!card) return;
-        if (activeCard === name) {
-            closeMiniCards();
-            return;
-        }
-
+        if (activeCard === name) { closeMiniCards(); return; }
         closeMiniCards();
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
         card.classList.add('show');
         card.setAttribute('aria-hidden', 'false');
         activeCard = name;
-        if (name === 'radar') {
-            drawRadar();
-        }
+        if (name === 'radar') drawRadar();
     };
 
-    const reveal = () => {
-        sidebar.classList.add('is-revealed');
-        items.forEach((item, idx) => {
-            if (prefersReduced) {
-                item.classList.add('is-revealed');
-                return;
-            }
-            setTimeout(() => item.classList.add('is-revealed'), idx * 80);
-        });
-    };
-
-    if (prefersReduced) {
-        reveal();
-    } else {
-        setTimeout(reveal, 2200);
-    }
-
-    items.forEach((item) => {
-        item.addEventListener('click', () => {
-            const action = item.getAttribute('data-action');
-            const targetSelector = item.getAttribute('data-target');
-
-            if (action === 'toggle-sidebar') {
-                closeMiniCards();
-                const collapsed = !sidebar.classList.contains('is-collapsed');
-                sidebar.classList.toggle('is-collapsed', collapsed);
-                item.setAttribute('data-label', collapsed ? 'Show Sidebar' : 'Hide Sidebar');
-                item.setAttribute('aria-label', collapsed ? 'Show sidebar' : 'Hide sidebar');
-                item.setAttribute('title', collapsed ? 'Show Sidebar' : 'Hide Sidebar');
-                return;
-            }
-
-            if (action === 'availability') {
-                toggleMiniCard('availability');
-                return;
-            }
-
-            if (action === 'tech-radar') {
-                toggleMiniCard('radar');
-                return;
-            }
-
-            if (action === 'cosmic-clock') {
-                closeMiniCards();
-                openCosmicClockPopup();
-                return;
-            }
-
-            if (action === 'courses') {
-                closeMiniCards();
-                openCoursesExplorer();
-                return;
-            }
-
-            if (action === 'recruiter') {
-                closeMiniCards();
-                const enabled = !document.body.classList.contains('recruiter-mode');
-                setRecruiterMode(enabled);
-                return;
-            }
-
-            if (action === 'games') {
-                closeMiniCards();
-                openGameHub();
-                return;
-            }
-
-            if (!targetSelector) return;
-            const destination = document.querySelector(targetSelector);
-            if (!destination) return;
-
-            closeMiniCards();
-            setRecruiterMode(false);
-            destination.scrollIntoView({ behavior: 'smooth' });
-        });
+    // Close buttons inside modals
+    overlay.querySelectorAll('.mini-card-close').forEach(btn => {
+        btn.addEventListener('click', closeMiniCards);
     });
 
-    if (voicePlayBtn) {
-        voicePlayBtn.addEventListener('click', () => {
-            if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === 'undefined') {
-                voicePlayBtn.textContent = 'Audio not supported';
-                return;
-            }
-
-            const speaking = window.speechSynthesis.speaking;
-            if (speaking) {
-                closeVoiceIntro();
-                return;
-            }
-
-            voiceCancelRequested = false;
-            const fullText = getVoiceIntroText();
-            const chunks = buildVoiceChunks(fullText);
-            if (chunks.length === 0) {
-                voicePlayBtn.textContent = 'Play Intro';
-                voicePlayBtn.setAttribute('aria-pressed', 'false');
-                return;
-            }
-
-            voicePlayBtn.textContent = 'Stop Intro';
-            voicePlayBtn.setAttribute('aria-pressed', 'true');
-            speakVoiceChunks(chunks, 0);
-        });
-    }
-
-    document.addEventListener('click', (e) => {
-        if (!activeCard) return;
-        if (sidebar.contains(e.target)) return;
-        closeMiniCards();
+    // Click on overlay backdrop closes
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeMiniCards();
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeMiniCards();
-        }
+        if (e.key === 'Escape' && activeCard) closeMiniCards();
     });
 
-    if (recruiterItem) {
-        recruiterItem.classList.toggle('is-active', document.body.classList.contains('recruiter-mode'));
-    }
-
-    if (sidebarToggleItem && sidebar.classList.contains('is-collapsed')) {
-        sidebarToggleItem.setAttribute('data-label', 'Show Sidebar');
-        sidebarToggleItem.setAttribute('aria-label', 'Show sidebar');
-        sidebarToggleItem.setAttribute('title', 'Show Sidebar');
-    }
+    // Expose globally so the header dropdown can use it
+    window._miniCards = { toggle: toggleMiniCard, close: closeMiniCards };
 }
 
 /* ========================================================================== */
@@ -1190,7 +997,12 @@ function initializeRecruiterMode() {
     const panel = byId('recruiterModePanel');
     if (!panel) return;
 
-    initializeRecruiterModeEffects(panel);
+    initializeRecruiterDashboardNav(panel);
+
+    const closeBtn = byId('recruiterCloseBtn');
+    if (closeBtn) {
+        addListener(closeBtn, 'click', () => setRecruiterMode(false));
+    }
 
     let saved = null;
     try {
@@ -1200,6 +1012,27 @@ function initializeRecruiterMode() {
     }
 
     setRecruiterMode(saved === 'true');
+}
+
+function initializeRecruiterDashboardNav(panel) {
+    const navItems = panel.querySelectorAll('.rec-nav-item[data-rec-nav]');
+    const views = panel.querySelectorAll('.rec-view[data-rec-view]');
+    if (!navItems.length || !views.length) return;
+
+    navItems.forEach(item => {
+        addListener(item, 'click', () => {
+            const target = item.getAttribute('data-rec-nav');
+            navItems.forEach(n => n.classList.remove('is-active'));
+            item.classList.add('is-active');
+            views.forEach(v => {
+                v.classList.remove('is-active');
+                if (v.getAttribute('data-rec-view') === target) {
+                    v.classList.add('is-active');
+                    animateRecruiterView(panel, v);
+                }
+            });
+        });
+    });
 }
 
 function setRecruiterMode(enabled) {
@@ -1219,8 +1052,20 @@ function setRecruiterMode(enabled) {
         if (enabled) {
             panel.offsetHeight;
             panel.classList.add('recruiter-animate-in');
-            animateRecruiterMetrics(panel);
-            animateRecruiterSkillFills(panel);
+
+            // Reset to dashboard view
+            const navItems = panel.querySelectorAll('.rec-nav-item[data-rec-nav]');
+            const views = panel.querySelectorAll('.rec-view[data-rec-view]');
+            navItems.forEach(n => n.classList.remove('is-active'));
+            views.forEach(v => v.classList.remove('is-active'));
+            const dashNav = panel.querySelector('[data-rec-nav="dashboard"]');
+            const dashView = panel.querySelector('[data-rec-view="dashboard"]');
+            if (dashNav) dashNav.classList.add('is-active');
+            if (dashView) {
+                dashView.classList.add('is-active');
+                animateRecruiterView(panel, dashView);
+            }
+
             if (window.scrollY > 100) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -1232,15 +1077,18 @@ function setRecruiterMode(enabled) {
     } catch (_) {}
 }
 
-function initializeRecruiterModeEffects(panel) {
-    if (!panel || panel.dataset.effectsReady === 'true') return;
-    panel.dataset.effectsReady = 'true';
-
-    initializeRecruiterParallax(panel);
+function animateRecruiterView(panel, view) {
+    if (!panel || !view) return;
+    animateRecruiterMetrics(panel);
+    animateRecruiterSkillFills(panel);
+    animateRecruiterBars(view);
+    animateRecruiterFunnel(view);
+    animateRecruiterScoreRings(view);
+    renderRecruiterCanvasCharts(view);
 }
 
 function animateRecruiterMetrics(panel) {
-    const metrics = panel.querySelectorAll('.recruiter-metric-number[data-value]');
+    const metrics = panel.querySelectorAll('.rec-view.is-active .recruiter-metric-number[data-value]');
     if (!metrics || metrics.length === 0) return;
 
     const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1254,37 +1102,53 @@ function animateRecruiterMetrics(panel) {
         const duration = 900;
 
         if (!Number.isFinite(target) || target < 0) {
-            metric.textContent = `0${suffix}`;
+            metric.textContent = '0' + suffix;
             return;
         }
 
         if (prefersReduced) {
-            metric.textContent = `${target}${suffix}`;
+            metric.textContent = target + suffix;
             return;
         }
 
-        metric.textContent = `0${suffix}`;
+        metric.textContent = '0' + suffix;
         setTimeout(() => {
             const start = performance.now();
-
             const tick = (now) => {
                 if (!panel || panel.dataset.metricsRunId !== runId) return;
-
                 const progress = Math.min(1, (now - start) / duration);
                 const eased = 1 - Math.pow(1 - progress, 3);
                 const value = Math.round(target * eased);
-                metric.textContent = `${value}${suffix}`;
-
+                metric.textContent = value + suffix;
                 if (progress < 1) requestAnimationFrame(tick);
             };
-
             requestAnimationFrame(tick);
         }, delay);
+    });
+
+    // Also animate donut center totals
+    const totals = panel.querySelectorAll('.rec-view.is-active .rec-donut-total[data-value]');
+    totals.forEach((el, idx) => {
+        const target = parseInt(el.getAttribute('data-value') || '0', 10);
+        if (!Number.isFinite(target) || target < 0) return;
+        if (prefersReduced) { el.textContent = target; return; }
+        el.textContent = '0';
+        setTimeout(() => {
+            const start = performance.now();
+            const tick = (now) => {
+                if (panel.dataset.metricsRunId !== runId) return;
+                const progress = Math.min(1, (now - start) / 900);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(target * eased);
+                if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        }, 200 + idx * 100);
     });
 }
 
 function animateRecruiterSkillFills(panel) {
-    const fills = panel.querySelectorAll('.recruiter-skill-fill[data-level]');
+    const fills = panel.querySelectorAll('.rec-view.is-active .recruiter-skill-fill[data-level]');
     if (!fills || fills.length === 0) return;
 
     const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1294,42 +1158,98 @@ function animateRecruiterSkillFills(panel) {
     fills.forEach((fill, idx) => {
         const level = Math.max(0, Math.min(100, parseInt(fill.getAttribute('data-level') || '0', 10)));
         fill.style.width = '0%';
-
         const delay = prefersReduced ? 0 : 180 + (idx * 90);
         setTimeout(() => {
             if (!panel || panel.dataset.skillsRunId !== runId) return;
-            fill.style.width = `${level}%`;
+            fill.style.width = level + '%';
         }, delay);
     });
 }
 
-function initializeRecruiterParallax(panel) {
-    const inner = panel.querySelector('.recruiter-mode-inner');
-    if (!inner) return;
-
+function animateRecruiterBars(view) {
+    const bars = view.querySelectorAll('.rec-bar[data-height]');
+    if (!bars.length) return;
     const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced || isMobileDevice()) return;
-
-    function onMove(e) {
-        if (!document.body.classList.contains('recruiter-mode')) return;
-        const rect = inner.getBoundingClientRect();
-        const px = (e.clientX - rect.left) / rect.width;
-        const py = (e.clientY - rect.top) / rect.height;
-        const ry = (px - 0.5) * 5;
-        const rx = (0.5 - py) * 4;
-        inner.style.setProperty('--recruiter-rx', `${rx.toFixed(2)}deg`);
-        inner.style.setProperty('--recruiter-ry', `${ry.toFixed(2)}deg`);
-    }
-
-    function onLeave() {
-        inner.style.setProperty('--recruiter-rx', '0deg');
-        inner.style.setProperty('--recruiter-ry', '0deg');
-    }
-
-    panel.addEventListener('pointermove', onMove);
-    panel.addEventListener('pointerleave', onLeave);
+    bars.forEach((bar, idx) => {
+        const h = Math.max(0, Math.min(100, parseInt(bar.getAttribute('data-height') || '0', 10)));
+        bar.style.height = '0%';
+        const delay = prefersReduced ? 0 : 200 + idx * 80;
+        setTimeout(() => { bar.style.height = h + '%'; }, delay);
+    });
 }
 
+function animateRecruiterFunnel(view) {
+    const steps = view.querySelectorAll('.rec-funnel-step[data-width]');
+    if (!steps.length) return;
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    steps.forEach((step, idx) => {
+        const w = Math.max(0, Math.min(100, parseInt(step.getAttribute('data-width') || '0', 10)));
+        step.style.width = '0%';
+        const delay = prefersReduced ? 0 : 300 + idx * 120;
+        setTimeout(() => { step.style.width = w + '%'; }, delay);
+    });
+}
+
+function animateRecruiterScoreRings(view) {
+    const rings = view.querySelectorAll('.rec-cand-score-ring[data-score]');
+    if (!rings.length) return;
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    rings.forEach((ring, idx) => {
+        const score = Math.max(0, Math.min(100, parseInt(ring.getAttribute('data-score') || '0', 10)));
+        const arc = ring.querySelector('.rec-score-arc');
+        if (!arc) return;
+        const circumference = parseFloat(arc.getAttribute('stroke-dasharray') || '220');
+        const offset = circumference - (circumference * score / 100);
+        arc.style.strokeDashoffset = circumference;
+        if (prefersReduced) {
+            arc.style.strokeDashoffset = offset;
+            return;
+        }
+        setTimeout(() => {
+            arc.style.strokeDashoffset = offset;
+        }, 400 + idx * 200);
+    });
+}
+
+function renderRecruiterCanvasCharts(view) {
+    // Donut Charts (Skills donut)
+    view.querySelectorAll('canvas[id*="DonutChart"]').forEach(canvas => {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const size = Math.min(rect.width, rect.height) || 200;
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        canvas.style.width = size + 'px';
+        canvas.style.height = size + 'px';
+        ctx.scale(dpr, dpr);
+        drawDonut(ctx, size / 2, size / 2, size * 0.38, size * 0.09, [
+            { value: 5, color: '#2755d2' },
+            { value: 5, color: '#14b8a6' },
+            { value: 5, color: '#7c3aed' },
+            { value: 4, color: '#f59e0b' },
+            { value: 4, color: '#10b981' }
+        ]);
+    });
+}
+
+function drawDonut(ctx, cx, cy, radius, thickness, segments) {
+    const total = segments.reduce((s, seg) => s + seg.value, 0);
+    if (total <= 0) return;
+    let startAngle = -Math.PI / 2;
+    const gap = 0.04;
+    segments.forEach(seg => {
+        const slice = (seg.value / total) * (Math.PI * 2 - gap * segments.length);
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, startAngle, startAngle + slice);
+        ctx.strokeStyle = seg.color;
+        ctx.lineWidth = thickness;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+        startAngle += slice + gap;
+    });
+}
 /* ========================================================================== */
 /* 8) Theme Management */
 /* ========================================================================== */
@@ -5919,5 +5839,100 @@ function initializeCertificationsSlider() {
 $(document).ready(function() {
     initializePage();
     initializeEventListeners();
+
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    if (scrollTopBtn) {
+        const checkScroll = function() {
+            const scrolled = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            scrollTopBtn.classList.toggle('visible', scrolled > 200);
+        };
+        window.addEventListener('scroll', checkScroll, { passive: true });
+        document.addEventListener('scroll', checkScroll, { passive: true });
+        checkScroll();
+        scrollTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        });
+    }
+
+    // Scroll reveal animations
+    (function initScrollReveal() {
+        // Selectors for elements to animate
+        var revealSelectors = [
+            '.about-section .section-title',
+            '.about-image-container',
+            '.about-text-container',
+            '.about-card',
+            '.certifications-section .section-title',
+            '.cert-grid',
+            '.services-section .section-title',
+            '.service-card',
+            '.projects-section .section-title',
+            '.project-card',
+            '.blog-section .section-title',
+            '.blog-page-wrap',
+            '.main-footer'
+        ];
+
+        // Cards that should stagger
+        var staggerGroups = [
+            { parent: '.services-section', child: '.service-card' },
+            { parent: '.projects-section', child: '.project-card' }
+        ];
+
+        // Add scroll-reveal class to all target elements
+        revealSelectors.forEach(function(sel) {
+            document.querySelectorAll(sel).forEach(function(el) {
+                if (!el.classList.contains('scroll-reveal')) {
+                    el.classList.add('scroll-reveal');
+                }
+            });
+        });
+
+        // Add image-specific: from-left for images, from-right for text
+        document.querySelectorAll('.about-image-container').forEach(function(el) {
+            el.classList.add('from-left');
+        });
+        document.querySelectorAll('.about-text-container').forEach(function(el) {
+            el.classList.add('from-right');
+        });
+
+        // Add zoom-in for project cards
+        document.querySelectorAll('.project-card').forEach(function(el) {
+            el.classList.add('zoom-in');
+        });
+
+        // Add stagger delays
+        staggerGroups.forEach(function(group) {
+            document.querySelectorAll(group.parent).forEach(function(parent) {
+                parent.querySelectorAll(group.child).forEach(function(child, i) {
+                    if (i < 7) child.classList.add('stagger-' + (i + 1));
+                });
+            });
+        });
+
+        // IntersectionObserver
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.scroll-reveal').forEach(function(el) {
+                observer.observe(el);
+            });
+        } else {
+            // Fallback: show everything
+            document.querySelectorAll('.scroll-reveal').forEach(function(el) {
+                el.classList.add('revealed');
+            });
+        }
+    })();
 });
 
