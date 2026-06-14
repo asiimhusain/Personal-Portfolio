@@ -1,33 +1,34 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Asim Husain - Personal Portfolio Website"/>
-    <meta name="keywords" content="portfolio, resume, software developer, machine learning engineer"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Asim Husain - Personal Portfolio Website" />
+    <meta name="keywords" content="portfolio, resume, software developer, machine learning engineer" />
     <meta name="author" content="Asim Husain" />
     <title>Asim Husain</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-        <!-- Apply theme as early as possible: user's stored preference or system default -->
-        <script>
-            (function() {
-                try {
-                    var stored = localStorage.getItem('theme');
-                    if (stored === 'dark' || stored === 'light') {
-                        document.documentElement.setAttribute('data-theme', stored);
-                    } else {
-                        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-                    }
-                } catch (e) {
-                    var prefersDarkFallback = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    document.documentElement.setAttribute('data-theme', prefersDarkFallback ? 'dark' : 'light');
+    <!-- Apply theme as early as possible: user's stored preference or system default -->
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('theme');
+                if (stored === 'dark' || stored === 'light') {
+                    document.documentElement.setAttribute('data-theme', stored);
+                } else {
+                    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
                 }
-            })();
-        </script>
+            } catch (e) {
+                var prefersDarkFallback = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', prefersDarkFallback ? 'dark' : 'light');
+            }
+        })();
+    </script>
 
-        <!-- CSS & Scripts -->
+    <!-- CSS & Scripts -->
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -37,6 +38,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>emailjs.init("UePSK07m9S4zmmL19");</script>
 </head>
+
 <body>
     <!-- Custom Cursor -->
     <div class="cursor-dot"></div>
@@ -45,13 +47,19 @@
     <div id="smooth-cursor" class="smooth-cursor" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 50 54" fill="none">
             <g filter="url(#filter0_d_91_7928)">
-                <path d="M42.6817 41.1495L27.5103 6.79925C26.7269 5.02557 24.2082 5.02558 23.3927 6.79925L7.59814 41.1495C6.75833 42.9759 8.52712 44.8902 10.4125 44.1954L24.3757 39.0496C24.8829 38.8627 25.4385 38.8627 25.9422 39.0496L39.8121 44.1954C41.6849 44.8902 43.4884 42.9759 42.6817 41.1495Z" fill="currentColor"/>
-                <path d="M43.7146 40.6933L28.5431 6.34306C27.3556 3.65428 23.5772 3.69516 22.3668 6.32755L6.57226 40.6778C5.3134 43.4156 7.97238 46.298 10.803 45.2549L24.7662 40.109C25.0221 40.0147 25.2999 40.0156 25.5494 40.1082L39.4193 45.254C42.2261 46.2953 44.9254 43.4347 43.7146 40.6933Z" stroke="none"/>
+                <path
+                    d="M42.6817 41.1495L27.5103 6.79925C26.7269 5.02557 24.2082 5.02558 23.3927 6.79925L7.59814 41.1495C6.75833 42.9759 8.52712 44.8902 10.4125 44.1954L24.3757 39.0496C24.8829 38.8627 25.4385 38.8627 25.9422 39.0496L39.8121 44.1954C41.6849 44.8902 43.4884 42.9759 42.6817 41.1495Z"
+                    fill="currentColor" />
+                <path
+                    d="M43.7146 40.6933L28.5431 6.34306C27.3556 3.65428 23.5772 3.69516 22.3668 6.32755L6.57226 40.6778C5.3134 43.4156 7.97238 46.298 10.803 45.2549L24.7662 40.109C25.0221 40.0147 25.2999 40.0156 25.5494 40.1082L39.4193 45.254C42.2261 46.2953 44.9254 43.4347 43.7146 40.6933Z"
+                    stroke="none" />
             </g>
             <defs>
-                <filter id="filter0_d_91_7928" x="0.602397" y="0.952444" width="49.0584" height="52.428" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <filter id="filter0_d_91_7928" x="0.602397" y="0.952444" width="49.0584" height="52.428"
+                    filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                     <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        result="hardAlpha" />
                     <feOffset dy="2.25825" />
                     <feGaussianBlur stdDeviation="2.25825" />
                     <feComposite in2="hardAlpha" operator="out" />
@@ -62,19 +70,19 @@
             </defs>
         </svg>
     </div>
-        <!-- SVG filter used by gooey nav buttons -->
-        <svg width="0" height="0" style="position: absolute;">
-            <filter id="goo" x="-50%" y="-50%" width="200%" height="200%">
-                <feComponentTransfer>
-                    <feFuncA type="discrete" tableValues="0 1"></feFuncA>
-                </feComponentTransfer>
-                <feGaussianBlur stdDeviation="5"></feGaussianBlur>
-                <feComponentTransfer>
-                    <feFuncA type="table" tableValues="-5 11"></feFuncA>
-                </feComponentTransfer>
-            </filter>
-        </svg>
-    
+    <!-- SVG filter used by gooey nav buttons -->
+    <svg width="0" height="0" style="position: absolute;">
+        <filter id="goo" x="-50%" y="-50%" width="200%" height="200%">
+            <feComponentTransfer>
+                <feFuncA type="discrete" tableValues="0 1"></feFuncA>
+            </feComponentTransfer>
+            <feGaussianBlur stdDeviation="5"></feGaussianBlur>
+            <feComponentTransfer>
+                <feFuncA type="table" tableValues="-5 11"></feFuncA>
+            </feComponentTransfer>
+        </filter>
+    </svg>
+
     <!-- Theme toggle (top-left) -->
     <button id="themeToggle" class="theme-toggle" aria-label="Switch to dark theme" title="Toggle theme">
         <!-- Moon (shown in light theme) -->
@@ -83,7 +91,9 @@
         </svg>
         <!-- Sun (shown in dark theme) -->
         <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.79 1.41 1.41-1.8 1.79-1.4-1.41zM12 4V1h-0v3h0zm0 19v-3h0v3h0zM4 12H1v0h3v0zm19 0h-3v0h3v0zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zm10.48 0l1.4 1.41 1.8-1.79-1.41-1.41-1.79 1.79zM12 8a4 4 0 100 8 4 4 0 000-8z"></path>
+            <path
+                d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.79 1.41 1.41-1.8 1.79-1.4-1.41zM12 4V1h-0v3h0zm0 19v-3h0v3h0zM4 12H1v0h3v0zm19 0h-3v0h3v0zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zm10.48 0l1.4 1.41 1.8-1.79-1.41-1.41-1.79 1.79zM12 8a4 4 0 100 8 4 4 0 000-8z">
+            </path>
         </svg>
     </button>
 
@@ -100,16 +110,53 @@
                     <button type="button" class="gooey-btn" data-target="#about">ABOUT&nbsp;ME</button>
                     <button type="button" class="gooey-btn" data-target="#projects">MY&nbsp;WORK</button>
                     <div class="header-dropdown-wrap">
-                      <button type="button" class="gooey-btn header-dropdown-btn" id="headerDropdownBtn" aria-haspopup="true" aria-expanded="false">MORE <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:4px;"><path d="m19 9-7 7-7-7"/></svg></button>
-                      <div class="header-dropdown-menu" id="headerDropdownMenu">
-                        <button type="button" class="header-dropdown-item" data-action="recruiter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="5" width="14" height="14" rx="2.5"/><path d="M9 10h6" stroke-linecap="round"/><path d="M9 14h6" stroke-linecap="round"/></svg>Recruiter Mode</button>
-                        <button type="button" class="header-dropdown-item" data-action="tech-radar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12l5-3" stroke-linecap="round"/></svg>Domain Radar</button>
-                        <button type="button" class="header-dropdown-item" data-action="courses"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.5 5.5h15" stroke-linecap="round"/><path d="M4.5 12h15" stroke-linecap="round"/><path d="M4.5 18.5h15" stroke-linecap="round"/></svg>Courses Notes</button>
-                        <button type="button" class="header-dropdown-item" data-action="games"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="7.5" width="17" height="9" rx="4.5"/><path d="M8 12h4" stroke-linecap="round"/><path d="M10 10v4" stroke-linecap="round"/></svg>Play Games</button>
-                        <button type="button" class="header-dropdown-item" data-action="cosmic-clock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v4.5" stroke-linecap="round"/><path d="M12 12.5l3 1.8" stroke-linecap="round"/></svg>Clock</button>
-                      </div>
+                        <button type="button" class="gooey-btn header-dropdown-btn" id="headerDropdownBtn"
+                            aria-haspopup="true" aria-expanded="false">MORE <svg width="14" height="14"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                style="vertical-align:middle;margin-left:4px;">
+                                <path d="m19 9-7 7-7-7" />
+                            </svg></button>
+                        <div class="header-dropdown-menu" id="headerDropdownMenu">
+                            <button type="button" class="header-dropdown-item" data-action="recruiter"><svg width="16"
+                                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <rect x="5" y="5" width="14" height="14" rx="2.5" />
+                                    <path d="M9 10h6" stroke-linecap="round" />
+                                    <path d="M9 14h6" stroke-linecap="round" />
+                                </svg>Recruiter Mode</button>
+                            <button type="button" class="header-dropdown-item" data-action="tech-radar"><svg width="16"
+                                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <circle cx="12" cy="12" r="8" />
+                                    <circle cx="12" cy="12" r="4" />
+                                    <path d="M12 12l5-3" stroke-linecap="round" />
+                                </svg>Domain Radar</button>
+                            <button type="button" class="header-dropdown-item" data-action="courses"><svg width="16"
+                                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <path d="M4.5 5.5h15" stroke-linecap="round" />
+                                    <path d="M4.5 12h15" stroke-linecap="round" />
+                                    <path d="M4.5 18.5h15" stroke-linecap="round" />
+                                </svg>Courses Notes</button>
+                            <button type="button" class="header-dropdown-item" data-action="games"><svg width="16"
+                                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <rect x="3.5" y="7.5" width="17" height="9" rx="4.5" />
+                                    <path d="M8 12h4" stroke-linecap="round" />
+                                    <path d="M10 10v4" stroke-linecap="round" />
+                                </svg>Play Games</button>
+                            <button type="button" class="header-dropdown-item" data-action="cosmic-clock"><svg
+                                    width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <circle cx="12" cy="12" r="8" />
+                                    <path d="M12 8v4.5" stroke-linecap="round" />
+                                    <path d="M12 12.5l3 1.8" stroke-linecap="round" />
+                                </svg>Clock</button>
+                        </div>
                     </div>
-                    <a id="resume-trigger" class="gooey-btn" href="files/resume.pdf" target="_blank" rel="noopener" aria-label="Resume">RESUME</a>
+                    <a id="resume-trigger" class="gooey-btn" href="files/resume.pdf" target="_blank" rel="noopener"
+                        aria-label="Resume">RESUME</a>
                 </div>
             </main>
         </div>
@@ -117,174 +164,268 @@
 
     <!-- Recruiter Mode Focus Panel - SaaS Dashboard -->
     <section id="recruiterModePanel" class="recruiter-mode-panel" aria-labelledby="recruiterModeTitle">
-      <div class="recruiter-mode-inner rec-dashboard">
+        <div class="recruiter-mode-inner rec-dashboard">
 
-        <!-- â”€â”€â”€ Left Sidebar Nav â”€â”€â”€ -->
-        <nav class="rec-sidebar" aria-label="Recruiter dashboard navigation">
-          <div class="rec-sidebar-brand">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-            <span>RecruiterOS</span>
-          </div>
-          <div class="rec-sidebar-projects">
-            <h4 class="rec-sidebar-section-title">Projects</h4>
-            <a href="https://www.curehelplus.me" target="_blank" rel="noopener" class="rec-sidebar-project-link">
-              <span class="rec-sidebar-proj-dot" style="--dot-color:#2755d2"></span><span>CureHelp+</span>
-            </a>
-            <a href="https://intervbot.vercel.app" target="_blank" rel="noopener" class="rec-sidebar-project-link">
-              <span class="rec-sidebar-proj-dot" style="--dot-color:#14b8a6"></span><span>IntervBot</span>
-            </a>
-            <a href="https://tinyurl-chvx.onrender.com" target="_blank" rel="noopener" class="rec-sidebar-project-link">
-              <span class="rec-sidebar-proj-dot" style="--dot-color:#7c3aed"></span><span>TinyURL</span>
-            </a>
-            <a href="https://predictrade.streamlit.app/" target="_blank" rel="noopener" class="rec-sidebar-project-link">
-              <span class="rec-sidebar-proj-dot" style="--dot-color:#10b981"></span><span>PredicTrade</span>
-            </a>
-            <a href="https://validleads.azurewebsites.net/" target="_blank" rel="noopener" class="rec-sidebar-project-link">
-              <span class="rec-sidebar-proj-dot" style="--dot-color:#f59e0b"></span><span>Lead Validation</span>
-            </a>
-            <a href="https://www.asimhusain.dev" target="_blank" rel="noopener" class="rec-sidebar-project-link">
-              <span class="rec-sidebar-proj-dot" style="--dot-color:#ef4444"></span><span>Personal Website</span>
-            </a>
-          </div>
-          <button type="button" id="recruiterCloseBtn" class="rec-sidebar-exit" aria-label="Exit recruiter mode" title="Exit Recruiter Mode">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-            <span>Exit Mode</span>
-          </button>
-        </nav>
-
-        <!-- â”€â”€â”€ Main Content Area â”€â”€â”€ -->
-        <div class="rec-main">
-
-          <!-- Top Header Bar -->
-          <header class="rec-header">
-            <div class="rec-header-left">
-              <h2 id="recruiterModeTitle" class="rec-header-title">Asim Husain</h2>
-              <span class="rec-header-subtitle">SWE &nbsp;&amp;&nbsp; AI | ML</span>
-            </div>
-            <div class="rec-header-right">
-              <span class="rec-header-badge">
-                <span class="rec-status-dot"></span>Open to Work
-              </span>
-            </div>
-          </header>
-
-          <!-- â”€â”€â”€ DASHBOARD VIEW â”€â”€â”€ -->
-          <div class="rec-view rec-view--dashboard is-active" data-rec-view="dashboard">
-
-            <!-- Summary Line -->
-            <p class="recruiter-summary">Software Engineer and B.Tech CS student specializing in AI/ML. Builds scalable, data-driven systems with Python, SQL, and modern engineering practices. Seeking SWE or AI-focused roles.</p>
-
-            <!-- Metric Cards Row -->
-            <div class="recruiter-metrics-grid" aria-label="Key metrics">
-              <article class="recruiter-metric-card">
-                <div class="rec-metric-icon rec-metric-icon--blue">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <!-- â”€â”€â”€ Left Sidebar Nav â”€â”€â”€ -->
+            <nav class="rec-sidebar" aria-label="Recruiter dashboard navigation">
+                <div class="rec-sidebar-brand">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                    </svg>
+                    <span>RecruiterOS</span>
                 </div>
-                <p class="recruiter-metric-number" data-value="4" data-suffix="+">0</p>
-                <p class="recruiter-metric-label">Live Projects</p>
-              </article>
-              <article class="recruiter-metric-card">
-                <div class="rec-metric-icon rec-metric-icon--green">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <div class="rec-sidebar-projects">
+                    <h4 class="rec-sidebar-section-title">Projects</h4>
+                    <a href="https://www.curehelplus.me" target="_blank" rel="noopener"
+                        class="rec-sidebar-project-link">
+                        <span class="rec-sidebar-proj-dot" style="--dot-color:#2755d2"></span><span>CureHelp+</span>
+                    </a>
+                    <a href="https://intervbot.vercel.app" target="_blank" rel="noopener"
+                        class="rec-sidebar-project-link">
+                        <span class="rec-sidebar-proj-dot" style="--dot-color:#14b8a6"></span><span>IntervBot</span>
+                    </a>
+                    <a href="https://tinyurl-chvx.onrender.com" target="_blank" rel="noopener"
+                        class="rec-sidebar-project-link">
+                        <span class="rec-sidebar-proj-dot" style="--dot-color:#7c3aed"></span><span>TinyURL</span>
+                    </a>
+                    <a href="https://predictrade.streamlit.app/" target="_blank" rel="noopener"
+                        class="rec-sidebar-project-link">
+                        <span class="rec-sidebar-proj-dot" style="--dot-color:#10b981"></span><span>PredicTrade</span>
+                    </a>
+                    <a href="https://validleads.azurewebsites.net/" target="_blank" rel="noopener"
+                        class="rec-sidebar-project-link">
+                        <span class="rec-sidebar-proj-dot" style="--dot-color:#f59e0b"></span><span>Lead
+                            Validation</span>
+                    </a>
+                    <a href="https://www.asimhusain.dev" target="_blank" rel="noopener"
+                        class="rec-sidebar-project-link">
+                        <span class="rec-sidebar-proj-dot" style="--dot-color:#ef4444"></span><span>Personal
+                            Website</span>
+                    </a>
                 </div>
-                <p class="recruiter-metric-number" data-value="7" data-suffix="">0</p>
-                <p class="recruiter-metric-label">Certifications</p>
-              </article>
-              <article class="recruiter-metric-card">
-                <div class="rec-metric-icon rec-metric-icon--purple">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                </div>
-                <p class="recruiter-metric-number" data-value="92" data-suffix="%">0</p>
-                <p class="recruiter-metric-label">Skill Match</p>
-              </article>
-              <article class="recruiter-metric-card">
-                <div class="rec-metric-icon rec-metric-icon--orange">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-                </div>
-                <p class="recruiter-metric-number" data-value="96" data-suffix="%">0</p>
-                <p class="recruiter-metric-label">AI Score</p>
-              </article>
-            </div>
+                <button type="button" id="recruiterCloseBtn" class="rec-sidebar-exit" aria-label="Exit recruiter mode"
+                    title="Exit Recruiter Mode">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                    </svg>
+                    <span>Exit Mode</span>
+                </button>
+            </nav>
 
-            <!-- Charts Row -->
-            <div class="rec-charts-row">
-              <!-- Skills Card (replaces Hiring Pipeline) -->
-              <div class="rec-card rec-card--chart rec-skills-card">
-                <div class="rec-card-header">
-                  <h3>Skills</h3>
-                  <span class="rec-card-badge">Live</span>
-                </div>
-                <div class="rec-skills-layout">
-                  <ul class="rec-skills-list" aria-label="Skills list">
-                    <li>Python</li><li>SQL</li><li>Flask</li><li>REST APIs</li>
-                    <li>Web Services</li><li>Data Analytics</li><li>HTML CSS</li><li>MySQL</li>
-                    <li>System Design</li><li>JavaScript</li><li>AI Integration</li><li>Automation Testing</li>
-                    <li>Azure DevOps</li><li>Machine Learning</li><li>Deep Learning</li><li>Prompt Engineering</li>
-                    <li>Automation Agentic</li><li>Vercel</li><li>Azure</li><li>Git</li>
-                    <li>Github</li><li>Github Copilot</li><li>CI/CD</li>
-                  </ul>
-                  <div class="rec-donut-wrapper">
-                    <canvas id="recDonutChart" width="200" height="200" aria-label="Skills donut chart"></canvas>
-                    <div class="rec-donut-center">
-                      <span class="rec-donut-total" data-value="23">0</span>
-                      <span class="rec-donut-label">Total</span>
+            <!-- â”€â”€â”€ Main Content Area â”€â”€â”€ -->
+            <div class="rec-main">
+
+                <!-- Top Header Bar -->
+                <header class="rec-header">
+                    <div class="rec-header-left">
+                        <h2 id="recruiterModeTitle" class="rec-header-title">Asim Husain</h2>
+                        <span class="rec-header-subtitle">SWE &nbsp;&amp;&nbsp; AI | ML</span>
                     </div>
-                  </div>
-                </div>
-              </div>
+                    <div class="rec-header-right">
+                        <span class="rec-header-badge">
+                            <span class="rec-status-dot"></span>Open to Work
+                        </span>
+                    </div>
+                </header>
 
-              <!-- GitHub-style Yearly Contribution Bar Chart -->
-              <div class="rec-card rec-card--chart">
-                <div class="rec-card-header">
-                  <h3>GitHub Contributions</h3>
-                  <span class="rec-card-badge">Yearly</span>
-                </div>
-                <div class="rec-bar-chart rec-contrib-chart" aria-label="Yearly GitHub contributions">
-                  <div class="rec-bar-col"><span class="rec-bar-value">1</span><div class="rec-bar rec-bar-wide" data-height="1" style="--bar-color:#2755d2"></div><span>2022</span></div>
-                  <div class="rec-bar-col"><span class="rec-bar-value">60</span><div class="rec-bar rec-bar-wide" data-height="8" style="--bar-color:#14b8a6"></div><span>2023</span></div>
-                  <div class="rec-bar-col"><span class="rec-bar-value">268</span><div class="rec-bar rec-bar-wide" data-height="35" style="--bar-color:#7c3aed"></div><span>2024</span></div>
-                  <div class="rec-bar-col"><span class="rec-bar-value">763</span><div class="rec-bar rec-bar-wide" data-height="100" style="--bar-color:#10b981"></div><span>2025</span></div>
-                  <div class="rec-bar-col"><span class="rec-bar-value">115</span><div class="rec-bar rec-bar-wide" data-height="15" style="--bar-color:#f59e0b"></div><span>2026</span></div>
-                </div>
-              </div>
-            </div>
+                <!-- â”€â”€â”€ DASHBOARD VIEW â”€â”€â”€ -->
+                <div class="rec-view rec-view--dashboard is-active" data-rec-view="dashboard">
 
-            <!-- Core Skill Confidence + Credentials Row -->
-            <div class="rec-charts-row">
-              <!-- Core Skill Confidence (replaces Hiring Funnel) -->
-              <div class="rec-card rec-card--funnel">
-                <div class="rec-card-header"><h3>Core Skill Confidence</h3></div>
-                <div class="rec-funnel" aria-label="Core skill confidence levels">
-                  <div class="rec-funnel-step" data-width="92" style="--funnel-color:#2755d2"><span>Software Engineering</span><b>92%</b></div>
-                  <div class="rec-funnel-step" data-width="90" style="--funnel-color:#14b8a6"><span>AI / ML Engineering</span><b>90%</b></div>
-                  <div class="rec-funnel-step" data-width="88" style="--funnel-color:#7c3aed"><span>Cloud &amp; Deployment</span><b>88%</b></div>
-                  <div class="rec-funnel-step" data-width="86" style="--funnel-color:#f59e0b"><span>Data &amp; Analytics</span><b>86%</b></div>
-                  <div class="rec-funnel-step" data-width="85" style="--funnel-color:#10b981"><span>Problem Solving</span><b>85%</b></div>
-                </div>
-              </div>
+                    <!-- Summary Line -->
+                    <p class="recruiter-summary">Software Engineer and B.Tech CS student specializing in AI/ML. Builds
+                        scalable, data-driven systems with Python, SQL, and modern engineering practices. Seeking SWE or
+                        AI-focused roles.</p>
 
-              <!-- Credentials (replaces Recent Activity) -->
-              <div class="rec-card rec-card--timeline">
-                <div class="rec-card-header"><h3>Credentials</h3></div>
-                <ul class="recruiter-cert-list">
-                  <li><span>AI ML Engineering (Coursera)</span><a href="https://coursera.org/share/a56bcb83964565c6e94da4ce709b6269" target="_blank" rel="noopener">Verify</a></li>
-                  <li><span>GitHub Foundations (Microsoft)</span><a href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/AFAA28471679E673?sharingId=AF5276DA5CCA289D" target="_blank" rel="noopener">Verify</a></li>
-                  <li><span>GitHub Copilot (Microsoft)</span><a href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/B28390E691C3D95F?sharingId=AF5276DA5CCA289D" target="_blank" rel="noopener">Verify</a></li>
-                  <li><span>SQL Basics (HackerRank)</span><a href="https://www.hackerrank.com/certificates/278da06f2f91" target="_blank" rel="noopener">Verify</a></li>
-                  <li><span>Python (Codedex)</span><a href="https://www.codedex.io/certificates/aeb2023c-d71b-4463-b827-5d8de9eb62dc" target="_blank" rel="noopener">Verify</a></li>
-                  <li><span>Big Data (NPTEL)</span><a href="https://archive.nptel.ac.in/content/noc/NOC24/SEM2/Ecertificates/106/noc24-cs130/Course/NPTEL24CS130S46430016304336111.pdf" target="_blank" rel="noopener">Verify</a></li>
-                  <li><span>ML Training (Internshala)</span><a href="https://trainings.internshala.com/verify-certificate/?certificate_number=3c8qenodme0" target="_blank" rel="noopener">Verify</a></li>
-                </ul>
-              </div>
-            </div>
+                    <!-- Metric Cards Row -->
+                    <div class="recruiter-metrics-grid" aria-label="Key metrics">
+                        <article class="recruiter-metric-card">
+                            <div class="rec-metric-icon rec-metric-icon--blue">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                                </svg>
+                            </div>
+                            <p class="recruiter-metric-number" data-value="4" data-suffix="+">0</p>
+                            <p class="recruiter-metric-label">Live Projects</p>
+                        </article>
+                        <article class="recruiter-metric-card">
+                            <div class="rec-metric-icon rec-metric-icon--green">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                            </div>
+                            <p class="recruiter-metric-number" data-value="7" data-suffix="">0</p>
+                            <p class="recruiter-metric-label">Certifications</p>
+                        </article>
+                        <article class="recruiter-metric-card">
+                            <div class="rec-metric-icon rec-metric-icon--purple">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
+                            </div>
+                            <p class="recruiter-metric-number" data-value="92" data-suffix="%">0</p>
+                            <p class="recruiter-metric-label">Skill Match</p>
+                        </article>
+                        <article class="recruiter-metric-card">
+                            <div class="rec-metric-icon rec-metric-icon--orange">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M18 20V10M12 20V4M6 20v-6" />
+                                </svg>
+                            </div>
+                            <p class="recruiter-metric-number" data-value="96" data-suffix="%">0</p>
+                            <p class="recruiter-metric-label">AI Score</p>
+                        </article>
+                    </div>
 
-        </div><!-- .rec-main -->
-      </div><!-- .recruiter-mode-inner -->
+                    <!-- Charts Row -->
+                    <div class="rec-charts-row">
+                        <!-- Skills Card (replaces Hiring Pipeline) -->
+                        <div class="rec-card rec-card--chart rec-skills-card">
+                            <div class="rec-card-header">
+                                <h3>Skills</h3>
+                                <span class="rec-card-badge">Live</span>
+                            </div>
+                            <div class="rec-skills-layout">
+                                <ul class="rec-skills-list" aria-label="Skills list">
+                                    <li>Python</li>
+                                    <li>SQL</li>
+                                    <li>Flask</li>
+                                    <li>REST APIs</li>
+                                    <li>Web Services</li>
+                                    <li>Data Analytics</li>
+                                    <li>HTML CSS</li>
+                                    <li>MySQL</li>
+                                    <li>System Design</li>
+                                    <li>JavaScript</li>
+                                    <li>AI Integration</li>
+                                    <li>Automation Testing</li>
+                                    <li>Azure DevOps</li>
+                                    <li>Machine Learning</li>
+                                    <li>Deep Learning</li>
+                                    <li>Prompt Engineering</li>
+                                    <li>Automation Agentic</li>
+                                    <li>Vercel</li>
+                                    <li>Azure</li>
+                                    <li>Git</li>
+                                    <li>Github</li>
+                                    <li>Github Copilot</li>
+                                    <li>CI/CD</li>
+                                </ul>
+                                <div class="rec-donut-wrapper">
+                                    <canvas id="recDonutChart" width="200" height="200"
+                                        aria-label="Skills donut chart"></canvas>
+                                    <div class="rec-donut-center">
+                                        <span class="rec-donut-total" data-value="23">0</span>
+                                        <span class="rec-donut-label">Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GitHub-style Yearly Contribution Bar Chart -->
+                        <div class="rec-card rec-card--chart">
+                            <div class="rec-card-header">
+                                <h3>GitHub Contributions</h3>
+                                <span class="rec-card-badge">Yearly</span>
+                            </div>
+                            <div class="rec-bar-chart rec-contrib-chart" aria-label="Yearly GitHub contributions">
+                                <div class="rec-bar-col"><span class="rec-bar-value">1</span>
+                                    <div class="rec-bar rec-bar-wide" data-height="1" style="--bar-color:#2755d2"></div>
+                                    <span>2022</span>
+                                </div>
+                                <div class="rec-bar-col"><span class="rec-bar-value">60</span>
+                                    <div class="rec-bar rec-bar-wide" data-height="8" style="--bar-color:#14b8a6"></div>
+                                    <span>2023</span>
+                                </div>
+                                <div class="rec-bar-col"><span class="rec-bar-value">268</span>
+                                    <div class="rec-bar rec-bar-wide" data-height="35" style="--bar-color:#7c3aed">
+                                    </div><span>2024</span>
+                                </div>
+                                <div class="rec-bar-col"><span class="rec-bar-value">763</span>
+                                    <div class="rec-bar rec-bar-wide" data-height="100" style="--bar-color:#10b981">
+                                    </div><span>2025</span>
+                                </div>
+                                <div class="rec-bar-col"><span class="rec-bar-value">115</span>
+                                    <div class="rec-bar rec-bar-wide" data-height="15" style="--bar-color:#f59e0b">
+                                    </div><span>2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Core Skill Confidence + Credentials Row -->
+                    <div class="rec-charts-row">
+                        <!-- Core Skill Confidence (replaces Hiring Funnel) -->
+                        <div class="rec-card rec-card--funnel">
+                            <div class="rec-card-header">
+                                <h3>Core Skill Confidence</h3>
+                            </div>
+                            <div class="rec-funnel" aria-label="Core skill confidence levels">
+                                <div class="rec-funnel-step" data-width="92" style="--funnel-color:#2755d2">
+                                    <span>Software Engineering</span><b>92%</b>
+                                </div>
+                                <div class="rec-funnel-step" data-width="90" style="--funnel-color:#14b8a6"><span>AI /
+                                        ML Engineering</span><b>90%</b></div>
+                                <div class="rec-funnel-step" data-width="88" style="--funnel-color:#7c3aed"><span>Cloud
+                                        &amp; Deployment</span><b>88%</b></div>
+                                <div class="rec-funnel-step" data-width="86" style="--funnel-color:#f59e0b"><span>Data
+                                        &amp; Analytics</span><b>86%</b></div>
+                                <div class="rec-funnel-step" data-width="85" style="--funnel-color:#10b981">
+                                    <span>Problem Solving</span><b>85%</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credentials (replaces Recent Activity) -->
+                        <div class="rec-card rec-card--timeline">
+                            <div class="rec-card-header">
+                                <h3>Credentials</h3>
+                            </div>
+                            <ul class="recruiter-cert-list">
+                                <li><span>AI ML Engineering (Coursera)</span><a
+                                        href="https://coursera.org/share/a56bcb83964565c6e94da4ce709b6269"
+                                        target="_blank" rel="noopener">Verify</a></li>
+                                <li><span>GitHub Foundations (Microsoft)</span><a
+                                        href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/AFAA28471679E673?sharingId=AF5276DA5CCA289D"
+                                        target="_blank" rel="noopener">Verify</a></li>
+                                <li><span>GitHub Copilot (Microsoft)</span><a
+                                        href="https://learn.microsoft.com/api/credentials/share/en-us/asimhusain-ai/B28390E691C3D95F?sharingId=AF5276DA5CCA289D"
+                                        target="_blank" rel="noopener">Verify</a></li>
+                                <li><span>SQL Basics (HackerRank)</span><a
+                                        href="https://www.hackerrank.com/certificates/278da06f2f91" target="_blank"
+                                        rel="noopener">Verify</a></li>
+                                <li><span>Python (Codedex)</span><a
+                                        href="https://www.codedex.io/certificates/aeb2023c-d71b-4463-b827-5d8de9eb62dc"
+                                        target="_blank" rel="noopener">Verify</a></li>
+                                <li><span>Big Data (NPTEL)</span><a
+                                        href="https://archive.nptel.ac.in/content/noc/NOC24/SEM2/Ecertificates/106/noc24-cs130/Course/NPTEL24CS130S46430016304336111.pdf"
+                                        target="_blank" rel="noopener">Verify</a></li>
+                                <li><span>ML Training (Internshala)</span><a
+                                        href="https://trainings.internshala.com/verify-certificate/?certificate_number=3c8qenodme0"
+                                        target="_blank" rel="noopener">Verify</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div><!-- .rec-main -->
+            </div><!-- .recruiter-mode-inner -->
     </section>
 
     <!-- Domain Radar Modal -->
     <div id="miniCardOverlay" class="mini-card-overlay" aria-hidden="true">
-        <section id="sidebarTechRadarCard" class="mini-card-modal" role="dialog" aria-modal="true" aria-label="Domain Radar" aria-hidden="true">
+        <section id="sidebarTechRadarCard" class="mini-card-modal" role="dialog" aria-modal="true"
+            aria-label="Domain Radar" aria-hidden="true">
             <button type="button" class="mini-card-close" aria-label="Close">&times;</button>
             <h4>Tech Stack Radar</h4>
             <canvas id="sidebarTechRadarCanvas" width="340" height="230" aria-label="Tech stack radar chart"></canvas>
@@ -298,110 +439,146 @@
         </section>
     </div>
 
-        <!-- Cosmic Clock Popup -->
-        <div id="cosmicClockOverlay" class="cosmic-clock-overlay" aria-hidden="true">
-                <section id="cosmicClockPopup" class="cosmic-clock-popup" role="dialog" aria-modal="true" aria-label="Cosmic Clock">
-                        <button type="button" id="cosmicClockCloseBtn" class="cosmic-clock-close" aria-label="Close clock">&times;</button>
-                        <div class="cosmic-clock-root">
-                                <canvas id="canvas"></canvas>
+    <!-- Cosmic Clock Popup -->
+    <div id="cosmicClockOverlay" class="cosmic-clock-overlay" aria-hidden="true">
+        <section id="cosmicClockPopup" class="cosmic-clock-popup" role="dialog" aria-modal="true"
+            aria-label="Cosmic Clock">
+            <button type="button" id="cosmicClockCloseBtn" class="cosmic-clock-close"
+                aria-label="Close clock">&times;</button>
+            <div class="cosmic-clock-root">
+                <canvas id="canvas"></canvas>
 
-                                <div id="info">
-                                    <h1>Cosmic Clock</h1>
-                                    <div class="subtitle">Time in concentric rings</div>
-                                    <div id="current-time">00:00:00</div>
-                                    <div id="current-date">Loading...</div>
+                <div id="info">
+                    <h1>Cosmic Clock</h1>
+                    <div class="subtitle">Time in concentric rings</div>
+                    <div id="current-time">00:00:00</div>
+                    <div id="current-date">Loading...</div>
 
-                                    <div class="ring-legend">
-                                        <div class="legend-section">
-                                            <div class="legend-section-title">Inner (fast)</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div>Seconds</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div>Minutes</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #06b6d4;"></div>Hours</div>
-                                        </div>
-
-                                        <div class="legend-section">
-                                            <div class="legend-section-title">Middle</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #10b981;"></div>Day of Week</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #8b5cf6;"></div>Week</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #ec4899;"></div>Month</div>
-                                        </div>
-
-                                        <div class="legend-section">
-                                            <div class="legend-section-title">Outer (slow)</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #3b82f6;"></div>Quarter</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #14b8a6;"></div>Season</div>
-                                            <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div>Year</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div id="tooltip"></div>
-
-                                <div id="controls">
-                                    <button class="control-btn active" data-speed="1">1x</button>
-                                    <button class="control-btn" data-speed="60">1m/s</button>
-                                    <button class="control-btn" data-speed="3600">1h/s</button>
-                                    <button class="control-btn" data-speed="86400">1d/s</button>
-                                </div>
+                    <div class="ring-legend">
+                        <div class="legend-section">
+                            <div class="legend-section-title">Inner (fast)</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #ef4444;"></div>Seconds
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f59e0b;"></div>Minutes
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #06b6d4;"></div>Hours
+                            </div>
                         </div>
-                </section>
-        </div>
+
+                        <div class="legend-section">
+                            <div class="legend-section-title">Middle</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #10b981;"></div>Day of Week
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #8b5cf6;"></div>Week
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #ec4899;"></div>Month
+                            </div>
+                        </div>
+
+                        <div class="legend-section">
+                            <div class="legend-section-title">Outer (slow)</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #3b82f6;"></div>Quarter
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #14b8a6;"></div>Season
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f97316;"></div>Year
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tooltip"></div>
+
+                <div id="controls">
+                    <button class="control-btn active" data-speed="1">1x</button>
+                    <button class="control-btn" data-speed="60">1m/s</button>
+                    <button class="control-btn" data-speed="3600">1h/s</button>
+                    <button class="control-btn" data-speed="86400">1d/s</button>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <!-- Hero Section -->
     <section id="hero" class="hero-section">
         <canvas id="particleBackgroundCanvas" class="particle-background-canvas" aria-hidden="true"></canvas>
         <div id="particles-bg"></div>
-        
+
         <div class="social-links">
             <!-- LinkedIn -->
-            <a class="social-icon" href="https://www.linkedin.com/in/asiimhusain" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+            <a class="social-icon" href="https://www.linkedin.com/in/asiimhusain" target="_blank" rel="noopener"
+                aria-label="LinkedIn" title="LinkedIn">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true">
                     <!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                    <path d="M196.3 512L103.4 512L103.4 212.9L196.3 212.9L196.3 512zM149.8 172.1C120.1 172.1 96 147.5 96 117.8C96 103.5 101.7 89.9 111.8 79.8C121.9 69.7 135.6 64 149.8 64C164 64 177.7 69.7 187.8 79.8C197.9 89.9 203.6 103.6 203.6 117.8C203.6 147.5 179.5 172.1 149.8 172.1zM543.9 512L451.2 512L451.2 366.4C451.2 331.7 450.5 287.2 402.9 287.2C354.6 287.2 347.2 324.9 347.2 363.9L347.2 512L254.4 512L254.4 212.9L343.5 212.9L343.5 253.7L344.8 253.7C357.2 230.2 387.5 205.4 432.7 205.4C526.7 205.4 544 267.3 544 347.7L544 512L543.9 512z"/>
+                    <path
+                        d="M196.3 512L103.4 512L103.4 212.9L196.3 212.9L196.3 512zM149.8 172.1C120.1 172.1 96 147.5 96 117.8C96 103.5 101.7 89.9 111.8 79.8C121.9 69.7 135.6 64 149.8 64C164 64 177.7 69.7 187.8 79.8C197.9 89.9 203.6 103.6 203.6 117.8C203.6 147.5 179.5 172.1 149.8 172.1zM543.9 512L451.2 512L451.2 366.4C451.2 331.7 450.5 287.2 402.9 287.2C354.6 287.2 347.2 324.9 347.2 363.9L347.2 512L254.4 512L254.4 212.9L343.5 212.9L343.5 253.7L344.8 253.7C357.2 230.2 387.5 205.4 432.7 205.4C526.7 205.4 544 267.3 544 347.7L544 512L543.9 512z" />
                 </svg>
             </a>
             <!-- GitHub -->
-            <a class="social-icon" href="https://github.com/asiimhusain" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+            <a class="social-icon" href="https://github.com/asiimhusain" target="_blank" rel="noopener"
+                aria-label="GitHub" title="GitHub">
                 <!-- Simple filled GitHub mark -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.111.82-.261.82-.577 0-.285-.01-1.04-.016-2.04-3.338.724-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.76-1.605-2.665-.304-5.467-1.334-5.467-5.93 0-1.31.468-2.381 1.235-3.221-.124-.303-.535-1.525.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.289-1.552 3.296-1.23 3.296-1.23.653 1.651.242 2.873.118 3.176.77.84 1.232 1.911 1.232 3.221 0 4.61-2.807 5.624-5.479 5.921.43.371.823 1.102.823 2.222 0 1.606-.015 2.904-.015 3.296 0 .319.216.694.825.576C20.565 22.092 24 17.595 24 12.297 24 5.67 18.627.297 12 .297z"/>
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.111.82-.261.82-.577 0-.285-.01-1.04-.016-2.04-3.338.724-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.76-1.605-2.665-.304-5.467-1.334-5.467-5.93 0-1.31.468-2.381 1.235-3.221-.124-.303-.535-1.525.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.289-1.552 3.296-1.23 3.296-1.23.653 1.651.242 2.873.118 3.176.77.84 1.232 1.911 1.232 3.221 0 4.61-2.807 5.624-5.479 5.921.43.371.823 1.102.823 2.222 0 1.606-.015 2.904-.015 3.296 0 .319.216.694.825.576C20.565 22.092 24 17.595 24 12.297 24 5.67 18.627.297 12 .297z" />
                 </svg>
             </a>
             <!-- LeetCode (clean code emblem) -->
-            <a class="social-icon" href="https://www.leetcode.com/asimhusain01" target="_blank" rel="noopener" aria-label="LeetCode" title="LeetCode">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <a class="social-icon" href="https://www.leetcode.com/asimhusain01" target="_blank" rel="noopener"
+                aria-label="LeetCode" title="LeetCode">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24"
+                    aria-hidden="true">
                     <!--Boxicons v3.0.3 https://boxicons.com | License  https://docs.boxicons.com/free-->
-                    <path d="m15.42 16.94-2.25 2.17a2.1 2.1 0 0 1-1.52.56 2.1 2.1 0 0 1-1.52-.56l-3.61-3.63a2.18 2.18 0 0 1-.58-1.55 2.07 2.07 0 0 1 .58-1.52l3.6-3.65a2.1 2.1 0 0 1 1.53-.54 2.08 2.08 0 0 1 1.52.55l2.25 2.17A1.14 1.14 0 0 0 17 9.33l-2.17-2.2a4.24 4.24 0 0 0-2-1.12l2.06-2.08a1.15 1.15 0 0 0-1.62-1.62l-8.43 8.42a4.48 4.48 0 0 0-1.24 3.2 4.57 4.57 0 0 0 1.24 3.23l3.63 3.63A4.38 4.38 0 0 0 11.66 22a4.45 4.45 0 0 0 3.2-1.25L17 18.56a1.14 1.14 0 0 0-1.61-1.62z"></path>
+                    <path
+                        d="m15.42 16.94-2.25 2.17a2.1 2.1 0 0 1-1.52.56 2.1 2.1 0 0 1-1.52-.56l-3.61-3.63a2.18 2.18 0 0 1-.58-1.55 2.07 2.07 0 0 1 .58-1.52l3.6-3.65a2.1 2.1 0 0 1 1.53-.54 2.08 2.08 0 0 1 1.52.55l2.25 2.17A1.14 1.14 0 0 0 17 9.33l-2.17-2.2a4.24 4.24 0 0 0-2-1.12l2.06-2.08a1.15 1.15 0 0 0-1.62-1.62l-8.43 8.42a4.48 4.48 0 0 0-1.24 3.2 4.57 4.57 0 0 0 1.24 3.23l3.63 3.63A4.38 4.38 0 0 0 11.66 22a4.45 4.45 0 0 0 3.2-1.25L17 18.56a1.14 1.14 0 0 0-1.61-1.62z">
+                    </path>
                     <path d="M19.34 12.84h-8.45a1.12 1.12 0 0 0 0 2.24h8.45a1.12 1.12 0 0 0 0-2.24"></path>
                 </svg>
             </a>
             <!-- Kaggle -->
-            <a class="social-icon" href="https://www.kaggle.com/asimhusain01" target="_blank" rel="noopener" aria-label="Kaggle" title="Kaggle">
+            <a class="social-icon" href="https://www.kaggle.com/asimhusain01" target="_blank" rel="noopener"
+                aria-label="Kaggle" title="Kaggle">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M4.6 3.2a1.1 1.1 0 0 1 2.2 0V13l4.8-4.7a1.1 1.1 0 0 1 1.6 1.6L9.9 13l3.5 4.2a1.1 1.1 0 1 1-1.7 1.4L8.6 15l-1.8 1.8v2.2a1.1 1.1 0 1 1-2.2 0V3.2z"/>
-                    <path d="M15.8 8.6a1.1 1.1 0 0 1 1.6 0l2.2 2.2 2.2-2.2a1.1 1.1 0 1 1 1.6 1.6l-2.2 2.2 2.2 2.2a1.1 1.1 0 1 1-1.6 1.6l-2.2-2.2-2.2 2.2a1.1 1.1 0 1 1-1.6-1.6l2.2-2.2-2.2-2.2a1.1 1.1 0 0 1 0-1.6z"/>
+                    <path
+                        d="M4.6 3.2a1.1 1.1 0 0 1 2.2 0V13l4.8-4.7a1.1 1.1 0 0 1 1.6 1.6L9.9 13l3.5 4.2a1.1 1.1 0 1 1-1.7 1.4L8.6 15l-1.8 1.8v2.2a1.1 1.1 0 1 1-2.2 0V3.2z" />
+                    <path
+                        d="M15.8 8.6a1.1 1.1 0 0 1 1.6 0l2.2 2.2 2.2-2.2a1.1 1.1 0 1 1 1.6 1.6l-2.2 2.2 2.2 2.2a1.1 1.1 0 1 1-1.6 1.6l-2.2-2.2-2.2 2.2a1.1 1.1 0 1 1-1.6-1.6l2.2-2.2-2.2-2.2a1.1 1.1 0 0 1 0-1.6z" />
                 </svg>
             </a>
             <!-- Email -->
-            <a class="social-icon" href="https://mail.google.com/mail/?view=cm&fs=1&to=studyboyasim01@gmail.com" target="_blank" rel="noopener" aria-label="Email" title="Email">
+            <a class="social-icon" href="https://mail.google.com/mail/?view=cm&fs=1&to=studyboyasim01@gmail.com"
+                target="_blank" rel="noopener" aria-label="Email" title="Email">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.25-8 5-8-5V6l8 5 8-5v2.25z"/>
+                    <path
+                        d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.25-8 5-8-5V6l8 5 8-5v2.25z" />
                 </svg>
             </a>
             <!-- WhatsApp -->
-            <a class="social-icon" href="https://wa.me/917310647227" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+            <a class="social-icon" href="https://wa.me/917310647227" target="_blank" rel="noopener"
+                aria-label="WhatsApp" title="WhatsApp">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.52 3.48A11.86 11.86 0 0 0 12.07 0C5.52 0 .2 5.3.2 11.85c0 2.08.54 4.11 1.57 5.91L0 24l6.42-1.68a11.86 11.86 0 0 0 5.65 1.44h.01c6.54 0 11.86-5.31 11.87-11.85a11.8 11.8 0 0 0-3.43-8.43zM12.08 21.73h-.01a9.86 9.86 0 0 1-5.03-1.38l-.36-.21-3.81 1 1.02-3.72-.24-.38a9.83 9.83 0 0 1-1.52-5.19C2.13 6.44 6.67 1.9 12.07 1.9c2.63 0 5.1 1.02 6.95 2.88a9.8 9.8 0 0 1 2.87 6.97c0 5.4-4.4 9.98-9.81 9.98zm5.38-7.46c-.3-.15-1.77-.88-2.04-.98-.27-.1-.46-.15-.66.15s-.75.98-.92 1.18c-.17.2-.34.22-.64.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.67-2.06-.17-.3-.02-.46.13-.61.14-.14.3-.34.45-.51.15-.17.2-.29.3-.49.1-.2.05-.37-.03-.51-.07-.15-.66-1.6-.91-2.19-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.43s1.04 2.81 1.18 3c.15.2 2.04 3.11 4.95 4.36.69.3 1.24.48 1.66.61.7.22 1.34.19 1.85.12.56-.08 1.77-.72 2.02-1.42.25-.7.25-1.31.17-1.43-.07-.12-.27-.2-.56-.34z"/>
+                    <path
+                        d="M20.52 3.48A11.86 11.86 0 0 0 12.07 0C5.52 0 .2 5.3.2 11.85c0 2.08.54 4.11 1.57 5.91L0 24l6.42-1.68a11.86 11.86 0 0 0 5.65 1.44h.01c6.54 0 11.86-5.31 11.87-11.85a11.8 11.8 0 0 0-3.43-8.43zM12.08 21.73h-.01a9.86 9.86 0 0 1-5.03-1.38l-.36-.21-3.81 1 1.02-3.72-.24-.38a9.83 9.83 0 0 1-1.52-5.19C2.13 6.44 6.67 1.9 12.07 1.9c2.63 0 5.1 1.02 6.95 2.88a9.8 9.8 0 0 1 2.87 6.97c0 5.4-4.4 9.98-9.81 9.98zm5.38-7.46c-.3-.15-1.77-.88-2.04-.98-.27-.1-.46-.15-.66.15s-.75.98-.92 1.18c-.17.2-.34.22-.64.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.67-2.06-.17-.3-.02-.46.13-.61.14-.14.3-.34.45-.51.15-.17.2-.29.3-.49.1-.2.05-.37-.03-.51-.07-.15-.66-1.6-.91-2.19-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.43s1.04 2.81 1.18 3c.15.2 2.04 3.11 4.95 4.36.69.3 1.24.48 1.66.61.7.22 1.34.19 1.85.12.56-.08 1.77-.72 2.02-1.42.25-.7.25-1.31.17-1.43-.07-.12-.27-.2-.56-.34z" />
                 </svg>
             </a>
         </div>
-        
+
         <div class="hero-content">
             <div class="hero-text">
                 <div class="hero-name"><span class="accent-color">Asim </span>Husain</div>
                 <div class="hero-title">
                     I'm a
-                    <span class="typewriter-text accent-color" data-period="1200" data-rotate='[ " AI/ML Engineer.", "Software Developer", " Prompt Engineer" ]'></span>
+                    <span class="typewriter-text accent-color" data-period="1200"
+                        data-rotate='[ " AI/ML Engineer.", "Software Developer", " Prompt Engineer" ]'></span>
                     <span class="typewriter-cursor">|</span>
                 </div>
             </div>
@@ -410,7 +587,7 @@
 
     <!-- About Section -->
     <section id="about" class="about-section">
-        <div class="about-container">  
+        <div class="about-container">
             <div class="about-image-container">
                 <img src="images/dp.png" alt="Asim Husain" class="profile-image" loading="lazy" decoding="async">
                 <h3 class="profile-name">Asim Husain</h3>
@@ -420,250 +597,327 @@
                 <div class="about-card">
                     <h2>
                         About Me
-                        <button id="aboutSpeakBtn" class="speak-btn" aria-label="Speak description" title="Speak description" type="button">
+                        <button id="aboutSpeakBtn" class="speak-btn" aria-label="Speak description"
+                            title="Speak description" type="button">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
                                 <path d="M3 10v4a1 1 0 0 0 1 1h3l4 3V6L7 9H4a1 1 0 0 0-1 1z"></path>
-                                <path d="M16 8a5 5 0 0 1 0 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M19 5a8 8 0 0 1 0 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 8a5 5 0 0 1 0 8" stroke="currentColor" stroke-width="2" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M19 5a8 8 0 0 1 0 14" stroke="currentColor" stroke-width="2" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
                     </h2>
-                    <p id="aboutDescription">I'm an AI/ML Engineer, currently pursuing a B.Tech in Computer Science and Engineering with a specialization in Artificial Intelligence, Machine Learning, and Deep Learning. Skilled in Python, SQL, HTML, and CSS, with a solid understanding of systems and modern software development practices, along with a foundational knowledge of JavaScript. I thrive at the intersection of artificial intelligence, machine learning, cloud computing, and modern software engineering. I specialize in building end-to-end ML pipelines, scalable backend systems, and cloud-integrated applications that blend intelligence with performance. My technical stack includes Docker, Azure, CI/CD pipelines, data pipelines, and workflow automation tools, enabling me to design and deploy solutions that learn, adapt, and scale efficiently. Passionate about clean engineering, data-driven problem solving, and continuous innovation, I actively explore emerging technologies in Generative AI, cloud-native architectures, and autonomous ML workflows with the goal of building systems that not only work, but also think, evolve, and create impact.</p>
+                    <p id="aboutDescription">I'm an AI/ML Engineer, currently pursuing a B.Tech in Computer Science and
+                        Engineering with a specialization in Artificial Intelligence, Machine Learning, and Deep
+                        Learning. Skilled in Python, SQL, HTML, and CSS, with a solid understanding of systems and
+                        modern software development practices, along with a foundational knowledge of JavaScript. I
+                        thrive at the intersection of artificial intelligence, machine learning, cloud computing, and
+                        modern software engineering. I specialize in building end-to-end ML pipelines, scalable backend
+                        systems, and cloud-integrated applications that blend intelligence with performance. My
+                        technical stack includes Docker, Azure, CI/CD pipelines, data pipelines, and workflow automation
+                        tools, enabling me to design and deploy solutions that learn, adapt, and scale efficiently.
+                        Passionate about clean engineering, data-driven problem solving, and continuous innovation, I
+                        actively explore emerging technologies in Generative AI, cloud-native architectures, and
+                        autonomous ML workflows with the goal of building systems that not only work, but also think,
+                        evolve, and create impact.</p>
                     <button class="gooey-btn" id="hireMeBtn">Hire&nbsp;Me</button>
                 </div>
             </div>
         </div>
     </section>
 
-<!-- Certifications Section -->
-<section class="certifications-section">
-    <h2 class="section-title">Achievements</h2>
-    <div id="sequence" class="seq">
-        <button type="button" class="cert-prev" aria-label="Previous Certificate">
-            <svg class="cert-arrow" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false">
-                <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-        <ul class="seq-canvas">
-                        <li class="step1 valign seq-in">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Microsoft AI ML Engineering (Coursera)</h2>
-                            <p class="certificate-description">
-                               Developed practical expertise in AI and machine learning systems, covering core ML algorithms, model training, feature engineering, and evaluation techniques. Built intelligent AI solutions using Microsoft Azure services, applied advanced ML methods, and completed a capstone project implementing the end-to-end machine learning lifecycle from data processing to deployment.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate1.jpg" alt="Certificate 1" loading="lazy" decoding="async" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="step2 valign seq-in">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">GitHub Foundations (Microsoft)</h2>
-                            <p class="certificate-description">
-                               Mastered enterprise-level Git and GitHub workflows, repository initialization, branching strategies (Git Flow), pull request reviews, and CI/CD setup via GitHub Actions. Implemented version control best practices and collaborative issue tracking for scalable software development.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate2.jpg" alt="Certificate 1" loading="lazy" decoding="async" />
+    <!-- Certifications Section -->
+    <section class="certifications-section">
+        <h2 class="section-title">Achievements</h2>
+        <div id="sequence" class="seq">
+            <button type="button" class="cert-prev" aria-label="Previous Certificate">
+                <svg class="cert-arrow" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false">
+                    <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="seq-canvas">
+                <li class="step1 valign seq-in">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Microsoft AI ML Engineering (Coursera)</h2>
+                                <p class="certificate-description">
+                                    Developed practical expertise in AI and machine learning systems, covering core ML
+                                    algorithms, model training, feature engineering, and evaluation techniques. Built
+                                    intelligent AI solutions using Microsoft Azure services, applied advanced ML
+                                    methods, and completed a capstone project implementing the end-to-end machine
+                                    learning lifecycle from data processing to deployment.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate1.jpg"
+                                    alt="Certificate 1" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
-            <li class="step3 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Github Copilot (Microsoft)</h2>
-                            <p class="certificate-description">
-                                 Gained expertise in leveraging AI-powered code completion to enhance productivity, code quality, and collaboration. Mastered Copilot's integration within IDEs, prompt engineering for accurate code suggestions, secure coding practices, and workflow optimization through GitHub Copilot for Individuals and Business.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate3.jpg" alt="Certificate 2" loading="lazy" decoding="async" />
+                </li>
+                <li class="step2 valign seq-in">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">GitHub Foundations (Microsoft)</h2>
+                                <p class="certificate-description">
+                                    Mastered enterprise-level Git and GitHub workflows, repository initialization,
+                                    branching strategies (Git Flow), pull request reviews, and CI/CD setup via GitHub
+                                    Actions. Implemented version control best practices and collaborative issue tracking
+                                    for scalable software development.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate2.jpg"
+                                    alt="Certificate 1" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
+                <li class="step3 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Github Copilot (Microsoft)</h2>
+                                <p class="certificate-description">
+                                    Gained expertise in leveraging AI-powered code completion to enhance productivity,
+                                    code quality, and collaboration. Mastered Copilot's integration within IDEs, prompt
+                                    engineering for accurate code suggestions, secure coding practices, and workflow
+                                    optimization through GitHub Copilot for Individuals and Business.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate3.jpg"
+                                    alt="Certificate 2" loading="lazy" decoding="async" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
 
-            <li class="step4 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Big Data Computing (NPTEL)</h2>
-                            <p class="certificate-description">
-                                Studied distributed data processing with Hadoop and Apache Spark (RDDs, DataFrames). Gained expertise in partitioning, shuffling, fault tolerance, and optimization techniques for scalable big data analytics and cluster-based computation.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate4.jpg" alt="Certificate 7" loading="lazy" decoding="async" />
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="step5 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">SQL Basics (HackerRank)</h2>
-                            <p class="certificate-description">
-                                Built and optimized relational queries using subqueries, window functions, and complex JOINs. Enhanced query performance with indexing and execution plan analysis to ensure scalable and efficient database operations.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate5.jpg" alt="Certificate 12" loading="lazy" decoding="async" />
+                <li class="step4 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Big Data Computing (NPTEL)</h2>
+                                <p class="certificate-description">
+                                    Studied distributed data processing with Hadoop and Apache Spark (RDDs, DataFrames).
+                                    Gained expertise in partitioning, shuffling, fault tolerance, and optimization
+                                    techniques for scalable big data analytics and cluster-based computation.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate4.jpg"
+                                    alt="Certificate 7" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <li class="step6 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Python (Codedex)</h2>
-                            <p class="certificate-description">
-                                Built strong proficiency in Python programming, including core syntax, data structures, functions, and object-oriented programming concepts. Applied Python for problem solving, automation, and data handling while implementing best coding practices, debugging techniques, and writing clean, efficient, and scalable code.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate6.jpg" alt="Certificate 12" loading="lazy" decoding="async" />
+                <li class="step5 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">SQL Basics (HackerRank)</h2>
+                                <p class="certificate-description">
+                                    Built and optimized relational queries using subqueries, window functions, and
+                                    complex JOINs. Enhanced query performance with indexing and execution plan analysis
+                                    to ensure scalable and efficient database operations.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate5.jpg"
+                                    alt="Certificate 12" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <li class="step7 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Junior Data Analyst (CETPA)</h2>
-                            <p class="certificate-description">
-                                Executed data wrangling, transformation, and visualization using Excel (PivotTables, XLOOKUP) and SQL (JOIN, GROUP BY, AGGREGATE). Designed analytical dashboards and optimized data pipelines to deliver insight-driven reporting and performance monitoring.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate7.jpg" alt="Certificate 3" loading="lazy" decoding="async" />
+                <li class="step6 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Python (Codedex)</h2>
+                                <p class="certificate-description">
+                                    Built strong proficiency in Python programming, including core syntax, data
+                                    structures, functions, and object-oriented programming concepts. Applied Python for
+                                    problem solving, automation, and data handling while implementing best coding
+                                    practices, debugging techniques, and writing clean, efficient, and scalable code.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate6.jpg"
+                                    alt="Certificate 12" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <li class="step8 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Machine Learning Trainee (Internshala)</h2>
-                            <p class="certificate-description">
-                                Implemented end-to-end ML pipelines using Scikit-learn - preprocessing, model training, and hyperparameter tuning. Applied regression and classification algorithms with metrics such as F1-Score, ROC-AUC, and cross-validation for performance optimization.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate8.jpg" alt="Certificate 5" loading="lazy" decoding="async" />
+                <li class="step7 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Junior Data Analyst (CETPA)</h2>
+                                <p class="certificate-description">
+                                    Executed data wrangling, transformation, and visualization using Excel (PivotTables,
+                                    XLOOKUP) and SQL (JOIN, GROUP BY, AGGREGATE). Designed analytical dashboards and
+                                    optimized data pipelines to deliver insight-driven reporting and performance
+                                    monitoring.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate7.jpg"
+                                    alt="Certificate 3" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <li class="step9 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">Technology Day Winner (TMU)</h2>
-                            <p class="certificate-description">
-                                Engineered and deployed an innovative prototype demonstrating applied AI and data-driven problem-solving. Led requirements gathering, implementation, benchmarking, and technical presentation, earning recognition for innovation and execution excellence.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate9.jpg" alt="Certificate 6" loading="lazy" decoding="async" />
+                <li class="step8 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Machine Learning Trainee (Internshala)</h2>
+                                <p class="certificate-description">
+                                    Implemented end-to-end ML pipelines using Scikit-learn - preprocessing, model
+                                    training, and hyperparameter tuning. Applied regression and classification
+                                    algorithms with metrics such as F1-Score, ROC-AUC, and cross-validation for
+                                    performance optimization.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate8.jpg"
+                                    alt="Certificate 5" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <li class="step10 valign">
-                <div class="vcenter">
-                    <div class="cert-grid">
-                        <div class="cert-info">
-                            <h2 data-seq class="certificate-title">TeamEverest NGO (Volunteer)</h2>
-                            <p class="certificate-description">
-                                Contributed to data-driven community initiatives through structured reporting, event coordination, and analytics using Excel and Google Sheets. Focused on measurable outreach impact, documentation clarity, and collaborative workflow.
-                            </p>
-                        </div>
-                        <div class="cert-visual">
-                            <img data-seq class="certificate-feature" src="certificate/certificate10.jpg" alt="Certificate 14" loading="lazy" decoding="async" />
+                <li class="step9 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Technology Day Winner (TMU)</h2>
+                                <p class="certificate-description">
+                                    Engineered and deployed an innovative prototype demonstrating applied AI and
+                                    data-driven problem-solving. Led requirements gathering, implementation,
+                                    benchmarking, and technical presentation, earning recognition for innovation and
+                                    execution excellence.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate9.jpg"
+                                    alt="Certificate 6" loading="lazy" decoding="async" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-        </ul>
-        <button type="button" class="cert-next" aria-label="Next Certificate">
-            <svg class="cert-arrow" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false">
-                <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-    </div>
-</section>
+                <li class="step10 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
+                                <h2 data-seq class="certificate-title">TeamEverest NGO (Volunteer)</h2>
+                                <p class="certificate-description">
+                                    Contributed to data-driven community initiatives through structured reporting, event
+                                    coordination, and analytics using Excel and Google Sheets. Focused on measurable
+                                    outreach impact, documentation clarity, and collaborative workflow.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/certificate10.jpg"
+                                    alt="Certificate 14" loading="lazy" decoding="async" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            <button type="button" class="cert-next" aria-label="Next Certificate">
+                <svg class="cert-arrow" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false">
+                    <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+    </section>
 
     <!-- Services Section -->
     <section class="services-section">
         <h2 class="section-title">Areas of Expertise</h2>
         <div class="services-grid">
             <div class="service-card">
-                <div class="service-icon"><img src="images/developer.png" alt="Developer Icon" loading="lazy" decoding="async" /></div>
+                <div class="service-icon"><img src="images/developer.png" alt="Developer Icon" loading="lazy"
+                        decoding="async" /></div>
                 <div class="service-front"><span>Software Development</span></div>
                 <div class="service-back">
                     <span>
                         <ul>
-                            <li>System Design</li><li>Python | SQL</li><li>HTML | CSS</li>
-                            <li>CI | CD Basics</li><li>Git | Github</li><li>PyTest | Unit Test</li>
+                            <li>System Design</li>
+                            <li>Python | SQL</li>
+                            <li>HTML | CSS</li>
+                            <li>CI | CD Basics</li>
+                            <li>Git | Github</li>
+                            <li>PyTest | Unit Test</li>
                             <li>Docker | AWS</li>
                         </ul>
                     </span>
                 </div>
             </div>
             <div class="service-card">
-                <div class="service-icon"><img src="images/ml.png" alt="ML Icon" loading="lazy" decoding="async" /></div>
+                <div class="service-icon"><img src="images/ml.png" alt="ML Icon" loading="lazy" decoding="async" />
+                </div>
                 <div class="service-front"><span>AI/ML Engineering</span></div>
                 <div class="service-back">
                     <span>
                         <ul>
-                            <li>Python Libraries</li><li>Maths | Statistics</li><li>ML Fundamentals</li>
-                            <li>ANN | Frameworks</li><li>ML Ops Basics</li><li>Feature Engineering | EDA</li>
-                            <li>Azure | Docker</li><li>Git | Github</li><li>Jupyter Notebook | Colab</li>
-                        </ul>
-                    </span>
-                </div>
-            </div>
-            <div class="service-card">
-                <div class="service-icon"><img src="images/da.png" alt="Data Analysis Icon" loading="lazy" decoding="async" /></div>
-                <div class="service-front"><span>Data Analysis</span></div>
-                <div class="service-back">
-                    <span>
-                        <ul>
-                            <li>Python</li><li>SQL</li><li>PowerBi</li><li>Numpy</li>
-                            <li>Pandas</li><li>Seaborn</li><li>Matplotlib | Plotly</li>
+                            <li>Python Libraries</li>
+                            <li>Maths | Statistics</li>
+                            <li>ML Fundamentals</li>
+                            <li>ANN | Frameworks</li>
+                            <li>ML Ops Basics</li>
+                            <li>Feature Engineering | EDA</li>
+                            <li>Azure | Docker</li>
+                            <li>Git | Github</li>
                             <li>Jupyter Notebook | Colab</li>
                         </ul>
                     </span>
                 </div>
             </div>
             <div class="service-card">
-                <div class="service-icon"><img src="images/mechanic.png" alt="IT Support Icon" loading="lazy" decoding="async" /></div>
+                <div class="service-icon"><img src="images/da.png" alt="Data Analysis Icon" loading="lazy"
+                        decoding="async" /></div>
+                <div class="service-front"><span>Data Analysis</span></div>
+                <div class="service-back">
+                    <span>
+                        <ul>
+                            <li>Python</li>
+                            <li>SQL</li>
+                            <li>PowerBi</li>
+                            <li>Numpy</li>
+                            <li>Pandas</li>
+                            <li>Seaborn</li>
+                            <li>Matplotlib | Plotly</li>
+                            <li>Jupyter Notebook | Colab</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><img src="images/mechanic.png" alt="IT Support Icon" loading="lazy"
+                        decoding="async" /></div>
                 <div class="service-front"><span>IT Support Specialist</span></div>
                 <div class="service-back">
                     <span>
                         <ul>
-                            <li>Windows Troubleshooting</li><li>System Cleanup | Boost</li>
-                            <li>OS Installation | Setup</li><li>Android Flashing | Optimization</li>
-                            <li>Data Backup | Recovery</li><li>Network | Connectivity Fixes</li>
+                            <li>Windows Troubleshooting</li>
+                            <li>System Cleanup | Boost</li>
+                            <li>OS Installation | Setup</li>
+                            <li>Android Flashing | Optimization</li>
+                            <li>Data Backup | Recovery</li>
+                            <li>Network | Connectivity Fixes</li>
                             <li>Driver Updates | Fixes</li>
                         </ul>
                     </span>
@@ -677,64 +931,89 @@
         <div class="projects-container">
             <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
+                <a href="https://ragsystem.grayground-1f565d06.centralindia.azurecontainerapps.io" target="_blank"
+                    class="project-link">
+                    <div class="project-card">
+                        <img src="images/rag.png" alt="RAG System" class="project-image" loading="lazy"
+                            decoding="async">
+                        <p class="project-title">RAG System</p>
+                        <p class="project-description">Built a RAG system using FastAPI, LangChain, and ChromaDB with
+                            Jina embeddings, SQLite, Docker, and Azure deployment..</p>
+                        <div class="project-overlay"></div>
+                        <button class="project-button">View</button>
+                    </div>
+                </a>
                 <a href="https://www.curehelplus.me" target="_blank" class="project-link">
                     <div class="project-card">
-                        <img src="images/curehelp.png" alt="CureHelp+" class="project-image" loading="lazy" decoding="async">
+                        <img src="images/curehelp.png" alt="CureHelp+" class="project-image" loading="lazy"
+                            decoding="async">
                         <p class="project-title">CureHelp+</p>
-                        <p class="project-description">An AI-assisted health companion offering preliminary insights, symptom-based guidance, and smarter access to care.</p>
+                        <p class="project-description">An AI-assisted health companion offering preliminary insights,
+                            symptom-based guidance, and smarter access to care.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
                 </a>
                 <a href="https://intervbot.vercel.app" target="_blank" class="project-link">
                     <div class="project-card">
-                        <img src="images/interview.png" alt="Interview Project" class="project-image" loading="lazy" decoding="async">
+                        <img src="images/interview.png" alt="Interview Project" class="project-image" loading="lazy"
+                            decoding="async">
                         <p class="project-title">IntervBot</p>
-                        <p class="project-description">Practice interviews with AI-generated questions and structured feedback to build confidence and improve answers.</p>
+                        <p class="project-description">Practice interviews with AI-generated questions and structured
+                            feedback to build confidence and improve answers.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
                 </a>
                 <a href="https://tinyurl-chvx.onrender.com" target="_blank" class="project-link">
                     <div class="project-card">
-                        <img src="images/url.png" alt="URL Project" class="project-image" loading="lazy" decoding="async">
+                        <img src="images/url.png" alt="URL Project" class="project-image" loading="lazy"
+                            decoding="async">
                         <p class="project-title">TinyURL</p>
-                        <p class="project-description">Blazing-fast link toolkit: shorten and unshorten URLs, and generate QR codes for effortless sharing anywhere.</p>
+                        <p class="project-description">Blazing-fast link toolkit: shorten and unshorten URLs, and
+                            generate QR codes for effortless sharing anywhere.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
                 </a>
                 <a href="https://predictrade.streamlit.app/" target="_blank" class="project-link">
                     <div class="project-card">
-                        <img src="images/stock.png" alt="Stock Project" class="project-image" loading="lazy" decoding="async">
+                        <img src="images/stock.png" alt="Stock Project" class="project-image" loading="lazy"
+                            decoding="async">
                         <p class="project-title">PredicTrade</p>
-                        <p class="project-description">AI-driven market forecasting that turns historical trends and live signals into clear, actionable insights for smarter investing.</p>
+                        <p class="project-description">AI-driven market forecasting that turns historical trends and
+                            live signals into clear, actionable insights for smarter investing.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
                 </a>
                 <a href="https://validleads.azurewebsites.net/" target="_blank" class="project-link">
                     <div class="project-card">
-                        <img src="images/letter.png" alt="Lead Project" class="project-image" loading="lazy" decoding="async">
+                        <img src="images/letter.png" alt="Lead Project" class="project-image" loading="lazy"
+                            decoding="async">
                         <p class="project-title">Lead Validation Suite</p>
-                        <p class="project-description">Cleans and verifies lead data to remove junk and keep only accurate, high-quality contacts in your pipeline.</p>
+                        <p class="project-description">Cleans and verifies lead data to remove junk and keep only
+                            accurate, high-quality contacts in your pipeline.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
                 </a>
                 <a href="https://www.asimhusain.dev" target="_blank" class="project-link">
                     <div class="project-card">
-                        <img src="images/favicon.png" alt="Website Project" class="project-image" loading="lazy" decoding="async">
+                        <img src="images/favicon.png" alt="Website Project" class="project-image" loading="lazy"
+                            decoding="async">
                         <p class="project-title">Personal Website</p>
-                        <p class="project-description">A clean, responsive portfolio showcasing projects, writing, and skills across AI, ML, and full-stack development.</p>
+                        <p class="project-description">A clean, responsive portfolio showcasing projects, writing, and
+                            skills across AI, ML, and full-stack development.</p>
                         <div class="project-overlay"></div>
                         <button class="project-button">View</button>
                     </div>
                 </a>
-                
+
                 <a href="#" target="_blank" class="project-link">
                     <div class="project-card">
-                        <img src="images/wip.png" alt="Work in Progress" class="project-image" loading="lazy" decoding="async">
+                        <img src="images/wip.png" alt="Work in Progress" class="project-image" loading="lazy"
+                            decoding="async">
                         <p class="project-title">Coming Soon</p>
                         <p class="project-description">New project in development</p>
                         <div class="project-overlay"></div>
@@ -782,7 +1061,11 @@
         <div class="privacy-content">
             <span class="privacy-close" id="closePrivacyPopup">&times;</span>
             <h2>Privacy Policy</h2>
-            <p><strong>I Respect Your Privacy.</strong><br>I don't collect any personal information unless you choose to share it, like when you fill out the contact form to connect or ask questions.<br>There are no hidden trackers, cookies, or background scripts running unless clearly mentioned for transparency.<br>This site is built purely for personal use and creative expression, and your data is never sold, shared, or misused in any way.<br>You're safe, valued, and always in control here.</p>
+            <p><strong>I Respect Your Privacy.</strong><br>I don't collect any personal information unless you choose to
+                share it, like when you fill out the contact form to connect or ask questions.<br>There are no hidden
+                trackers, cookies, or background scripts running unless clearly mentioned for transparency.<br>This site
+                is built purely for personal use and creative expression, and your data is never sold, shared, or
+                misused in any way.<br>You're safe, valued, and always in control here.</p>
         </div>
     </div>
 
@@ -790,7 +1073,8 @@
     <div id="contactPopup" class="contact-popup">
         <div class="contact-form">
             <span class="contact-close" id="closeContactPopup">&times;</span>
-            <h2><img src="images/contact.png" alt="Contact Icon" class="form-icon" loading="lazy" decoding="async">Contact Me</h2>
+            <h2><img src="images/contact.png" alt="Contact Icon" class="form-icon" loading="lazy"
+                    decoding="async">Contact Me</h2>
             <div id="contactError" class="form-error" role="alert" aria-live="polite"></div>
             <div class="form-group">
                 <img src="images/name.png" alt="User" class="input-icon" loading="lazy" decoding="async">
@@ -818,7 +1102,8 @@
         <section id="coursesModal" class="courses-modal" role="dialog" aria-modal="true" aria-labelledby="coursesTitle">
             <header class="courses-header">
                 <h2 id="coursesTitle">Courses</h2>
-                <button type="button" id="coursesCloseBtn" class="courses-close-btn" aria-label="Close courses">&times;</button>
+                <button type="button" id="coursesCloseBtn" class="courses-close-btn"
+                    aria-label="Close courses">&times;</button>
             </header>
 
             <div class="courses-body">
@@ -828,8 +1113,10 @@
                 </aside>
 
                 <main class="courses-viewer-panel" aria-label="Course file viewer">
-                    <div id="coursesViewerState" class="courses-viewer-state">Select a file from Notes to open it here.</div>
-                    <div id="coursesViewerLoading" class="courses-viewer-loading" aria-live="polite">Loading file...</div>
+                    <div id="coursesViewerState" class="courses-viewer-state">Select a file from Notes to open it here.
+                    </div>
+                    <div id="coursesViewerLoading" class="courses-viewer-loading" aria-live="polite">Loading file...
+                    </div>
                     <iframe id="coursesPdfViewer" class="courses-pdf-viewer" title="PDF Viewer"></iframe>
                     <article id="coursesTextViewer" class="courses-text-viewer"></article>
                 </main>
@@ -846,8 +1133,10 @@
                     <p id="gamesHighScoreText" class="games-high-score">Highest Score: 0</p>
                 </div>
                 <div class="games-header-actions">
-                    <button type="button" id="gamesSoundToggle" class="games-header-btn" aria-pressed="true" title="Toggle sound">Sound: On</button>
-                    <button type="button" id="gamesCloseBtn" class="games-header-btn games-close-btn" aria-label="Close games">&times;</button>
+                    <button type="button" id="gamesSoundToggle" class="games-header-btn" aria-pressed="true"
+                        title="Toggle sound">Sound: On</button>
+                    <button type="button" id="gamesCloseBtn" class="games-header-btn games-close-btn"
+                        aria-label="Close games">&times;</button>
                 </div>
             </header>
 
@@ -856,19 +1145,25 @@
                 <button type="button" class="games-tab" data-game="ludo" aria-selected="false">Ludo</button>
                 <button type="button" class="games-tab" data-game="breakout" aria-selected="false">Breakout</button>
                 <button type="button" class="games-tab" data-game="dodger" aria-selected="false">Dodger</button>
-                <button type="button" class="games-tab" data-game="targetrush" aria-selected="false">Target Rush</button>
+                <button type="button" class="games-tab" data-game="targetrush" aria-selected="false">Target
+                    Rush</button>
                 <button type="button" class="games-tab" data-game="pong" aria-selected="false">Pong</button>
-                <button type="button" class="games-tab" data-game="memoryflip" aria-selected="false">Memory Flip</button>
-                <button type="button" class="games-tab" data-game="laneescape" aria-selected="false">Lane Escape</button>
-                <button type="button" class="games-tab" data-game="offlinerunner" aria-selected="false">Offline Runner</button>
+                <button type="button" class="games-tab" data-game="memoryflip" aria-selected="false">Memory
+                    Flip</button>
+                <button type="button" class="games-tab" data-game="laneescape" aria-selected="false">Lane
+                    Escape</button>
+                <button type="button" class="games-tab" data-game="offlinerunner" aria-selected="false">Offline
+                    Runner</button>
             </nav>
 
             <div id="gamesLoader" class="games-loader" aria-live="polite">Loading game...</div>
 
             <main id="gamesViewport" class="games-viewport" tabindex="0">
-                <canvas id="gamesCanvas" class="games-canvas" width="1280" height="720" aria-label="Game canvas"></canvas>
+                <canvas id="gamesCanvas" class="games-canvas" width="1280" height="720"
+                    aria-label="Game canvas"></canvas>
                 <div id="gamesStartOverlay" class="games-start-overlay" aria-hidden="true">
-                    <button type="button" id="gamesStartBtn" class="games-start-btn" aria-label="Play current game">â–¶ Play</button>
+                    <button type="button" id="gamesStartBtn" class="games-start-btn" aria-label="Play current game">â–¶
+                        Play</button>
                 </div>
             </main>
 
@@ -887,19 +1182,14 @@
 
     <!-- Scroll to Top Button -->
     <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top" title="Back to top">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 15-6-6-6 6" />
+        </svg>
     </button>
 
     <!-- JavaScript -->
     <script src="js/script.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
