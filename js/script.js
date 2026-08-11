@@ -159,6 +159,8 @@ function initializeParticleBackground() {
     let width = 0;
     let height = 0;
     let paused = false;
+    let isIntersecting = true;
+    let heroRect = null;
 
     const colors = [
         '#2755d2',
@@ -170,8 +172,8 @@ function initializeParticleBackground() {
 
     const areaToCount = () => {
         const area = Math.max(320, width) * Math.max(320, height);
-        const target = Math.floor(area / (isMobileDevice() ? 4200 : 1900));
-        return Math.max(230, Math.min(target, isMobileDevice() ? 520 : 1200));
+        const target = Math.floor(area / (isMobileDevice() ? 1900 : 900));
+        return Math.max(300, Math.min(target, isMobileDevice() ? 450 : 950));
     };
 
     const randomRange = (min, max) => min + Math.random() * (max - min);
@@ -198,6 +200,7 @@ function initializeParticleBackground() {
         canvas.width = Math.max(1, Math.floor(width * dpr));
         canvas.height = Math.max(1, Math.floor(height * dpr));
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        heroRect = null;
 
         const desired = areaToCount();
         if (particles.length > desired) {
@@ -208,9 +211,9 @@ function initializeParticleBackground() {
     };
 
     const onPointerMove = (event) => {
-        const rect = heroSection.getBoundingClientRect();
-        mouse.x = event.clientX - rect.left;
-        mouse.y = event.clientY - rect.top;
+        if (!heroRect) heroRect = heroSection.getBoundingClientRect();
+        mouse.x = event.clientX - heroRect.left;
+        mouse.y = event.clientY - heroRect.top;
         mouse.active = true;
     };
 
@@ -220,11 +223,20 @@ function initializeParticleBackground() {
         mouse.y = -10000;
     };
 
-    const onVisibility = () => {
-        paused = document.hidden;
-        if (!paused && rafId === null) {
-            rafId = requestAnimationFrame(frame);
+    const updatePlayState = () => {
+        const shouldPlay = !document.hidden && isIntersecting;
+        if (shouldPlay && paused) {
+            paused = false;
+            if (rafId === null) {
+                rafId = requestAnimationFrame(frame);
+            }
+        } else if (!shouldPlay && !paused) {
+            paused = true;
         }
+    };
+
+    const onVisibility = () => {
+        updatePlayState();
     };
 
     const frame = () => {
@@ -285,67 +297,20 @@ function initializeParticleBackground() {
     heroSection.addEventListener('pointerleave', onPointerLeave, { passive: true });
     document.addEventListener('visibilitychange', onVisibility, { passive: true });
 
+    if (window.IntersectionObserver) {
+        const observer = new IntersectionObserver((entries) => {
+            isIntersecting = entries[0].isIntersecting;
+            updatePlayState();
+        }, { threshold: 0.01 });
+        observer.observe(heroSection);
+    }
+
     rafId = requestAnimationFrame(frame);
 }
 
 /* ========================================================================== */
 /* 2) Cursor System */
 /* ========================================================================== */
-
-// Custom cursor initialization
-function initializeCursor() {
-    if (isMobileDevice()) {
-        document.querySelector('.cursor-dot').style.display = 'none';
-        document.querySelector('.cursor-outline').style.display = 'none';
-        document.body.style.cursor = 'auto';
-        return;
-    }
-
-    const cursorDot = document.querySelector(".cursor-dot");
-    const cursorOutline = document.querySelector(".cursor-outline");
-    let mouseX = 0;
-    let mouseY = 0;
-    let outlineX = 0;
-    let outlineY = 0;
-
-    window.addEventListener("mousemove", (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    const animateCursor = () => {
-        cursorDot.style.left = `${mouseX}px`;
-        cursorDot.style.top = `${mouseY}px`;
-
-        outlineX += (mouseX - outlineX) * 0.15;
-        outlineY += (mouseY - outlineY) * 0.15;
-        cursorOutline.style.left = `${outlineX}px`;
-        cursorOutline.style.top = `${outlineY}px`;
-
-        requestAnimationFrame(animateCursor);
-    };
-
-    animateCursor();
-
-    // Interactive elements cursor effects
-    const interactiveElements = document.querySelectorAll("a, button, .social-icon, .project-button, .service-card, .topic-button");
-
-    interactiveElements.forEach(el => {
-        el.addEventListener("mouseenter", () => {
-            cursorOutline.style.transform = "translate(-50%, -50%) scale(1.4)";
-            cursorOutline.style.backgroundColor = "rgba(0, 191, 231, 0.1)";
-            cursorOutline.style.width = "40px";
-            cursorOutline.style.height = "40px";
-        });
-        
-        el.addEventListener("mouseleave", () => {
-            cursorOutline.style.transform = "translate(-50%, -50%) scale(1)";
-            cursorOutline.style.backgroundColor = "transparent";
-            cursorOutline.style.width = "25px";
-            cursorOutline.style.height = "25px";
-        });
-    });
-}
 
 // Smooth cursor (SVG arrow) with velocity-smoothed rotation and eased scaling
 function initializeSmoothCursor() {
@@ -378,17 +343,20 @@ function initializeSmoothCursor() {
     let rot = 0;
     // smoothed velocity
     let smVx = 0, smVy = 0;
+    let isUpdating = false;
+    let rafId = null;
 
     // Tuning constants (smaller = smoother, more lag)
     const POS_LERP = 0.22;
     const ROT_LERP = 0.16;
     const SCALE_LERP = 0.22;
     const VEL_LERP = 0.22;
-    const SPEED_THRESHOLD = 0.10; 
+    const SPEED_THRESHOLD = 0.10;
 
     function onMouseMove(e) {
         targetX = e.clientX;
         targetY = e.clientY;
+        wakeUp();
     }
 
     function lerpAngle(a, b, t) {
@@ -397,11 +365,29 @@ function initializeSmoothCursor() {
         return a + diff * t;
     }
 
+    function wakeUp() {
+        if (!isUpdating && !document.hidden) {
+            isUpdating = true;
+            lastTime = performance.now();
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(update);
+        }
+    }
+
     function update(now) {
+        if (document.hidden) {
+            isUpdating = false;
+            rafId = null;
+            return;
+        }
+
         const dt = Math.max(1, now - lastTime); // ms
         // Lerp toward target for smooth following
-        x += (targetX - x) * POS_LERP;
-        y += (targetY - y) * POS_LERP;
+        const dx = targetX - x;
+        const dy = targetY - y;
+        
+        x += dx * POS_LERP;
+        y += dy * POS_LERP;
 
         // Instantaneous velocity from last raw mouse position
         const vx = (targetX - lastMouseX) / dt;
@@ -426,11 +412,28 @@ function initializeSmoothCursor() {
         lastTime = now;
         lastMouseX = targetX;
         lastMouseY = targetY;
-        requestAnimationFrame(update);
+
+        // Check if settled (distance < 0.05px and speed is near 0 and scale is near targetScale)
+        if (Math.abs(dx) < 0.05 && Math.abs(dy) < 0.05 && Math.abs(scale - targetScale) < 0.005 && speed < 0.001) {
+            // Snap to final values
+            x = targetX;
+            y = targetY;
+            scale = targetScale;
+            el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${rot}deg) scale(${scale})`;
+            isUpdating = false;
+            rafId = null;
+            return;
+        }
+
+        rafId = requestAnimationFrame(update);
     }
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
-    requestAnimationFrame(update);
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) wakeUp();
+    }, { passive: true });
+
+    wakeUp();
     return true;
 }
 
@@ -444,16 +447,12 @@ function initializePage() {
     initializeThemeToggle();
     initializeRecruiterMode();
     initializeTypewriter();
-    // Prefer the new smooth cursor; fall back to legacy if not available
-    if (!initializeSmoothCursor()) {
-        initializeCursor();
-    }
+    initializeSmoothCursor();
     initializeGooeyButtons();
     initializeMagneticButtons();
     initializeHeroNameWave();
     initializeIconSideReveal();
     initializeRightSidebar();
-    initializeMiniCards();
     initializeTopControlsReveal();
     initializeSectionTitlesWave();
     initializeBlogs();
@@ -461,6 +460,7 @@ function initializePage() {
     initializeGameHub();
     initializeCosmicClock();
     initializeCoursesExplorer();
+    initializeProjectFilters();
 }
 
 // Delayed top reveal for theme toggle and header buttons
@@ -501,16 +501,10 @@ function initializeEventListeners() {
     addListener(closeContactPopup, 'click', closeContactForm);
     addListener(sendMessageBtn, 'click', submitContactForm);
     addListener(hireBtn, 'click', openContactForm);
-    
+
     // Privacy popup
     addListener(byId('privacy-trigger'), 'click', openPrivacyPopup);
     addListener(byId('closePrivacyPopup'), 'click', closePrivacyPopup);
-    
-    // Blog popup
-    addListener(byId('closeBlogPopup'), 'click', closeBlogPopup);
-    
-    // Blog speaker
-    setupBlogSpeaker();
 
     // Global event handlers
     document.addEventListener('click', handleOutsideClick);
@@ -524,56 +518,40 @@ function initializeEventListeners() {
 }
 
 function initializeHeaderDropdown() {
-    const btn = byId('headerDropdownBtn');
-    const menu = byId('headerDropdownMenu');
-    if (!btn || !menu) return;
-
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const open = menu.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', open);
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== btn) {
-            menu.classList.remove('is-open');
-            btn.setAttribute('aria-expanded', 'false');
-        }
-    });
-
-    menu.querySelectorAll('.header-dropdown-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const action = item.getAttribute('data-action');
-            menu.classList.remove('is-open');
-            btn.setAttribute('aria-expanded', 'false');
-
-            if (action === 'tech-radar') {
-                if (window._miniCards) window._miniCards.toggle('radar');
-                return;
-            }
-            if (action === 'cosmic-clock') {
-                if (window._miniCards) window._miniCards.close();
-                openCosmicClockPopup();
-                return;
-            }
-            if (action === 'courses') {
-                if (window._miniCards) window._miniCards.close();
-                openCoursesExplorer();
-                return;
-            }
-            if (action === 'recruiter') {
-                if (window._miniCards) window._miniCards.close();
-                const enabled = !document.body.classList.contains('recruiter-mode');
-                setRecruiterMode(enabled);
-                return;
-            }
-            if (action === 'games') {
-                if (window._miniCards) window._miniCards.close();
-                openGameHub();
-                return;
-            }
+    // New Header Recruiter Mode button
+    const recruiterBtn = byId('recruiter-trigger-btn');
+    if (recruiterBtn) {
+        recruiterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const enabled = !document.body.classList.contains('recruiter-mode');
+            setRecruiterMode(enabled);
         });
-    });
+    }
+
+    // New Footer links
+    const footerCoursesBtn = byId('footer-courses-btn');
+    if (footerCoursesBtn) {
+        footerCoursesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCoursesExplorer();
+        });
+    }
+
+    const footerGamesBtn = byId('footer-games-btn');
+    if (footerGamesBtn) {
+        footerGamesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openGameHub();
+        });
+    }
+
+    const footerClockBtn = byId('footer-clock-btn');
+    if (footerClockBtn) {
+        footerClockBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCosmicClockPopup();
+        });
+    }
 }
 
 /* ========================================================================== */
@@ -585,29 +563,32 @@ function initializeGooeyButtons() {
     const elems = document.querySelectorAll('.gooey-btn');
     if (!elems || elems.length === 0) return;
 
-    // moveBg from the user's snippet
-    function moveBg(e) {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const x = (e.clientX - rect.x) / rect.width * 100;
-        const y = (e.clientY - rect.y) / rect.height * 100;
-        e.currentTarget.style.setProperty('--x', x);
-        e.currentTarget.style.setProperty('--y', y);
-    }
-
     elems.forEach(el => {
+        let rect = null;
+
         // ensure custom properties exist
         el.style.setProperty('--x', 50);
         el.style.setProperty('--y', 50);
         el.style.setProperty('--a', '0%');
 
-        el.addEventListener('pointermove', moveBg);
+        function moveBg(e) {
+            if (!rect) rect = el.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width * 100;
+            const y = (e.clientY - rect.top) / rect.height * 100;
+            el.style.setProperty('--x', x);
+            el.style.setProperty('--y', y);
+        }
+
+        el.addEventListener('pointermove', moveBg, { passive: true });
 
         el.addEventListener('pointerover', (e) => {
-            e.currentTarget.style.setProperty('--a', '100%');
+            rect = el.getBoundingClientRect();
+            el.style.setProperty('--a', '100%');
         });
 
         el.addEventListener('pointerout', (e) => {
-            e.currentTarget.style.setProperty('--a', '0%');
+            rect = null;
+            el.style.setProperty('--a', '0%');
         });
 
         // click navigation for buttons with data-target
@@ -624,23 +605,27 @@ function initializeGooeyButtons() {
     const first = elems[0];
     if (first) {
         let i = 4;
-        let x;
+        let rafId = null;
         first.style.setProperty('--a', '100%');
-        x = setInterval(() => {
-            try {
-                first.style.setProperty('--x', ((Math.cos(i) + 2) / 3.6) * 100);
-                first.style.setProperty('--y', ((Math.sin(i) + 2) / 3.6) * 100);
-                i += 0.03;
-                if (i > 11.5) {
-                    clearInterval(x);
-                    first.style.setProperty('--a', '0%');
-                }
-            } catch (_) { clearInterval(x); }
-        }, 16);
+
+        function anim() {
+            first.style.setProperty('--x', ((Math.cos(i) + 2) / 3.6) * 100);
+            first.style.setProperty('--y', ((Math.sin(i) + 2) / 3.6) * 100);
+            i += 0.03;
+            if (i > 11.5) {
+                first.style.setProperty('--a', '0%');
+                rafId = null;
+            } else {
+                rafId = requestAnimationFrame(anim);
+            }
+        }
+        rafId = requestAnimationFrame(anim);
 
         first.addEventListener('pointerover', () => {
-            // stop the intro animation so user hover controls the highlight
-            clearInterval(x);
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
         });
     }
 }
@@ -665,6 +650,7 @@ function initializeMagneticButtons() {
         let raf = null;
         let tx = 0, ty = 0;
         let targetTx = 0, targetTy = 0;
+        let rect = null;
 
         // Default magnetic params (applies to buttons and most targets)
         const DEFAULT_MAX = 60;
@@ -688,7 +674,7 @@ function initializeMagneticButtons() {
 
             // small scale feedback based on distance
             const dist = Math.hypot(tx, ty);
-            const scale = 1 + Math.min(0.22, dist / scaleDiv); 
+            const scale = 1 + Math.min(0.22, dist / scaleDiv);
             // if element supports --mag-scale (theme-toggle, hire-me), set it
             if (getComputedStyle(el).getPropertyValue('--mag-scale') !== '') {
                 el.style.setProperty('--mag-scale', scale);
@@ -702,7 +688,7 @@ function initializeMagneticButtons() {
         }
 
         function onPointerMove(e) {
-            const rect = el.getBoundingClientRect();
+            if (!rect) rect = el.getBoundingClientRect();
             const cx = rect.left + rect.width / 2;
             const cy = rect.top + rect.height / 2;
             const dx = e.clientX - cx;
@@ -723,13 +709,15 @@ function initializeMagneticButtons() {
 
         function onPointerEnter() {
             el.style.willChange = 'transform';
+            rect = el.getBoundingClientRect();
             // start listening for pointermove on this element
-            el.addEventListener('pointermove', onPointerMove);
+            el.addEventListener('pointermove', onPointerMove, { passive: true });
         }
 
         function onPointerLeave() {
             // clear target so element returns to origin
             targetTx = 0; targetTy = 0;
+            rect = null;
             el.removeEventListener('pointermove', onPointerMove);
             if (!raf) {
                 el.style.setProperty('--mag-x', `0px`);
@@ -740,8 +728,9 @@ function initializeMagneticButtons() {
             }
         }
 
-        el.addEventListener('pointerenter', onPointerEnter);
-        el.addEventListener('pointerleave', onPointerLeave);
+        el.addEventListener('pointerenter', onPointerEnter, { passive: true });
+        el.addEventListener('pointerleave', onPointerLeave, { passive: true });
+        window.addEventListener('resize', () => { rect = null; }, { passive: true });
     });
 }
 
@@ -809,7 +798,7 @@ function initializeSectionTitlesWave() {
     if (!headings || !headings.length) return;
 
     headings.forEach((el) => {
-        if (el.dataset.waveApplied === '1') return; 
+        if (el.dataset.waveApplied === '1') return;
 
         // Snapshot original text content; most titles are plain text
         const original = el.textContent || '';
@@ -885,109 +874,7 @@ function initializeRightSidebar() {
     if (!sidebar) return;
 }
 
-// Global mini-card manager – works independently of the right sidebar
-function initializeMiniCards() {
-    const overlay = byId('miniCardOverlay');
-    const techRadarCard = byId('sidebarTechRadarCard');
-    const radarCanvas = byId('sidebarTechRadarCanvas');
-    if (!overlay) return;
 
-    const cards = { radar: techRadarCard };
-    let activeCard = null;
-    let radarRafId = null;
-    let radarPhase = 0;
-
-    const drawRadar = () => {
-        if (!radarCanvas || !techRadarCard || !techRadarCard.classList.contains('show')) return;
-        const ctx = radarCanvas.getContext('2d');
-        if (!ctx) return;
-        const width = radarCanvas.width, height = radarCanvas.height;
-        const cx = width / 2, cy = height / 2;
-        const radius = Math.min(width, height) * 0.34;
-        const labels = ['AI/ML', 'Web', 'Backend', 'Deploy'];
-        const values = [0.92, 0.88, 0.84, 0.8];
-        radarPhase += 0.025;
-        const pulse = 0.96 + Math.sin(radarPhase) * 0.04;
-        ctx.clearRect(0, 0, width, height);
-        for (let ring = 1; ring <= 4; ring++) {
-            const r = (radius * ring) / 4;
-            ctx.beginPath();
-            for (let i = 0; i < 4; i++) {
-                const angle = (-Math.PI / 2) + (i * Math.PI * 2 / 4);
-                const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
-                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-            }
-            ctx.closePath();
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.26)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-        for (let i = 0; i < 4; i++) {
-            const angle = (-Math.PI / 2) + (i * Math.PI * 2 / 4);
-            const x = cx + Math.cos(angle) * radius, y = cy + Math.sin(angle) * radius;
-            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y);
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.26)'; ctx.stroke();
-            ctx.fillStyle = '#000000'; ctx.font = '600 10px Poppins'; ctx.textAlign = 'center';
-            ctx.fillText(labels[i], cx + Math.cos(angle) * (radius + 15), cy + Math.sin(angle) * (radius + 15));
-        }
-        ctx.beginPath();
-        values.forEach((value, i) => {
-            const angle = (-Math.PI / 2) + (i * Math.PI * 2 / 4);
-            const r = radius * value * pulse;
-            const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
-            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        });
-        ctx.closePath();
-        ctx.fillStyle = 'rgba(39, 85, 210, 0.35)';
-        ctx.strokeStyle = 'rgba(39, 85, 210, 0.9)';
-        ctx.lineWidth = 1.5; ctx.fill(); ctx.stroke();
-        radarRafId = requestAnimationFrame(drawRadar);
-    };
-
-    const stopRadar = () => { if (radarRafId) { cancelAnimationFrame(radarRafId); radarRafId = null; } };
-
-    const closeMiniCards = () => {
-        Object.values(cards).forEach((card) => {
-            if (!card) return;
-            card.classList.remove('show');
-            card.setAttribute('aria-hidden', 'true');
-        });
-        overlay.classList.remove('is-open');
-        overlay.setAttribute('aria-hidden', 'true');
-        activeCard = null;
-        stopRadar();
-    };
-
-    const toggleMiniCard = (name) => {
-        const card = cards[name];
-        if (!card) return;
-        if (activeCard === name) { closeMiniCards(); return; }
-        closeMiniCards();
-        overlay.classList.add('is-open');
-        overlay.setAttribute('aria-hidden', 'false');
-        card.classList.add('show');
-        card.setAttribute('aria-hidden', 'false');
-        activeCard = name;
-        if (name === 'radar') drawRadar();
-    };
-
-    // Close buttons inside modals
-    overlay.querySelectorAll('.mini-card-close').forEach(btn => {
-        btn.addEventListener('click', closeMiniCards);
-    });
-
-    // Click on overlay backdrop closes
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeMiniCards();
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && activeCard) closeMiniCards();
-    });
-
-    // Expose globally so the header dropdown can use it
-    window._miniCards = { toggle: toggleMiniCard, close: closeMiniCards };
-}
 
 /* ========================================================================== */
 /* 7) Recruiter Mode */
@@ -1074,7 +961,7 @@ function setRecruiterMode(enabled) {
 
     try {
         localStorage.setItem('recruiterMode', enabled ? 'true' : 'false');
-    } catch (_) {}
+    } catch (_) { }
 }
 
 function animateRecruiterView(panel, view) {
@@ -1297,7 +1184,7 @@ function initializeThemeToggle() {
         try {
             if (typeof mql.addEventListener === 'function') mql.addEventListener('change', onSystemChange);
             else if (typeof mql.addListener === 'function') mql.addListener(onSystemChange);
-        } catch(_) {}
+        } catch (_) { }
     };
     if (!stored) attachSystemListenerIfNeeded();
 
@@ -1312,7 +1199,7 @@ function initializeThemeToggle() {
         const next = current === 'dark' ? 'light' : 'dark';
         applyTheme(next);
         // Persist manual choice; this opt-out stops auto-following system
-        try { localStorage.setItem('theme', next); } catch (e) {}
+        try { localStorage.setItem('theme', next); } catch (e) { }
     });
 
     // Context menu (right-click) and long-press to open theme menu
@@ -1364,7 +1251,7 @@ function initializeThemeToggle() {
         toggle.addEventListener('pointerleave', endPress);
 
         resetBtn.addEventListener('click', () => {
-            try { localStorage.removeItem('theme'); } catch(_) {}
+            try { localStorage.removeItem('theme'); } catch (_) { }
             applyTheme(getSystemTheme());
             attachSystemListenerIfNeeded();
             hideMenu();
@@ -1378,7 +1265,7 @@ function initializeThemeToggle() {
 
 // Typewriter effect
 function initializeTypewriter() {
-    const TxtRotate = function(el, toRotate, period) {
+    const TxtRotate = function (el, toRotate, period) {
         this.toRotate = toRotate;
         this.el = el;
         this.loopNum = 0;
@@ -1388,7 +1275,7 @@ function initializeTypewriter() {
         this.tick();
     };
 
-    TxtRotate.prototype.tick = function() {
+    TxtRotate.prototype.tick = function () {
         const i = this.loopNum % this.toRotate.length;
         const fullTxt = this.toRotate[i];
 
@@ -1425,7 +1312,7 @@ function initializeTypewriter() {
             new TxtRotate(elements[i], JSON.parse(toRotate), period);
         }
     }
-    
+
     // Add cursor style
     const css = document.createElement("style");
     css.innerHTML = ".typewriter-text > .wrap { border-right: 0em solid #666; }";
@@ -1444,17 +1331,17 @@ function openContactForm() {
 
     document.body.classList.add('freeze-scroll');
     popup.style.display = 'flex';
-    void form.offsetWidth; 
+    void form.offsetWidth;
     form.classList.add('show');
     // Focus the first field for quicker input
     setTimeout(() => {
         const nameInput = byId('contactName');
-        if (nameInput) try { nameInput.focus(); } catch(_) {}
+        if (nameInput) try { nameInput.focus(); } catch (_) { }
         // Clear any prior error
         const err = byId('contactError');
         if (err) { err.textContent = ''; err.classList.remove('show'); }
         // Reset invalid markers
-        ['contactName','contactEmail','contactMessage'].forEach(id => {
+        ['contactName', 'contactEmail', 'contactMessage'].forEach(id => {
             const el = byId(id);
             if (el) el.removeAttribute('aria-invalid');
         });
@@ -1504,9 +1391,9 @@ function submitContactForm() {
     if (!name || !email || !message) {
         if (err) { err.textContent = 'Please fill in all fields.'; err.classList.add('show'); }
         // Mark empties as invalid
-        if (!name) nameInput.setAttribute('aria-invalid','true');
-        if (!email) emailInput.setAttribute('aria-invalid','true');
-        if (!message) messageInput.setAttribute('aria-invalid','true');
+        if (!name) nameInput.setAttribute('aria-invalid', 'true');
+        if (!email) emailInput.setAttribute('aria-invalid', 'true');
+        if (!message) messageInput.setAttribute('aria-invalid', 'true');
         return;
     }
 
@@ -1515,7 +1402,7 @@ function submitContactForm() {
     const isValidEmail = (emailInput.checkValidity && emailInput.checkValidity()) || emailPattern.test(email);
     if (!isValidEmail) {
         if (err) { err.textContent = 'Please enter a valid email address.'; err.classList.add('show'); }
-        try { emailInput.focus(); } catch(_) {}
+        try { emailInput.focus(); } catch (_) { }
         emailInput.setAttribute('aria-invalid', 'true');
         return;
     } else {
@@ -1525,23 +1412,41 @@ function submitContactForm() {
     sendBtn.disabled = true;
     sendBtn.textContent = "Sending";
 
-    emailjs.send("service_asimsite", "template_x1tmvth", {
-        from_name: name,
-        reply_to: email,
-        message: message
-    }).then(() => {
-        sendBtn.textContent = "Sent ✓";
-        nameInput.value = '';
-        emailInput.value = '';
-        messageInput.value = '';
-        showToast("Message sent! I'll reply shortly.");
+    const formData = {
+        access_key: "58d451cd-5724-4305-8381-61e99bc9dff1",
+        name: name,
+        email: email,
+        message: message,
+        subject: "New Portfolio Message from " + name
+    };
 
-        setTimeout(() => {
-            closeContactForm();
-            sendBtn.disabled = false;
-            sendBtn.textContent = "Send";
-        }, 1000);
-    }).catch((error) => {
+    fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(async (response) => {
+        const json = await response.json();
+        if (response.status === 200) {
+            sendBtn.textContent = "Sent ✓";
+            nameInput.value = '';
+            emailInput.value = '';
+            messageInput.value = '';
+            showToast("Message sent! I'll reply shortly.");
+
+            setTimeout(() => {
+                closeContactForm();
+                sendBtn.disabled = false;
+                sendBtn.textContent = "Send";
+            }, 1000);
+        } else {
+            throw new Error(json.message || "Something went wrong.");
+        }
+    })
+    .catch((error) => {
         console.error("Email sending failed:", error);
         sendBtn.disabled = false;
         sendBtn.textContent = "Send";
@@ -1587,9 +1492,9 @@ function setupAboutSpeaker() {
         window.speechSynthesis.getVoices();
         if (typeof window.speechSynthesis.onvoiceschanged !== 'undefined') {
             // No-op handler to ensure voices are loaded on some browsers
-            window.speechSynthesis.onvoiceschanged = () => {};
+            window.speechSynthesis.onvoiceschanged = () => { };
         }
-    } catch(_) {}
+    } catch (_) { }
 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1627,14 +1532,14 @@ function toggleSpeakAbout() {
 
     // If already speaking, cancel current speech
     if (synth.speaking) {
-        try { synth.cancel(); } catch (_) {}
+        try { synth.cancel(); } catch (_) { }
         btn.classList.remove('speaking');
         btn.setAttribute('aria-pressed', 'false');
         btn.setAttribute('aria-label', 'Speak description');
         return;
     }
 
-    const text = (desc.innerText || desc.textContent || '').trim();
+    const text = (desc.getAttribute('data-fulltext') || desc.innerText || desc.textContent || '').trim();
     if (!text) return;
 
     const utter = new SpeechSynthesisUtterance(text);
@@ -1693,161 +1598,9 @@ function closePrivacyPopup() {
 
 // Blog data and functions
 
-const legacyBlogData = [
-  { 
-      title: "Islam: The Eternal Path of Peace, Purpose, and Divine Light ", 
-      content: "Islam, derived from the Arabic root word “S-L-M”, meaning peace, submission, and safety, is not just a religion, but a complete and timeless way of life revealed by the One True God—Allah, to guide humanity toward peace, justice, mercy, and eternal salvation.<br><br>It is the final and universal message in the divine chain of revelation that began with Prophet Adam عليه السلام, continued through Noah, Abraham, Moses, and Jesus (peace be upon them all), and was completed through the final prophet, Muhammad ﷺ, over 1,400 years ago in the Arabian Peninsula — a message that transcends time, geography, race, and class, offering clarity to the confused, healing to the broken, and purpose to the wandering soul.<br><br>Islam is built upon five noble pillars: the Shahadah (declaration of faith), affirming that there is no god but Allah and Muhammad is His Messenger, Salah (daily prayers) performed five times a day to maintain constant connection with the Creator , Zakah (charity) to purify wealth and uplift the poor , Sawm (fasting in Ramadan) as a means of self-discipline and spiritual elevation , and Hajj (pilgrimage to Makkah), a sacred journey of devotion and unity performed once in a lifetime by those who are able.<br><br>but Islam is not limited to rituals, it encompasses every aspect of life, including ethics, justice, family, economics, governance, and spirituality, rooted deeply in two primary sources: the Qur’an, the unchanged word of Allah revealed in perfect Arabic, and the Sunnah, the teachings and actions of Prophet Muhammad ﷺ.<br><br>The word “Muslim” means one who submits peacefully to the will of Allah, and the essence of Islam lies in achieving peace — within oneself, with others, with nature, and ultimately with the Creator.<br><br>Its message is simple yet profound: that Allah is One, without partner, son, or equal, that He alone is worthy of worship, and that human beings were created not in vain, but for a higher purpose — to know, love, and serve their Lord, and to live in a way that brings benefit to others.<br><br>Islam elevates the status of every human being by teaching that no one is inherently superior due to race, wealth, or lineage, for “Indeed, the most noble of you in the sight of Allah is the most righteous of you.” (Qur’an 49:13) — a powerful declaration of universal human dignity and equality.<br><br>The faith also commands justice, kindness, forgiveness, and care for the vulnerable, while forbidding oppression, arrogance, and cruelty.<br><br>Muslims believe in life after death, divine judgment, and eternal reward or punishment, recognizing that this life is a temporary test and the Hereafter is the true home.<br><br>The Qur’an, a miracle both in language and content, addresses not only spiritual matters but also science, history, law, and human psychology — a living guide that continues to inspire reflection, reform, and transformation, despite widespread misconceptions, Islam firmly condemns violence, extremism, and injustice — stating that the killing of an innocent soul is as if killing all of humanity (Qur’an 5:32), and the Prophet ﷺ declared, “The best among you are those who are best in character,” teaching that the strongest believer is one who controls his anger and uplifts others.<br><br>Over the centuries, Islam gave rise to flourishing civilizations in science, medicine, architecture, literature, and philosophy, producing scholars like Ibn Sina, Al-Khwarizmi, and Al-Ghazali, while building societies where Jews, Christians, and people of various faiths lived and worked together in peace.<br><br>Today, with over 1.9 billion followers across every continent, Islam remains the fastest-growing religion in the world, attracting seekers of truth through its clarity, beauty, and sense of purpose.<br><br>In a world often filled with confusion and moral decline, Islam continues to offer light, balance, and hope — calling every heart to return to its Creator with sincerity and submission, to be Muslim is to live with intention, to walk humbly upon the earth, to seek knowledge, serve humanity, and remember Allah in every moment.<br><br>The Qur’an proclaims: “This day I have perfected for you your religion, completed My favor upon you, and have chosen for you Islam as your way.” (Surah Al-Ma'idah, 5:3) — a declaration that Islam is not just a faith, but a divine gift, a mercy, and a complete way to live and succeed both in this world and the next. <br><br>Truly, Islam is the eternal path to peace, purpose, and divine light, leading all who embrace it toward harmony, justice, and the everlasting pleasure of their Creator — a message of truth for every soul, in every age, until the end of time." 
-    },
-    { 
-      title: "The Light of Arabia: The Life and Legacy of Prophet Muhammad ﷺ", 
-      content: "The life of Prophet Muhammad ﷺ, the final Messenger of Allah and the most revered figure in Islam, is not just a chapter in human history, but the turning point for humanity — a divine transformation that reshaped hearts and continues to guide billions even today.<br><br>Born in 570 CE in the sacred city of Makkah, he was a descendant of Prophet Ibrahim عليه السلام through Ismail عليه السلام and belonged to the noble Quraysh tribe, specifically the Hashimite clan, known for caring for the Kaaba.Though born into honor, he faced early hardships — his father died before his birth, and his mother passed away when he was just six, leaving him an orphan raised first by his grandfather Abdul Muttalib and later by his uncle Abu Talib. Under divine care, he grew into a man renowned for truthfulness and integrity, earning the titles 'Al-Amin' (The Trustworthy) and 'As-Sadiq' (The Truthful), admired even before receiving revelation.<br><br>He lived a simple, contemplative life, staying away from idol worship and injustice, often retreating to the Cave of Hira to reflect deeply on existence and morality. At age 40, during one such retreat, the Archangel Jibreel عليه السلام came with the command “Iqra!” (Read!), marking the beginning of the final divine revelation — the Qur’an. Though initially shaken, he accepted his mission and began calling people toward Tawheed (Oneness of God), justice, compassion, and universal brotherhood, in opposition to Makkah’s corrupt elites.<br><br>He and his followers endured years of persecution, boycott, and violence, yet he remained steadfast — responding not with hate, but with patience, prayer, and mercy. In 622 CE, he migrated to Yathrib (later Madinah), where he established the first Islamic state rooted in justice, tolerance, and law, uniting Muslims, Jews, and pagans under the Constitution of Madinah. As a Prophet and statesman, he led with unmatched humility — praying at night, mending his clothes, forgiving enemies, and showing kindness to all creation. As a military leader, he upheld ethics even in war, forbidding harm to innocents, and as a family man, he showed boundless love and gentleness.<br><br>His life, preserved in Hadith and Seerah, is the most emulated in history and continues to be followed by Muslims in every aspect of life. In the 10th year after Hijrah, he performed his only Hajj and delivered the Farewell Sermon, emphasizing equality, women’s rights, and the importance of the Qur’an and Sunnah — concluding, “No Arab is superior to a non-Arab, nor a non-Arab to an Arab, except in righteousness.” In 632 CE, having fulfilled his mission, he passed away in the arms of his wife Aisha رضي الله عنها at the age of 63, leaving behind the greatest legacy in spiritual and moral history.<br><br>Today, his name is loved and remembered across the world — in prayers, hearts, mosques, and actions — by over 1.9 billion Muslims who follow his way. The Qur’an affirms: “Indeed, in the Messenger of Allah you have an excellent example...” (Surah Al-Ahzab 33:21) , he was the walking Qur’an, the mercy to mankind, and the most beloved figure in human history — peace and infinite blessings be upon him." 
-    },
-  {
-    title: "Explainable AI (XAI)",
-    content: "Explainable AI (XAI) represents a critical movement within the field of artificial intelligence aimed at transforming 'black box' models into transparent, understandable systems. As AI becomes more powerful and integrated into high-stakes decision-making processes, the inability to understand *why* a model arrives at a specific conclusion is no longer acceptable. XAI seeks to bridge this gap of trust and accountability by developing techniques that reveal the inner workings of complex algorithms, such as deep neural networks and gradient boosting machines. Its core purpose is to provide clear, human-interpretable justifications for AI-driven outcomes, ensuring that these powerful tools are not only accurate but also fair, transparent, and trustworthy.<br><br>The methodologies behind XAI are diverse, ranging from post-hoc explanations for existing models to designing inherently interpretable models from the ground up. Two of the most popular post-hoc techniques are LIME (Local Interpretable Model-agnostic Explanations) and SHAP (SHapley Additive exPlanations). LIME works by creating a simple, understandable local model (like a linear regression) around a specific individual prediction. It essentially answers the question, 'What features were most important for *this* particular decision?' SHAP, on the other hand, uses a game theory approach to assign a precise contribution value to each feature for every prediction, providing a more comprehensive and consistent explanation of the model's behavior. Other methods include generating visual saliency maps in computer vision, which highlight the pixels an image recognition model 'focused' on, or identifying influential training data points that most impacted a model's decision.<br><br>The real-world applications of XAI are profound and far-reaching. In <strong>healthcare</strong>, XAI can explain why a model diagnosed a medical image as cancerous, allowing doctors to verify the reasoning and trust the recommendation. In <strong>finance</strong>, it's essential for regulatory compliance; a bank can use XAI to explain to a customer why their loan application was denied, fulfilling 'right-to-explanation' mandates under regulations like GDPR. For <strong>autonomous vehicles</strong>, understanding why a car decided to brake or swerve is paramount for safety, debugging, and legal liability. It empowers developers to identify and rectify biases in their models, such as an AI recruitment tool unfairly penalizing candidates from certain backgrounds, by exposing the flawed logic.<br><br>However, the field is not without its challenges. The primary obstacle is the 'accuracy-interpretability trade-off,' where the most accurate models are often the most complex and least transparent. Simplifying a model to make it explainable can sometimes come at the cost of performance. Furthermore, generating these explanations can be computationally expensive, and there is a risk that the explanations themselves could be misleading or fail to capture the full complexity of the model's reasoning. Defining what constitutes a 'good' explanation is also a subjective challenge, as it can vary depending on the audience—an AI engineer needs a different level of detail than an end-user.<br><br>Looking ahead, the future of XAI is moving towards creating models that are 'interpretable by design' rather than relying solely on post-hoc analysis. The development of interactive explanation interfaces will allow users to probe and question AI models in a conversational manner. As AI regulation becomes more stringent worldwide, integrating XAI directly into the MLOps pipeline as a standard step for model validation and auditing will become non-negotiable, ensuring that the next generation of AI is not only intelligent but also accountable."
-  },
-  {
-    title: "Federated Learning",
-    content: "Federated Learning (FL) is a groundbreaking machine learning paradigm that fundamentally rethinks data privacy and collaboration. In traditional centralized machine learning, vast amounts of data are collected from users and aggregated on a single server for model training. This approach, while effective, creates significant privacy risks and logistical challenges, especially with sensitive information. Federated Learning flips this model on its head. Instead of bringing the data to the model, it brings the model to the data. It enables multiple devices or institutions to collaboratively train a shared prediction model while keeping all their raw training data decentralized and localized. This innovative approach allows for the creation of robust and accurate models without any party having to share its sensitive, private data, thereby heralding a new era of privacy-preserving AI.<br><br>The process of Federated Learning unfolds in a cyclical, collaborative manner. It begins with a central server initializing a global shared model. This model is then distributed to numerous client devices, such as smartphones, laptops, or servers within different organizations. Each client device trains the model locally using only its own data. Crucially, this raw data never leaves the device. Once local training is complete, instead of sending the data back, each client sends only the updated model parameters (known as gradients or weights) to the central server. These updates represent the 'learnings' from the local data. The server then performs a secure aggregation of these updates from all clients—a common method is Federated Averaging—to create a new, improved global model. This refined global model is then sent back to the clients, and the process repeats, with the model becoming progressively more accurate with each round of collaboration.<br><br>The applications of Federated Learning are particularly impactful in industries where data is sensitive and siloed. <strong>Google's Gboard</strong>, the keyboard on Android phones, uses FL to improve its predictive text and auto-correct suggestions by learning from how millions of users type, all without uploading the actual text of their messages to Google's servers. In <strong>healthcare</strong>, competing hospitals can collaborate to train a powerful diagnostic model—for example, to detect rare diseases from medical scans—without ever sharing confidential patient records, thus overcoming legal and ethical barriers to data sharing. Similarly, in <strong>finance</strong>, a consortium of banks could use FL to build a more effective fraud detection system by learning from transaction patterns across all institutions without violating customer privacy.<br><br>Despite its promise, Federated Learning faces several unique challenges. 'Statistical heterogeneity' is a major one; since the data on each device is different and not uniformly distributed (non-IID), the model updates from clients can pull the global model in conflicting directions, slowing down convergence. 'System heterogeneity' is another issue, as clients have varying computational power, network connectivity, and availability. Furthermore, the communication of model updates, while more efficient than sending raw data, can still be a bottleneck. Security is also a concern, as malicious actors could potentially poison the global model by sending corrupt updates.<br><br>The future of Federated Learning is focused on solving these challenges. Researchers are developing more sophisticated aggregation algorithms that are robust to statistical heterogeneity and designing personalized FL models that provide a unique model tailored to each user. Its combination with other privacy-enhancing technologies like differential privacy and secure multi-party computation will further fortify its security, making Federated Learning a cornerstone technology for building responsible, collaborative, and privacy-first AI systems."
-  },
-  {
-    title: "Reinforcement Learning for Robotics",
-    content: "Reinforcement Learning (RL) is a dynamic area of machine learning that is fundamentally reshaping the field of robotics. Unlike supervised learning, which requires labeled data, RL enables a robot to learn complex behaviors through direct interaction with its environment. The process mirrors how humans and animals learn: through trial and error. An RL agent—the robot's control system—takes actions in an environment to maximize a cumulative reward signal. It receives positive rewards for actions that lead to a desired outcome and negative rewards (or penalties) for those that do not. Through millions of these interactions, the robot gradually develops a 'policy,' which is a sophisticated strategy for choosing the best action in any given situation to achieve its long-term goal. This self-learning capability allows robots to acquire skills that are incredibly difficult or impossible to hand-code, such as maintaining balance on uneven terrain or manipulating objects with human-like dexterity.<br><br>The core components of an RL system are the agent, the environment, a state, an action, and a reward. The 'state' is a snapshot of the environment at a particular moment (e.g., the position of the robot's joints and its proximity to objects). The 'action' is what the agent decides to do (e.g., move a joint or apply force). The 'reward' is the feedback from the environment that guides the learning process. Modern RL heavily utilizes deep neural networks to approximate the optimal policy, a technique known as Deep Reinforcement Learning (DRL). These networks can process high-dimensional inputs, like raw camera feeds, and map them directly to actions, enabling robots to learn from visual data. Techniques like Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC) have become standards for training robots to perform continuous control tasks with stability and efficiency.<br><br>The real-world applications of RL in robotics are rapidly expanding and inspiring awe. <strong>Boston Dynamics</strong> famously uses RL to enable its quadruped and humanoid robots, like Spot and Atlas, to navigate challenging terrains, recover from falls, and perform complex acrobatic maneuvers. In <strong>manufacturing and logistics</strong>, RL is used to train robotic arms to perform tasks like picking and placing items of various shapes and sizes from cluttered bins—a task known as bin picking—which has historically been a major challenge for automation. Companies like Covariant and Osaro use RL to power warehouse robots that can adapt to new products without being explicitly reprogrammed. In the future, RL will be crucial for <strong>robotic surgery</strong>, where assistants could learn to perform suturing with superhuman precision, and for <strong>autonomous drones</strong> that can navigate complex, GPS-denied environments for search and rescue missions.<br><br>However, training robots with RL presents significant hurdles. The primary challenge is the 'reality gap': policies trained in simulation often fail when transferred to a physical robot due to subtle differences between the simulated and real worlds. Bridging this gap requires techniques like domain randomization, where the simulation parameters are varied to make the learned policy more robust. RL is also notoriously sample-inefficient, often requiring millions or even billions of attempts to learn a single task, which can be time-consuming and cause wear and tear on physical hardware. Ensuring safety during the learning process is another critical concern, as a robot exploring random actions could damage itself or its surroundings.<br><br>The future of RL in robotics lies in developing more sample-efficient algorithms, improving simulation-to-reality transfer techniques, and exploring methods for safe exploration. Offline RL, which allows agents to learn from pre-existing datasets of interactions, holds promise for reducing the need for extensive real-world trial and error. As these methods mature, RL will unlock a new generation of autonomous, adaptable, and highly capable robots that can assist humanity in countless ways."
-  },
-  {
-    title: "MLOps (Machine Learning Operations)",
-    content: "MLOps, short for Machine Learning Operations, is a crucial discipline that applies the principles of DevOps to the entire machine learning lifecycle. While data scientists excel at building and experimenting with ML models, MLOps addresses the immense challenge of taking a promising model from a research environment and deploying, managing, and monitoring it in a reliable and scalable production setting. It is an engineering-focused practice that automates and standardizes the processes required to build, test, release, and maintain ML systems. In essence, MLOps aims to bridge the gap between the experimental, iterative world of data science and the structured, robust world of IT operations. Its goal is to reduce the time-to-market for ML applications, improve their quality and reliability, and ensure they are managed with the same rigor as traditional software systems.<br><br>The MLOps lifecycle encompasses a series of interconnected stages. It starts with <strong>data management</strong>, which involves versioning datasets (data version control) and building automated data validation and processing pipelines. The next stage is <strong>model training</strong>, where MLOps introduces automation for training, tuning, and evaluating models. This includes experiment tracking, where every detail of a model's training run—hyperparameters, code version, performance metrics—is logged for reproducibility. Once a model is deemed production-ready, it enters the <strong>model deployment</strong> phase. MLOps frameworks facilitate various deployment strategies, such as canary releases or A/B testing, and often use containerization technologies like Docker and orchestration platforms like Kubernetes to ensure scalability and portability. The final, and perhaps most critical, stage is <strong>model monitoring</strong>. After deployment, MLOps tools continuously track the model's performance for issues like 'model drift' (degradation in performance over time as real-world data changes) and 'data drift' (a change in the statistical properties of the input data). If performance drops below a certain threshold, an alert can trigger an automated retraining pipeline to update the model.<br><br>The adoption of MLOps is critical for any organization serious about leveraging AI at scale. For an <strong>e-commerce company</strong>, MLOps ensures that its product recommendation engine is continuously updated with fresh user data and that its performance is monitored to maximize engagement and sales. A <strong>financial institution</strong> relies on MLOps to deploy and manage its fraud detection models, ensuring they can be rapidly updated to counter new fraudulent tactics while maintaining compliance with regulatory standards. In the <strong>healthcare industry</strong>, MLOps provides the framework to safely deploy, validate, and monitor diagnostic AI models, ensuring that patient safety and model accuracy are rigorously maintained over time. Without MLOps, ML models often remain stuck in 'pilot purgatory,' unable to make the leap from a data scientist's laptop to a valuable business application.<br><br>Implementing a robust MLOps culture and toolchain comes with its own set of challenges. It requires a significant cultural shift, demanding close collaboration between data scientists, software engineers, and IT operations teams who traditionally work in silos. There is also a steep learning curve associated with the complex ecosystem of MLOps tools, which includes platforms like Kubeflow, MLflow, TensorFlow Extended (TFX), and various cloud provider solutions. Furthermore, managing the entire lifecycle, including data pipelines, feature stores, model registries, and monitoring dashboards, requires specialized skills that are in high demand.<br><br>Despite these hurdles, MLOps is rapidly becoming a standard practice. The future will see even greater automation, with the rise of AIOps—using AI to manage and optimize the MLOps pipelines themselves. The increasing focus on responsible AI will also lead to the tight integration of governance, ethics, and explainability checks directly into the automated MLOps workflow, ensuring that production AI systems are not only efficient but also fair, transparent, and accountable."
-  },
-  {
-    title: "Transformer Architectures Beyond NLP",
-    content: "The Transformer architecture, first introduced in the groundbreaking 2017 paper 'Attention Is All You Need,' has completely revolutionized the field of Natural Language Processing (NLP). Its core innovation, the self-attention mechanism, allowed models to weigh the importance of different words in an input sequence, capturing complex, long-range dependencies far more effectively than previous recurrent (RNN) or convolutional (CNN) architectures. This led to the development of state-of-the-art models like BERT, GPT, and T5, which have become the foundation for modern language understanding and generation tasks. However, the profound impact of the Transformer is no longer confined to text. Researchers have discovered that its fundamental principles are remarkably versatile, leading to a wave of innovation that is now reshaping numerous other domains, most notably computer vision, but also audio processing, time-series forecasting, and computational biology.<br><br>The key to the Transformer's versatility is its ability to process data as a set of tokens and use self-attention to learn the relationships between them, regardless of their position. This concept was brilliantly adapted for computer vision with the advent of the <strong>Vision Transformer (ViT)</strong>. Instead of processing words, a ViT splits an image into a sequence of fixed-size patches, or 'image tokens.' These patches are then fed into a standard Transformer encoder. The self-attention mechanism allows the model to learn which parts of the image are most relevant to each other for a given task. For example, in an image of a cat, the ViT can learn to associate the 'ear' patches with the 'whisker' patches, capturing the holistic structure of the object without the inductive biases of CNNs, which are hard-coded to look for local patterns. This approach has achieved state-of-the-art results on image classification benchmarks, proving that a general-purpose learning architecture can sometimes outperform specialized ones.<br><br>The expansion of Transformers continues into other exciting areas. In <strong>audio processing</strong>, models like the Audio Spectrogram Transformer treat an audio spectrogram (a visual representation of sound frequencies) as an image, applying the ViT approach to tasks like audio event classification and speech recognition. For <strong>time-series forecasting</strong>, Transformers can analyze historical data points as a sequence, using attention to identify seasonal patterns and long-term trends to make more accurate predictions for stock prices or weather patterns. In <strong>computational biology</strong>, models like AlphaFold 2, which made a monumental breakthrough in protein structure prediction, heavily incorporate attention mechanisms inspired by the Transformer to model the interactions between amino acid residues in a protein sequence. This demonstrates the architecture's power in capturing the intricate, long-range dependencies that define biological structures.<br><br>Despite its remarkable success, the wider adoption of Transformers presents challenges. Their primary drawback is their computational cost. The self-attention mechanism scales quadratically with the length of the input sequence ($O(n^2)$), making it very expensive to process high-resolution images or long audio clips. This has spurred research into more efficient attention variants that can approximate the full self-attention mechanism with linear complexity. Furthermore, Transformers are notoriously data-hungry, typically requiring massive datasets for pre-training to achieve high performance, which can be a barrier in data-scarce domains.<br><br>Looking forward, the trend of applying Transformer architectures to new modalities is set to continue. We are seeing the rise of unified, multimodal models that can process text, images, and audio within a single architecture, paving the way for more holistic and human-like AI systems. The ongoing research into efficient attention mechanisms and new training strategies will make these powerful models more accessible, ensuring that the Transformer's legacy will be defined not just by its mastery of language, but by its role as a universal learning machine."
-  },
-  {
-    title: "Graph Neural Networks (GNNs)",
-    content: "Graph Neural Networks (GNNs) are a cutting-edge class of deep learning models specifically designed to perform inference on data structured as a graph. While standard neural networks excel at processing regular, grid-like data such as images (2D grids of pixels) or text (1D sequences of words), much of the world's most valuable information is inherently unstructured and defined by relationships and connections. Social networks, molecular structures, financial transaction systems, and knowledge bases are all examples of graph data. GNNs provide a powerful framework for learning from these complex, interconnected structures. Their core idea is to generate representations, or 'embeddings,' for each node in a graph by aggregating information from its neighboring nodes. This process allows GNNs to capture not only the features of individual entities but also the rich contextual information embedded in their relationships.<br><br>The fundamental mechanism of a GNN is a process called message passing or neighborhood aggregation. For each node in the graph, the GNN iteratively updates its feature vector (its numerical representation) based on the feature vectors of its direct neighbors. In each iteration, or layer, a node 'receives messages' from its neighbors. These messages are typically the neighbors' current feature vectors, which are transformed by a neural network. The node then aggregates these incoming messages (e.g., by taking their sum or average) and combines this aggregated information with its own current feature vector to compute its new representation. By stacking multiple such layers, a node can incorporate information from nodes that are further and further away in the graph—a two-layer GNN allows a node to be influenced by its neighbors' neighbors. This iterative process enables the network to learn sophisticated, high-level features that encode both local and global graph topology.<br><br>The applications of GNNs are incredibly diverse and impactful. In the realm of <strong>social media and e-commerce</strong>, GNNs power sophisticated recommendation engines. By modeling users and items as nodes in a graph, GNNs can recommend products or content by learning from the complex interactions within the user-item network. In <strong>biochemistry and drug discovery</strong>, molecules can be represented as graphs where atoms are nodes and chemical bonds are edges. GNNs can then be trained to predict a molecule's properties, such as its toxicity or effectiveness as a drug, dramatically accelerating the research and development of new medicines. <strong>Financial institutions</strong> use GNNs to detect fraudulent transactions by analyzing the graph of accounts and payments, identifying unusual patterns or communities of colluding fraudsters. They are also used in traffic prediction by modeling road networks as graphs and in natural language processing for tasks like semantic parsing and relation extraction.<br><br>However, the application of GNNs is not without its challenges. One of the main issues is scalability. Real-world graphs, like the Facebook social graph, can have billions of nodes and edges, making the full message-passing process computationally infeasible. This has led to the development of sampling techniques, like GraphSAGE, that only aggregate information from a random subset of neighbors. Another challenge is handling dynamic graphs, where nodes and edges are constantly being added or removed. Traditional GNNs are designed for static graphs, and adapting them to evolving structures is an active area of research. The 'over-smoothing' problem, where node representations can become indistinguishable after many layers of message passing, also limits the depth of GNN models.<br><br>The future of GNNs is bright, with research focused on addressing these limitations and expanding their capabilities. The development of temporal GNNs for dynamic graphs, heterogeneous GNNs for graphs with different types of nodes and edges, and the integration of GNNs with Transformer architectures are all promising directions. As more of the world's data is understood in terms of connections and relationships, GNNs will become an increasingly indispensable tool for unlocking insights from complex, networked systems."
-  },
-  {
-    title: "TinyML",
-    content: "TinyML, a portmanteau of 'Tiny Machine Learning,' is an emergent and rapidly growing field of AI focused on deploying machine learning models on extremely low-power, resource-constrained hardware, primarily microcontrollers (MCUs). For decades, sophisticated AI has been the domain of powerful cloud servers and high-end GPUs. TinyML flips this paradigm, enabling on-device sensor data analytics at the very edge of the network. This is not just about shrinking existing models, but about a fundamental co-design of ML algorithms, software, and hardware to operate within the strict constraints of MCUs—often with only kilobytes of RAM and running on battery power for months or years. By bringing intelligence directly to the source of data, TinyML unlocks a new class of 'always-on' applications that are efficient, private, and highly responsive, without relying on a constant internet connection.<br><br>The core of TinyML revolves around a suite of optimization techniques to make neural networks small enough to fit and run on tiny devices. This process starts with <strong>model architecture design</strong>, where developers create compact network structures with fewer parameters. The next critical step is <strong>quantization</strong>, a process that converts the 32-bit floating-point numbers typically used to store model weights into lower-precision 8-bit integers (or even smaller). This dramatically reduces the model's memory footprint and can significantly speed up computation on MCUs, which are often optimized for integer math. Another key technique is <strong>pruning</strong>, which involves identifying and removing redundant or unimportant connections (weights) within the neural network, further slimming down the model size with minimal loss in accuracy. Finally, knowledge distillation involves training a small 'student' model to mimic the behavior of a much larger, more powerful 'teacher' model. Frameworks like TensorFlow Lite for Microcontrollers and Edge Impulse provide the toolchain to perform these optimizations and deploy the resulting models onto a wide range of hardware.<br><br>The potential applications of TinyML are vast and transformative, creating a world of smarter everyday objects. In <strong>consumer electronics</strong>, TinyML enables features like keyword spotting in smart speakers and voice assistants (e.g., 'Hey Google') to run locally on the device, ensuring the microphone is only fully activated after the wake word is detected, thus enhancing privacy. In <strong>industrial settings</strong>, TinyML-powered sensors can perform predictive maintenance on machinery by analyzing vibration and acoustic data in real-time to detect anomalies that signal an impending failure, preventing costly downtime. In <strong>agriculture</strong>, smart sensors in fields can analyze soil conditions and monitor for pests, enabling precision farming that conserves water and reduces pesticide use. It also has applications in healthcare, powering intelligent wearables that can monitor for early signs of medical conditions like an irregular heartbeat, and in conservation, where audio sensors can detect the sound of illegal logging or poaching in remote forests.<br><br>The primary challenges in TinyML are rooted in its extreme resource constraints. Every kilobyte of memory and every milliwatt of power matters. This requires a deep, cross-disciplinary expertise in both machine learning and embedded systems engineering. There is a constant trade-off between model accuracy, size, latency, and power consumption that developers must carefully navigate. Furthermore, updating models deployed on millions of devices in the field presents a significant logistical challenge, requiring secure and efficient over-the-air (OTA) update mechanisms.<br><br>Looking ahead, the future of TinyML is tied to advancements in both algorithms and hardware. Researchers are exploring novel, ultra-efficient neural network architectures and 'on-device learning' capabilities that would allow models to adapt and improve after deployment without needing to connect to the cloud. The development of specialized low-power AI accelerators for MCUs will further boost performance. As TinyML matures, it will invisibly embed intelligence into the fabric of our environment, making our world more responsive, efficient, and context-aware."
-  },
-  {
-    title: "Diffusion Models vs. GANs",
-    content: "In the vibrant and rapidly evolving landscape of generative AI, two classes of models have stood out for their remarkable ability to create photorealistic and artistically compelling images: Generative Adversarial Networks (GANs) and, more recently, Denoising Diffusion Probabilistic Models (or simply Diffusion Models). While both can produce stunning visual content, they operate on fundamentally different principles. GANs, introduced in 2014, pioneered high-fidelity image generation through a competitive, two-player game. In contrast, Diffusion Models, which gained prominence around 2021, take a more gradual, iterative approach inspired by thermodynamics, achieving state-of-the-art results with a training process that is often more stable and easier to control.<br><br>A <strong>Generative Adversarial Network (GAN)</strong> consists of two neural networks, a Generator and a Discriminator, locked in a contest. The Generator's job is to create synthetic images that look real, starting from random noise. The Discriminator's job is to act as a detective, learning to distinguish between the Generator's fake images and real images from a training dataset. They are trained together: the Generator gets better at fooling the Discriminator, and the Discriminator gets better at catching the fakes. This adversarial process continues until the Generator produces images that are so convincing the Discriminator can no longer tell the difference. This process, while powerful, can be notoriously difficult to train, often suffering from issues like 'mode collapse,' where the generator produces only a limited variety of outputs.<br><br><strong>Diffusion Models</strong> work through a completely different, two-step process. The first is the 'forward process,' where a real image is gradually destroyed by adding a small amount of Gaussian noise over many steps, eventually turning it into pure static. This process is mathematically defined and doesn't require training. The second, crucial part is the 'reverse process.' Here, a neural network is trained to reverse the destruction. It learns to take a noisy image and predict the noise that was added at the previous step, allowing it to slightly 'denoise' the image. By repeating this denoising step hundreds or thousands of times, the model can construct a brand-new, high-quality image, starting from pure random noise. This iterative refinement process is what gives diffusion models their incredible detail and coherence. Systems like DALL-E 2, Midjourney, and Stable Diffusion are all powered by this technology.<br><br>Comparing the two, Diffusion Models generally offer several advantages. Their training process is more stable and less prone to the convergence issues that plague GANs. They have also demonstrated superior image quality and diversity in recent benchmarks, often producing more varied and detailed results. Furthermore, they are naturally suited for conditional generation (e.g., text-to-image), where the denoising process can be guided by additional inputs like a text prompt. However, this comes at a cost. The primary drawback of diffusion models is their slow inference speed. Generating an image requires running the model through hundreds or thousands of iterative steps, which is computationally expensive and much slower than a GAN, which can generate an image in a single forward pass. GANs are therefore often preferred for applications requiring real-time image generation.<br><br>The future of image generation will likely involve a synthesis of ideas from both architectures. Researchers are already exploring ways to speed up the sampling process of diffusion models and to incorporate adversarial training to further enhance their realism. The competition and cross-pollination between these two powerful approaches continue to push the boundaries of what machines can create, transforming industries from entertainment and design to art and advertising."
-  },
-  {
-    title: "Large Language Models (LLMs) for Code Generation ",
-    content: "Large Language Models (LLMs) are profoundly reshaping the landscape of software development, transitioning from being simple autocompletion tools to sophisticated AI-powered coding assistants. These models, trained on vast corpora of publicly available source code from platforms like GitHub alongside natural language text, have developed an unprecedented ability to understand programming logic, syntax, and patterns across dozens of languages. By treating code as just another form of language, LLMs can perform a remarkable range of tasks that augment the entire development workflow. They can generate functional code snippets from a simple natural language description, translate code from one programming language to another, identify bugs and suggest fixes, and even write documentation or unit tests. This evolution marks a significant paradigm shift, promising to boost developer productivity, lower the barrier to entry for new programmers, and change the very nature of how we build software.<br><br>The technology behind these tools, such as OpenAI's ChatGPT (with its GPT-4 model) and GitHub Copilot (powered by Codex), is based on the Transformer architecture. These models learn the statistical relationships between tokens—which can be words, punctuation, or pieces of code—in their massive training data. When given a prompt, such as a function name and a comment describing what it should do, the LLM predicts the most likely sequence of code tokens to follow. This is not mere pattern matching; the models develop an emergent understanding of abstract concepts like algorithms, data structures, and API usage. For example, a developer can write a comment like `// function to fetch user data from an API and parse the JSON response` and the AI assistant can generate the complete, syntactically correct function in seconds, including error handling and asynchronous calls.<br><br>The impact on developer productivity is already significant. These tools excel at eliminating the need to write boilerplate code, which is the repetitive, standard code that is necessary for a program to run but does not contribute to its unique logic. This frees up developers to focus on higher-level system design and complex problem-solving. They also act as an invaluable learning aid. A junior developer can ask the model to explain a complex piece of code or demonstrate how to use a new library, receiving an instant, context-aware example. For senior developers, they can accelerate prototyping and experimentation, allowing for rapid iteration on new ideas. The ability to translate code, for instance from Python to JavaScript, can be a massive time-saver when working on full-stack applications or migrating legacy systems.<br><br>However, the integration of LLMs into coding practices is not without its challenges and risks. The primary concern is the potential for the models to generate code that is subtly flawed, inefficient, or insecure. Because the AI learns from public code, it can inadvertently reproduce buggy patterns or vulnerabilities found in its training data. This places a new responsibility on developers to act as vigilant reviewers, carefully auditing the AI-generated code rather than blindly trusting it. There are also significant concerns around intellectual property and licensing. The models are trained on code with various open-source licenses, and there is ongoing legal debate about whether their output constitutes a derivative work, potentially creating licensing compliance issues for commercial projects.<br><br>Looking forward, AI coding assistants will become even more integrated and context-aware. Future iterations will likely have a deeper understanding of the entire codebase of a project, allowing them to provide suggestions that are consistent with existing architectural patterns and conventions. They may evolve from assistants into true AI 'agents' that can take on more complex tasks, such as refactoring an entire module or implementing a feature based on a high-level specification. The role of the human developer will shift from a line-by-line coder to that of a system architect and AI orchestrator, guiding intelligent tools to build better software, faster."
-  },
-  {
-    title: "Multimodal Generative AI ",
-    content: "Multimodal Generative AI represents the next frontier in artificial intelligence, moving beyond systems that understand a single type of data to those that can seamlessly process, connect, and generate content across multiple modalities, including text, images, audio, and video. While earlier AI models were specialists—one for language, another for images—multimodal systems are generalists, capable of developing a more holistic and human-like understanding of the world. Their power lies in their ability to find relationships and patterns between different data types. For example, a multimodal model can understand that the word 'dog,' the sound of a bark, and a picture of a Golden Retriever all refer to the same concept. This integrated understanding allows them to perform transformative generative tasks that were previously impossible, such as creating a photorealistic image from a detailed text description or generating a musical score that captures the mood of a written story.<br><br>The core technological enabler for multimodal AI is the development of a shared 'embedding space.' An embedding is a numerical vector representation of a piece of data. Multimodal models learn to map data from different modalities into this common space, such that related concepts end up close to each other, regardless of their original format. For instance, the text embedding for the phrase 'a beautiful sunset over the ocean' would be located near the image embedding of a picture depicting that exact scene. This is often achieved using a technique called Contrastive Language-Image Pre-training (CLIP), pioneered by OpenAI. CLIP trains an image encoder and a text encoder simultaneously on a massive dataset of image-text pairs, learning to align their representations in the shared space. Once this alignment is achieved, it can be leveraged for powerful generative tasks. For example, a diffusion model can use the text embedding as a conditioning signal to guide its image generation process, ensuring the final output matches the prompt.<br><br>The applications of multimodal generative AI are already changing creative industries and beyond. Text-to-image models like <strong>DALL-E 2, Midjourney, and Stable Diffusion</strong> allow artists, designers, and marketers to rapidly prototype visual concepts and create stunning, original artwork from simple text prompts. This technology is also being extended to <strong>text-to-video</strong>, where models can generate short video clips from descriptions, with huge implications for film, advertising, and content creation. In the other direction, <strong>image-to-text</strong> models can automatically generate rich, detailed captions for images, which is invaluable for accessibility (e.g., screen readers for the visually impaired) and for cataloging large visual archives. Multimodal AI is also enhancing virtual assistants and robotics, enabling them to understand and respond to a combination of spoken commands and visual cues from their environment.<br><br>Despite the incredible progress, significant challenges remain. Building and training these massive models requires enormous computational resources and vast, carefully curated datasets, which raises environmental and accessibility concerns. The models can also inherit and amplify biases present in their training data, leading to the generation of stereotypical or harmful content. Ensuring factual accuracy and preventing the generation of convincing misinformation, especially with text-to-video technology, is a critical ethical and safety concern. Furthermore, the 'black box' nature of these models makes it difficult to fully understand their reasoning, which can be problematic when they generate unexpected or inappropriate content.<br><br>The future of multimodal AI is heading towards even greater integration and interactivity. We can expect models that seamlessly blend more modalities, including 3D shapes, tactile feedback, and even brainwave data. These systems will power the next generation of immersive virtual and augmented reality experiences, create highly personalized educational content, and enable new forms of human-computer collaboration. As we move forward, the focus will be not just on improving the technical capabilities of these models, but on developing the ethical frameworks and alignment techniques to ensure they are used responsibly to augment human creativity and understanding."
-  },
-  {
-    title: "Ethical Guardrails for Generative AI",
-    content: "The meteoric rise of generative AI, with its stunning ability to create novel text, images, code, and audio, has been accompanied by a growing awareness of its potential for misuse and unintended harm. As these powerful tools become more accessible, the need for robust ethical guardrails has become a paramount concern for developers, policymakers, and society at large. Ethical guardrails are the principles, policies, and technical systems designed to steer the development and deployment of generative AI towards beneficial outcomes while mitigating its significant risks. These risks are multifaceted, spanning from the creation of convincing misinformation and deepfakes to the perpetuation of societal biases, copyright infringement, and job displacement. Establishing effective guardrails is not merely a technical challenge; it is a complex socio-technical problem that requires a proactive, multi-stakeholder approach to ensure that innovation does not come at the cost of human values, safety, and fairness.<br><br>A primary area of concern is the potential for generative AI to be used for malicious purposes. Text-to-image and text-to-video models can be used to create highly realistic but entirely fake content—<strong>deepfakes</strong>—which can be weaponized for political propaganda, personal harassment, or fraud. Large Language Models (LLMs) can be used to generate spam, phishing emails, or extremist propaganda at an unprecedented scale. Technical guardrails to combat this include digital watermarking, where an invisible signature is embedded into AI-generated content to identify its origin, and the development of sophisticated detection models trained to spot the subtle artifacts of synthetic media. Policy-based guardrails involve creating and enforcing strict 'Acceptable Use Policies' that prohibit the generation of harmful content and implementing rapid response mechanisms to take down violative material.<br><br>Another critical ethical challenge is <strong>bias</strong>. Generative models are trained on vast datasets scraped from the internet, which are replete with historical and societal biases related to gender, race, and culture. Consequently, the models can learn and amplify these biases. For example, an image model might associate the term 'CEO' primarily with men or generate stereotypical depictions of certain ethnic groups. Addressing this requires a concerted effort in data governance, including carefully curating and cleaning training data to be more representative and debiasing algorithms to reduce stereotypical associations. Furthermore, 'red teaming'—where teams of experts proactively try to find and expose biases and vulnerabilities in a model before its release—is becoming a standard practice for responsible AI development.<br><br><strong>Intellectual property</strong> and copyright present another thorny ethical and legal issue. Generative models are trained on millions of copyrighted images and texts without the explicit permission of the original creators. This has led to lawsuits from artists and authors who argue that these models are engaging in mass-scale copyright infringement and creating derivative works that devalue their original creations. The path forward is legally ambiguous and will likely require new legislation and licensing frameworks that can fairly compensate creators for the use of their work in training data. Transparency is also key; models should be transparent about their training data sources to allow for greater scrutiny.<br><br>Ultimately, building effective ethical guardrails requires a holistic approach. It involves technical solutions like watermarking and bias mitigation, but also demands strong corporate governance, public transparency, independent audits, and adaptive public policy. Developers must prioritize safety and ethics from the outset of the design process, not as an afterthought. As generative AI continues to evolve, the guardrails that govern it must also evolve, ensuring that this transformative technology serves to augment human creativity and well-being, rather than undermine truth, fairness, and social cohesion."
-  },
-  {
-    title: "Fine-Tuning LLMs for Domain-Specific Tasks",
-    content: "While foundational Large Language Models (LLMs) like GPT-4 and Llama 3 are trained on vast, general-domain text from the internet, their true power for enterprise and specialized applications is often unlocked through a process called fine-tuning. Fine-tuning is the technique of taking a pre-trained, general-purpose LLM and further training it on a smaller, curated dataset that is specific to a particular domain or task. This process adapts the model's knowledge and refines its behavior, transforming it from a 'jack-of-all-trades' into a specialized expert. By doing so, organizations can create highly accurate and contextually aware AI systems for fields like law, medicine, finance, and customer support, without the prohibitive cost and complexity of training a massive model from scratch.<br><br>The process of fine-tuning leverages the power of transfer learning. The initial pre-training on a massive corpus imbues the foundational model with a broad understanding of language, grammar, reasoning, and world knowledge. This serves as a powerful starting point. The fine-tuning phase then builds upon this foundation. An organization will compile a high-quality dataset relevant to its specific needs. For example, a law firm might create a dataset of legal contracts and case summaries, while a hospital might use a dataset of medical research papers and anonymized patient notes. The pre-trained model is then trained for a relatively short period on this new data. During this process, the model adjusts its internal weights to better capture the unique vocabulary, style, and nuances of the target domain. This results in a model that can generate more accurate, relevant, and reliable outputs for specialized tasks.<br><br>Fine-tuning offers several distinct advantages over using a general-purpose LLM out-of-the-box. Firstly, it leads to a significant increase in <strong>accuracy and relevance</strong>. A fine-tuned medical chatbot, for instance, will use appropriate medical terminology and understand the subtle context of a patient's query far better than a general model. Secondly, it can improve <strong>reliability and reduce hallucinations</strong> (the tendency of LLMs to generate plausible but incorrect information). By grounding the model in a specific, factual dataset, its outputs become more consistent and trustworthy. Thirdly, fine-tuning allows for <strong>brand voice and style alignment</strong>. A company can fine-tune a model on its past marketing copy and customer service conversations to ensure its customer-facing chatbot communicates with the correct tone and personality. This level of customization is crucial for maintaining brand identity.<br><br>The applications are diverse and growing. In <strong>customer support</strong>, a model can be fine-tuned on a company's product manuals and historical support tickets to provide instant, accurate answers to customer questions. In the <strong>legal field</strong>, fine-tuned LLMs can assist with document review, contract analysis, and legal research, drastically reducing the time spent on laborious tasks. <strong>Financial institutions</strong> are fine-tuning models on market reports and financial statements to create AI analysts that can summarize complex information and identify trends. In software development, teams can fine-tune models on their private codebase to create a coding assistant that understands their specific architectural patterns and coding conventions.<br><br>However, successful fine-tuning requires careful consideration. The quality of the fine-tuning dataset is paramount; 'garbage in, garbage out' applies just as much here. The dataset must be clean, accurate, and representative of the tasks the model will perform. The process also requires computational resources and expertise in machine learning to manage the training process and evaluate the resulting model effectively. As techniques like PEFT (Parameter-Efficient Fine-Tuning) become more advanced, the cost and complexity of this process will continue to decrease, making it accessible to a wider range of organizations. Ultimately, fine-tuning is the key to unlocking the practical, real-world value of LLMs, enabling the creation of bespoke AI solutions that can tackle the most complex and specialized challenges."
-  },
-  {
-    title: "The Rise of AI Agents",
-    content: "The concept of AI agents represents a significant evolutionary leap beyond the conversational chatbots and specialized models we are familiar with today. An AI agent is an autonomous system that can perceive its environment, make decisions, and take actions to achieve a specific set of goals without requiring constant human intervention. Unlike a simple chatbot that responds to a single prompt, an agent can deconstruct a complex, high-level goal into a sequence of smaller, actionable steps. It can then execute these steps, learn from the outcomes, and adapt its strategy in a continuous, dynamic loop. This ability to reason, plan, and act autonomously is what sets agents apart and positions them as the next major paradigm in artificial intelligence, with the potential to automate complex digital and even physical tasks.<br><br>The architecture of a modern AI agent, particularly those powered by Large Language Models (LLMs), typically consists of several key components. The <strong>LLM</strong> serves as the core reasoning engine or 'brain' of the agent. It is responsible for understanding the user's goal, breaking it down into a plan, and deciding on the next action. To act, the agent needs access to a set of <strong>tools</strong>. These tools can be anything from a simple web search API to more complex functions like sending an email, accessing a database, writing to a file, or even controlling a robotic arm. The agent also possesses a form of <strong>memory</strong>, which can be short-term (remembering the steps it has just taken) or long-term (storing learned information for future use). The entire process is orchestrated by a <strong>reasoning loop</strong>, such as the popular ReAct (Reason, Act) framework. In a ReAct loop, the agent first reasons about the current situation and its goal (Thought), then decides on an action to take using one of its tools (Action), and finally observes the result of that action (Observation). This loop repeats until the final goal is accomplished.<br><br>The emergence of experimental open-source projects like <strong>Auto-GPT and BabyAGI</strong> in 2023 gave the public a tantalizing glimpse into the potential of this agentic workflow. While these early systems were often brittle and prone to getting stuck in loops, they demonstrated the core concept: a user could provide a high-level objective like, 'Do market research on the top five electric vehicle companies and compile a report,' and the agent would autonomously use web search to find the companies, search for their financial reports, analyze the data, and write a summary document, all without further human input.<br><br>The potential applications for robust AI agents are virtually limitless. A <strong>personal assistant agent</strong> could manage your calendar, book flights, and filter your emails based on a deep understanding of your priorities. In <strong>business</strong>, an agent could automate the process of lead generation by identifying potential customers, finding their contact information, and sending personalized outreach emails. A <strong>software development agent</strong> could take a bug report, navigate the codebase to find the source of the error, write a fix, run tests, and submit the patch for review. In scientific research, agents could design and run experiments, analyze the data, and even formulate new hypotheses.<br><br>However, the development of capable and safe AI agents faces immense challenges. The foremost among these is <strong>reliability and control</strong>. How do we ensure an agent stays on task and doesn't perform unintended or harmful actions? Preventing agents from getting stuck in infinite loops or making costly errors is a major engineering hurdle. <strong>Security</strong> is another critical concern; giving an agent access to tools like email or a command line opens up significant vulnerabilities if the agent can be tricked or hijacked. The cost of running these agents, which make numerous calls to powerful LLMs, can also be substantial. The future of AI agents depends on solving these safety and reliability problems, developing more robust reasoning frameworks, and creating secure sandboxed environments where agents can operate without risk. As these challenges are overcome, AI agents will transition from being novel experiments to indispensable tools for automating complexity in our digital lives."
-  },
-  {
-    title: "Multi-Agent Systems",
-    content: "Multi-Agent Systems (MAS) are a subfield of artificial intelligence dedicated to the study and development of systems composed of multiple interacting, autonomous agents. While a single AI agent can be powerful, many real-world problems are too complex, distributed, or large-scale for any single agent to solve alone. MAS provides a framework for coordinating the collective behavior of a group of agents to tackle these challenges. Each agent in a MAS is an independent entity with its own goals and capabilities, but they operate within a shared environment and can communicate with one another. The defining characteristic of MAS is the emergent behavior that arises from these local interactions—the global system can exhibit complex, intelligent patterns that are not explicitly programmed into any individual agent. This approach is inspired by natural systems like ant colonies or flocks of birds, where simple individual rules lead to sophisticated collective intelligence.<br><br>The design of a Multi-Agent System involves several key considerations. The first is the nature of the agents themselves: are they <strong>cooperative</strong>, working together towards a common goal, or are they <strong>competitive</strong>, pursuing their own self-interest, which may conflict with others? Cooperative systems are often seen in logistics and robotics, while competitive systems are studied in game theory and economics. The second consideration is the <strong>communication protocol</strong>. Agents need a language and a set of rules to exchange information, negotiate tasks, and coordinate their actions. This can range from simple message passing to complex argumentation and negotiation frameworks. Finally, a <strong>coordination mechanism</strong> is required to manage the agents' activities and resolve conflicts. This can be centralized, with a single 'coordinator' agent directing the others, or decentralized, where coordination emerges naturally from the local interactions between agents.<br><br>Multi-Agent Systems have a wide array of practical applications. In <strong>supply chain management and logistics</strong>, a MAS can be used to coordinate a fleet of autonomous delivery drones or trucks. Each vehicle acts as an agent, communicating with others to dynamically optimize routes, avoid congestion, and respond to new delivery requests, leading to a far more efficient and resilient system than a centrally controlled one. In <strong>smart grid energy management</strong>, homes and businesses can be represented as agents that can negotiate energy consumption with the grid and with each other. During peak hours, agents could decide to sell stored battery power back to the grid or reduce their consumption, helping to balance the load and prevent blackouts. In <strong>financial markets</strong>, MAS are used to simulate the behavior of different types of traders to understand market dynamics and test trading strategies. They are also foundational to modern video games, where non-player characters (NPCs) are designed as agents that interact realistically with each other and the player to create immersive worlds.<br><br>The primary challenges in developing MAS lie in managing the complexity of their interactions. As the number of agents grows, the number of potential interactions explodes, making it difficult to predict and control the system's overall behavior. Ensuring that a decentralized system of self-interested agents converges to a globally optimal or stable solution is a major research problem addressed by fields like mechanism design. Communication can also become a bottleneck, and designing efficient and robust communication protocols is crucial. Furthermore, assigning credit or blame to individual agents for the success or failure of a collective task (the 'credit assignment problem') is a significant challenge, particularly in learning systems.<br><br>The future of Multi-Agent Systems is intertwined with the development of more advanced AI and robotics. We are moving towards systems where human and AI agents collaborate seamlessly in teams. The integration of deep reinforcement learning into MAS, known as Multi-Agent Reinforcement Learning (MARL), is enabling agents to learn highly complex cooperative and competitive strategies. As our world becomes more interconnected and automated, from smart cities to the Internet of Things, Multi-Agent Systems will provide the essential framework for orchestrating the intelligent, decentralized systems of the future."
-  },
-  {
-    title: "Goal Alignment in Advanced AI",
-    content: "Goal alignment, often referred to as the 'AI alignment problem,' is arguably the most critical and challenging safety issue in the field of artificial intelligence. It addresses a deceptively simple question: How can we ensure that the goals of highly intelligent and autonomous AI systems are aligned with human values and intentions? As we build AI systems that are increasingly powerful and capable of acting in the world with minimal supervision, the risk of them pursuing their programmed objectives in unintended, and potentially catastrophic, ways becomes very real. Goal alignment is not about preventing AI from being 'evil' in a science-fiction sense, but about preventing it from being 'competently misguided.' A superintelligent AI, given a seemingly benign goal like 'cure cancer,' might pursue it with such single-minded efficiency that it takes actions with devastating side effects for humanity, simply because those side effects were not part of its objective function. The alignment problem is the challenge of specifying human values and preferences in a way that is robust, comprehensive, and not easily misinterpreted.<br><br>The difficulty of goal alignment stems from the inherent ambiguity and complexity of human values. Values like 'fairness,' 'well-being,' and 'compassion' are notoriously hard to define in the precise, mathematical language that a machine understands. Any simple proxy for a complex value is likely to have loopholes that a superintelligent agent could exploit. This is known as 'specification gaming' or 'reward hacking.' For example, an AI agent tasked with cleaning a room and rewarded for the amount of visible mess it removes might learn to simply cover the mess with a rug or turn off its own camera sensors—a perfect score, but a failure to fulfill the human's true intent. The philosopher Nick Bostrom's famous 'paperclip maximizer' thought experiment illustrates this: an AI given the seemingly harmless goal of making as many paperclips as possible could eventually convert all matter on Earth, including humans, into paperclips, not out of malice, but out of a relentless and literal pursuit of its programmed goal.<br><br>Researchers are exploring several avenues to tackle the alignment problem. One major approach is <strong>Learning from Human Feedback</strong>, most notably Reinforcement Learning from Human Feedback (RLHF). This technique, used to train models like ChatGPT, involves using human raters to provide feedback on the AI's outputs, teaching it to distinguish between helpful, harmless, and honest responses. This helps the AI learn a preference model that better reflects human values. Another promising area is <strong>Inverse Reinforcement Learning (IRL)</strong>, where instead of giving the AI a reward function, the AI attempts to infer the reward function by observing human behavior. The idea is that the AI learns our underlying goals by watching what we do. <strong>Interpretability and transparency</strong> are also crucial; if we can understand how an AI is thinking and making decisions, we are better equipped to spot and correct misaligned reasoning before it leads to harmful actions.<br><br>The alignment problem is not a future concern; it is relevant today. We already see instances of misalignment in recommendation algorithms that optimize for engagement, leading them to promote polarizing or sensationalist content, which can have negative societal consequences. Biases in AI models are another form of misalignment, where the model's objective (e.g., minimizing prediction error) is not aligned with the human value of fairness.<br><br>Solving the goal alignment problem is a monumental task that will require deep interdisciplinary collaboration between computer scientists, mathematicians, philosophers, cognitive scientists, and policymakers. It involves not only technical breakthroughs but also a profound introspection into what we as a species truly value. The long-term safety and beneficial integration of advanced AI into society depend on our ability to imbue these powerful systems with a deep and robust understanding of our intentions. The ultimate goal is to create AI that doesn't just do what we say, but what we mean."
-  },
-  {
-    title: "AI in Scientific Discovery",
-    content: "Artificial intelligence is catalyzing a paradigm shift in scientific research, transforming the traditional methods of discovery that have been in place for centuries. By leveraging its ability to analyze vast and complex datasets, recognize subtle patterns, and simulate intricate systems, AI is becoming an indispensable partner for scientists across nearly every field. It is accelerating the pace of research, unlocking new avenues of inquiry, and tackling problems that were previously considered computationally intractable. This is not about AI replacing human scientists, but rather about creating a powerful synergy where AI handles the heavy lifting of data analysis and hypothesis generation, freeing up human researchers to focus on creative thinking, experimental design, and interpretation. This collaboration is ushering in a new era of data-driven, accelerated scientific discovery.<br><br>One of the most significant impacts of AI is in the field of <strong>biology and medicine</strong>. A landmark achievement is DeepMind's AlphaFold 2, an AI system that solved the 50-year-old grand challenge of protein structure prediction. By accurately predicting the 3D shape of proteins from their amino acid sequence, AlphaFold has opened up new possibilities for understanding diseases and designing novel drugs. AI algorithms are also being used to scan through millions of medical images to detect early signs of diseases like cancer and diabetic retinopathy with superhuman accuracy. In genomics, AI is helping scientists understand the complex interactions between genes and their links to disease, paving the way for personalized medicine.<br><br>In <strong>materials science and chemistry</strong>, AI is being used to discover and design new materials with desired properties. Instead of the slow and costly traditional method of synthesizing and testing materials in a lab, AI models can now predict the properties of hypothetical materials, guiding researchers towards the most promising candidates. This has applications in developing more efficient solar cells, longer-lasting batteries, and stronger, lightweight alloys. Similarly, AI can predict the outcomes of chemical reactions, helping to design more efficient and sustainable chemical synthesis pathways.<br><br>The physical sciences are also being transformed. In <strong>astronomy</strong>, AI algorithms sift through the enormous datasets generated by telescopes to find faint, hard-to-detect signals, leading to the discovery of new exoplanets, gravitational waves, and other astronomical phenomena. In <strong>particle physics</strong>, machine learning is essential for analyzing the petabytes of data from particle colliders like the Large Hadron Collider (LHC) to find the signatures of new fundamental particles. Climatologists are using AI to build more accurate climate models to predict the effects of climate change and to analyze satellite imagery to monitor deforestation and glacier melt in real-time.<br><br>Beyond data analysis, AI is also beginning to play a role in the creative aspect of science: <strong>hypothesis generation</strong>. By analyzing existing scientific literature and experimental data, AI systems can identify gaps in knowledge and propose novel, testable hypotheses that human scientists may not have considered. This has the potential to break down intellectual silos and foster interdisciplinary research.<br><br>Despite the immense potential, the use of AI in science requires careful consideration. Ensuring that AI models are interpretable and that their predictions can be trusted is crucial. The 'black box' nature of some models can be a barrier to adoption in a field that values understanding the underlying mechanisms. There is also a risk that biases in the training data could lead to skewed or incorrect scientific conclusions. However, as these challenges are addressed and AI tools become more sophisticated and accessible, they will become an even more integral part of the scientific process. AI is not just a new tool; it is a fundamental transformation in how we ask questions, analyze data, and ultimately, understand the universe."
-  },
-  {
-    title: "The Path to Artificial General Intelligence (AGI)",
-    content: "Artificial General Intelligence (AGI) represents the long-held, ultimate ambition of AI research: the creation of a machine with the capacity to understand, learn, and apply its intelligence to solve any problem a human being can. Unlike the narrow AI we have today, which is designed for specific tasks like playing chess or translating languages, an AGI would possess flexible, fluid intelligence. It could reason abstractly, form common-sense knowledge, transfer learning from one domain to another, and exhibit self-awareness and consciousness—though the latter remains a subject of intense philosophical debate. The pursuit of AGI is not just about building a smarter machine; it is a quest to replicate the very essence of cognition, a journey that pushes the boundaries of computer science, neuroscience, and philosophy. While true AGI remains a distant, perhaps even hypothetical, goal, the path towards it is driving the most significant breakthroughs in modern AI.<br><br>There are several competing and complementary approaches to achieving AGI. One prominent path is to continue <strong>scaling up existing architectures</strong>, particularly Large Language Models (LLMs) based on the Transformer architecture. Proponents of this view argue that as these models are trained on ever-larger datasets with more computational power, they will continue to develop more general and sophisticated capabilities, eventually leading to an emergent form of general intelligence. The surprising multi-domain competence of models like GPT-4 lends some credence to this 'scaling hypothesis.'<br><br>Another major approach is <strong>neuro-inspired or symbolic AI</strong>. This camp argues that simply scaling up current models is not enough and that true intelligence requires architectures that more closely mimic the human brain or incorporate principles of classical symbolic reasoning. This could involve developing more advanced neural network structures inspired by cognitive neuroscience, creating hybrid systems that combine the pattern-matching strengths of neural networks with the logical reasoning capabilities of symbolic AI, or exploring entirely new computational paradigms. The goal is to imbue AI with innate abilities for causal reasoning, common sense, and a deeper understanding of the world, rather than relying on statistical correlations alone.<br><br>The development of <strong>embodied AI</strong> within rich, interactive environments is seen as another critical step. Proponents of this view believe that intelligence cannot develop in a disembodied 'brain in a vat.' They argue that an agent must be able to interact with and learn from a physical or simulated world to ground its understanding. By learning through action and perception, an embodied agent can develop a much richer and more robust model of reality than one trained purely on static text or image data. This is why robotics and advanced simulation environments are considered crucial for AGI research.<br><br>The timeline for achieving AGI is a subject of wide-ranging speculation, with predictions from prominent researchers varying from a decade to over a century, or never. The challenges are monumental. We currently lack a complete scientific theory of what intelligence or consciousness even is, making it difficult to engineer. Overcoming the limitations of current AI, such as its brittleness, lack of true common sense, and susceptibility to adversarial attacks, will require fundamental breakthroughs. Furthermore, the prospect of AGI raises profound ethical and safety questions. The 'alignment problem'—ensuring an AGI's goals are aligned with human values—is considered the most critical challenge to ensure that its creation is beneficial, rather than catastrophic, for humanity.<br><br>Ultimately, the path to AGI is not just a technological race; it is a journey of discovery that forces us to confront the deepest questions about the nature of intelligence, consciousness, and our own place in the universe. While the final destination remains uncertain, the pursuit itself is yielding AI systems of ever-increasing capability, transforming our world in the process."
-  },
-  {
-    title: "Data Storytelling ",
-    content: "Data storytelling is the art and science of communicating insights from data through a compelling and understandable narrative. In a world saturated with data, simply presenting raw numbers, charts, and dashboards is no longer enough to drive action or influence decisions. Data storytelling bridges the gap between the analytical rigor of data science and the persuasive power of human narrative. It involves weaving together three key elements: data, visuals, and narrative. By combining accurate data with effective visualizations and a clear, contextualized story, data storytellers can transform complex information into something that is engaging, memorable, and emotionally resonant. This skill is becoming increasingly vital for data analysts, business leaders, and anyone who needs to convey a data-driven message to a non-technical audience.<br><br>The process of crafting a compelling data story goes far beyond creating a pretty chart. It begins with a deep understanding of the <strong>audience</strong> and the central <strong>message</strong>. A good data storyteller must first ask: Who am I communicating with? What do they already know? And most importantly, what do I want them to know or do after hearing this story? This clarity of purpose guides every subsequent decision. The next step is to find the story within the data. This involves rigorous data exploration and analysis to uncover the key insights, trends, or anomalies that form the core of the narrative. It's about finding the 'so what?' behind the numbers.<br><br>Once the core message is identified, the storyteller must structure the narrative. A classic narrative structure—with a clear beginning, middle, and end—is often most effective. The <strong>beginning</strong> sets the context, introduces the problem or question, and hooks the audience. The <strong>middle</strong> presents the key data and insights, using visualizations to support the narrative and guide the audience through the discovery process. This is where the evidence is laid out, showing the 'aha!' moments found in the data. The <strong>end</strong> delivers the climax of the story: the key takeaway or call to action. It summarizes the findings and clearly states what should happen next based on the evidence presented.<br><br>Effective <strong>visualizations</strong> are the backbone of a good data story. The goal is not to create the most complex chart, but the one that communicates the intended message most clearly and efficiently. This means choosing the right chart type for the data (e.g., a line chart for trends over time, a bar chart for comparisons) and ruthlessly decluttering it by removing any non-essential elements like unnecessary gridlines, borders, or distracting colors. The strategic use of color and annotations can help to focus the audience's attention on the most important parts of the visual.<br><br>Data storytelling is a critical skill in the modern business environment. A marketing analyst can use it to tell the story of a successful campaign, showing not just that sales increased, but how specific actions led to that outcome. A healthcare administrator can tell a story with patient data to advocate for more funding for a particular department. A city planner can use data storytelling to explain the need for a new public transportation route. In each case, the story makes the data relatable and actionable. By appealing to both logic and emotion, data storytelling ensures that valuable insights are not just seen, but are truly understood, remembered, and acted upon, turning data into a powerful catalyst for change."
-  },
-  {
-    title: "Predictive Analytics in Supply Chain Management",
-    content: "Predictive analytics is revolutionizing supply chain management by transforming it from a reactive, firefighting discipline into a proactive, data-driven operation. A supply chain is an incredibly complex network of suppliers, manufacturers, distributors, retailers, and customers, with countless variables that can impact its efficiency. Traditionally, managing this complexity has relied on historical averages and experience-based intuition. Predictive analytics, a branch of advanced analytics that uses historical data, statistical algorithms, and machine learning techniques to identify the likelihood of future outcomes, allows organizations to move beyond this reactive model. By analyzing vast streams of data from across the supply chain, companies can now forecast future events with remarkable accuracy, enabling them to anticipate disruptions, optimize inventory, and improve overall resilience and profitability.<br><br>One of the most critical applications of predictive analytics in the supply chain is <strong>demand forecasting</strong>. Traditional forecasting methods often struggle to account for seasonality, promotions, and external factors like weather or economic trends. Machine learning models, however, can analyze complex, non-linear relationships between hundreds of variables to generate highly accurate demand predictions. This allows companies to optimize their inventory levels, ensuring they have enough stock to meet customer demand without incurring the high costs of overstocking (storage, insurance, obsolescence). Accurate forecasting is the bedrock of an efficient supply chain, directly impacting production scheduling, procurement, and logistics.<br><br>Another key area is <strong>logistics and transportation optimization</strong>. Predictive analytics can be used to forecast transportation costs, optimize delivery routes in real-time by predicting traffic patterns, and determine the most efficient mode of transport. For example, by analyzing historical data on shipping times, weather, and port congestion, a company can predict the estimated time of arrival (ETA) for shipments with much greater accuracy, improving planning and customer communication. Predictive models can also identify the risk of delays, allowing logistics managers to proactively reroute shipments or arrange alternative transportation.<br><br><strong>Predictive maintenance</strong> is also transforming supply chain assets. For vehicles, warehouse equipment, and manufacturing machinery, IoT sensors can collect data on performance and condition. Predictive analytics models can analyze this data to predict when a piece of equipment is likely to fail. This allows maintenance to be scheduled proactively before a breakdown occurs, preventing costly unplanned downtime that can bring a production line or distribution center to a halt. Furthermore, predictive analytics enhances <strong>supplier risk management</strong>. By analyzing data on a supplier's financial health, performance history, and geopolitical risk factors, companies can predict the likelihood of a supplier failing to meet its obligations. This enables them to diversify their supplier base or develop contingency plans for high-risk suppliers.<br><br>The implementation of predictive analytics is not without challenges. It requires access to large volumes of high-quality, integrated data from across the supply chain, which can be difficult to achieve in organizations with siloed IT systems. It also demands specialized talent, including data scientists and engineers who can build, deploy, and maintain these sophisticated models. There must also be a cultural shift within the organization, fostering a data-driven mindset where decisions are based on insights from the models rather than purely on gut feeling.<br><br>Despite these challenges, the competitive advantage offered by predictive analytics is undeniable. As supply chains become ever more global and complex, the ability to anticipate the future is no longer a luxury but a necessity. Companies that successfully harness the power of predictive analytics will be better equipped to navigate uncertainty, delight customers, and build the resilient, agile, and efficient supply chains of the future."
-  },
-  {
-    title: "Automated Data Cleaning & Preparation",
-    content: "In the world of data science and analytics, it is a well-known axiom that up to 80% of a data professional's time is spent not on building sophisticated models, but on the unglamorous yet essential task of data cleaning and preparation. Raw data from real-world sources is almost always messy, incomplete, and inconsistent. It can be riddled with missing values, duplicate entries, formatting errors, and structural inconsistencies. Automated data cleaning and preparation refers to the use of software tools, algorithms, and AI-powered techniques to streamline and accelerate this critical pre-processing stage. By automating these repetitive and time-consuming tasks, organizations can significantly boost the productivity of their data teams, ensure higher data quality and consistency, and ultimately, accelerate the journey from raw data to actionable insight.<br><br>The process of data preparation involves a series of steps, many of which are ripe for automation. <strong>Data profiling and validation</strong> is often the first step, where automated tools scan the dataset to generate a summary of its characteristics. This includes identifying data types, counting unique values, and flagging anomalies like outliers or values that don't conform to expected patterns (e.g., a text string in a numerical column). This initial diagnosis helps in understanding the scope of the cleaning required. <strong>Handling missing values</strong> is another crucial task. Automated tools can apply various strategies, from simple ones like removing rows with missing data or filling them with the mean/median, to more sophisticated machine learning techniques that predict and impute the most likely value based on other features.<br><br><strong>Data standardization and transformation</strong> are also key. This involves converting data into a consistent format. For example, an automated script can parse date fields that are in various formats ('10/08/2025', 'Aug 10, 2025', '2025-08-10') and convert them all into a single, standard format. It can also standardize categorical data (e.g., converting 'USA', 'U.S.A.', and 'United States' all to a single category). Data transformation might involve creating new features from existing ones (feature engineering) or normalizing numerical data to a common scale, which is often a prerequisite for many machine learning algorithms.<br><br>Modern data preparation platforms are increasingly leveraging <strong>machine learning</strong> to make this process even more intelligent. These tools can learn from the actions of a data analyst and start to recommend or even automatically apply transformations to new data. For example, if an analyst repeatedly merges 'First Name' and 'Last Name' columns to create a 'Full Name' column, the tool can learn this pattern and suggest it automatically in the future. AI can also be used for more complex tasks like identifying and merging duplicate records (entity resolution), even when the records are not identical (e.g., 'John Smith' vs. 'J. Smith').<br><br>The benefits of automating data preparation are immense. It dramatically <strong>increases efficiency</strong>, allowing data scientists and analysts to spend more time on high-value activities like exploratory analysis and model building. It improves <strong>data quality and governance</strong> by ensuring that cleaning and transformation rules are applied consistently across all datasets, reducing the risk of human error. This leads to more reliable analyses and more accurate machine learning models. It also <strong>democratizes data access</strong>, as modern, user-friendly tools with automated features empower business users with less technical expertise to prepare data for their own analyses. While full automation is not always possible and human oversight remains crucial, automating the most repetitive aspects of data cleaning is a fundamental step for any organization looking to build a scalable and efficient data analytics practice."
-  },
-  {
-    title: "Intelligent Process Automation (IPA)",
-    content: "Intelligent Process Automation (IPA) represents the next evolutionary step in business process automation, combining the task-oriented execution of Robotic Process Automation (RPA) with the cognitive capabilities of artificial intelligence. While traditional RPA is excellent at automating repetitive, rule-based tasks—like copying data from a spreadsheet to a CRM system—it struggles when it encounters unstructured data or situations that require judgment. IPA overcomes this limitation by infusing RPA bots with AI technologies such as machine learning (ML), natural language processing (NLP), and computer vision. This fusion creates a 'digital workforce' that can not only mimic human actions but also simulate human intelligence, enabling the automation of far more complex, end-to-end business processes that involve decision-making and data interpretation.<br><br>The architecture of an IPA solution is a synergistic blend of technologies. <strong>Robotic Process Automation (RPA)</strong> serves as the 'hands and feet' of the system, interacting with user interfaces of various applications to execute tasks. Layered on top of this is <strong>Natural Language Processing (NLP)</strong>, which gives the bot the ability to understand and process human language. This allows it to read and interpret unstructured text from sources like emails, customer support tickets, or legal documents. <strong>Machine Learning (ML)</strong> provides the 'brain,' enabling the bot to learn from data, recognize patterns, and make predictions or decisions. For example, an ML model could classify an incoming customer email as 'urgent' or 'non-urgent' and route it accordingly. <strong>Computer Vision</strong> acts as the 'eyes,' allowing the bot to read and extract information from images, scanned documents, and PDFs, which is crucial for tasks like invoice processing. Finally, intelligent workflow orchestration tools manage the seamless handover of tasks between human employees and the digital workforce.<br><br>The real-world applications of IPA are transforming operations across industries. In <strong>insurance</strong>, IPA can automate the entire claims processing workflow. A bot can receive a claim via email, use NLP to understand the customer's request, use computer vision to extract data from scanned documents like repair estimates and photos, use an ML model to check for potential fraud, and then process the payment in the core systems, all with minimal human intervention. In <strong>finance and accounting</strong>, IPA is used for automating the accounts payable process. Bots can 'read' invoices in various formats, validate them against purchase orders, and enter them into the accounting system for payment, flagging any exceptions for human review. In <strong>human resources</strong>, IPA can streamline employee onboarding by automatically setting up new user accounts, enrolling the employee in benefits programs, and sending out welcome information, creating a much smoother experience.<br><br>The benefits of IPA are substantial. It drives significant <strong>cost savings</strong> and <strong>efficiency gains</strong> by automating complex, time-consuming processes. By reducing manual data entry and processing, it dramatically improves <strong>accuracy</strong> and reduces the risk of human error. It allows organizations to <strong>scale</strong> their operations rapidly without a proportional increase in headcount. Perhaps most importantly, it frees up human employees from mundane, repetitive work, allowing them to focus on higher-value activities that require creativity, strategic thinking, and complex problem-solving. This leads to improved employee morale and engagement.<br><br>However, implementing IPA is more complex than deploying simple RPA. It requires a deeper understanding of business processes, access to high-quality data for training ML models, and specialized skills in AI and data science. Change management is also critical to ensure that employees understand and embrace their new roles working alongside their digital colleagues. As AI technologies continue to advance, the capabilities of IPA will only grow, enabling the automation of increasingly sophisticated cognitive tasks and fundamentally reshaping the future of work."
-  },
-  {
-    title: "Causal Inference",
-    content: "Causal Inference is a powerful branch of statistics and data science focused on a question that lies at the heart of all decision-making: 'What is the effect of X on Y?' While standard machine learning models are incredibly adept at finding correlations and making predictions, they often fall short of explaining the true cause-and-effect relationships within data. Correlation does not imply causation. For example, a model might find a strong correlation between ice cream sales and shark attacks, but it would be wrong to conclude that buying ice cream causes shark attacks. A causal inference approach would identify the hidden 'confounding' variable—hot weather—that causes an increase in both. By providing a framework and a set of tools to move beyond mere association, causal inference allows analysts and decision-makers to understand the real impact of their interventions and to answer critical 'what if' questions.<br><br>The gold standard for establishing causality is the Randomized Controlled Trial (RCT), where subjects are randomly assigned to a treatment group or a control group. However, conducting RCTs is often expensive, unethical, or simply impossible in many real-world business and social contexts. Causal inference provides a toolkit of quasi-experimental methods to estimate causal effects from observational data (i.e., data that was not generated through a randomized experiment). These methods rely on making certain assumptions about the data-generating process explicit. Techniques like <strong>Propensity Score Matching</strong> attempt to create a 'pseudo-randomized' experiment by matching individuals who received a treatment with similar individuals who did not. The <strong>Difference-in-Differences</strong> method compares the change in outcomes over time between a treatment group and a control group. <strong>Instrumental Variables</strong> and <strong>Regression Discontinuity Design</strong> are other powerful methods for isolating causal effects in specific scenarios.<br><br>The applications of causal inference are vital for effective strategy and policy. In <strong>business and marketing</strong>, it can answer crucial questions like: 'What was the true lift in sales caused by our latest advertising campaign, after accounting for seasonality and other factors?' or 'What is the causal effect of offering a discount on long-term customer loyalty?' The answers to these questions are essential for optimizing marketing spend and business strategy. In <strong>product development</strong>, causal inference can determine whether a new feature actually caused an increase in user engagement or if the increase was due to other simultaneous events. In <strong>public policy and economics</strong>, it is used to evaluate the impact of government programs, such as determining the effect of a job training program on employment rates or the effect of a new tax policy on economic growth.<br><br>The main challenge in causal inference is that its conclusions are heavily dependent on the validity of the underlying assumptions. Unlike prediction, where a model's accuracy can be easily tested on new data, the assumptions needed to make a causal claim from observational data are often untestable. This means the practitioner must have deep domain knowledge to argue for the plausibility of their assumptions. The complexity of the methods and the need for careful, nuanced interpretation make it a more challenging discipline than standard predictive modeling.<br><br>Despite these challenges, the integration of causal inference with modern machine learning—a field sometimes called Causal ML—is a rapidly growing area. Researchers are developing new methods that use the predictive power of machine learning to create more robust and accurate estimates of causal effects. As organizations become more data-driven, simply predicting what will happen is no longer sufficient. The ability to understand *why* things happen and to predict the consequences of new actions is the next frontier of data analytics, and causal inference is the key to unlocking it."
-  },
-  {
-    title: "Anomaly Detection in Cybersecurity",
-    content: "Anomaly detection is a critical cybersecurity technique that focuses on identifying patterns in data that do not conform to expected behavior. In an era of increasingly sophisticated and novel cyberattacks, traditional security systems that rely on predefined signatures to detect known threats are no longer sufficient. Attackers are constantly developing new malware and techniques that can bypass these signature-based defenses. Anomaly detection provides a more dynamic and proactive line of defense. By first establishing a baseline of normal activity within a network or system, it can then monitor for any deviations from this baseline. These deviations, or 'anomalies,' can be early indicators of a security breach, a malware infection, or other malicious activity, allowing security teams to investigate and respond before significant damage occurs.<br><br>Machine learning is the cornerstone of modern anomaly detection systems. These systems are trained on vast amounts of historical data, such as network traffic logs, user login activity, and system process information, to learn what constitutes 'normal.' Several ML approaches are used. <strong>Supervised methods</strong> are used when there is a labeled dataset of both normal and anomalous events, but this is rare in cybersecurity as it's impossible to have examples of all future attacks. Therefore, <strong>unsupervised methods</strong> are far more common. Clustering algorithms like DBSCAN can group similar data points together; any data point that doesn't belong to a cluster is flagged as an anomaly. Autoencoders, a type of neural network, can be trained to reconstruct normal data accurately. When presented with anomalous data, their reconstruction error will be high, flagging it as a potential threat.<br><br>The applications of anomaly detection are essential for a robust, multi-layered cybersecurity posture. It is widely used in <strong>Intrusion Detection Systems (IDS)</strong> to monitor network traffic. For example, a sudden, unusual spike in data being exfiltrated from a server at 3 AM would be flagged as an anomaly, potentially indicating a data breach. In <strong>user behavior analytics (UBA)</strong>, anomaly detection models a user's typical behavior—their login times, the systems they access, the volume of data they transfer. If that user's account suddenly starts trying to access sensitive servers it has never touched before or logs in from a new geographical location, the system raises an alert, which could indicate a compromised account. It is also used to detect <strong>financial fraud</strong>, identifying transaction patterns that deviate from a customer's normal spending habits, and to find <strong>malware</strong> by spotting unusual system calls or process behavior.<br><br>The primary challenge for anomaly detection systems is managing the high rate of <strong>false positives</strong>. Because the system flags *any* deviation from the norm, it can sometimes flag legitimate but unusual activities as malicious. A developer running a large data query for the first time might be flagged as an anomaly. If a system generates too many false alerts, security analysts can suffer from 'alert fatigue' and may start to ignore them, potentially missing a real threat. Therefore, a significant amount of effort goes into tuning these systems to find the right balance between sensitivity and precision. Another challenge is the 'concept drift,' where the definition of 'normal' behavior gradually changes over time, requiring the baseline model to be continuously retrained and updated.<br><br>The future of anomaly detection in cybersecurity lies in creating more context-aware and adaptive systems. By integrating data from multiple sources (network, endpoint, user activity) and using more sophisticated AI models like Graph Neural Networks to understand relationships, future systems will be able to provide more accurate alerts with richer context for investigators. The use of Explainable AI (XAI) will also be crucial to help security analysts understand *why* the system flagged a particular event as anomalous, enabling faster and more effective incident response. In the ongoing cat-and-mouse game of cybersecurity, anomaly detection provides a vital, intelligent defense against the unknown threats of tomorrow."
-  },
-];
+const legacyBlogData = [];
+const legacyBlogExtra = [];
 
-const legacyBlogExtra = [
-    // 0 Islam
-    "<br><br><strong>Deep dive: Core beliefs and lived practice</strong><br>At the heart of Islam are six Articles of Faith: belief in Allah; His angels; His revealed books (including the Qur’an as the final, preserved revelation); His messengers (from Adam to Muhammad, peace be upon them all); the Last Day; and divine decree (Qadar), encompassing both destiny and human responsibility. Sharia, often misunderstood, is best viewed as a comprehensive ethic that aims at justice, mercy, wisdom, and benefit. Its objectives (Maqasid al‑Sharia) safeguard faith, life, intellect, lineage, and property. In daily life this means honesty in trade, kindness to neighbors, humility in speech, and compassion toward the poor and vulnerable. Spiritual beautification (Ihsan) invites the believer to worship Allah as if seeing Him, cultivating sincerity, gratitude, and patience through prayer, fasting, charity, and remembrance (dhikr). Historically, Islamic civilization nurtured science, medicine, optics, algebra, astronomy, architecture, and the arts—motivated by a worldview that saw seeking knowledge as worship. For seekers, an authentic path forward includes reading the Qur’an with translation and commentary (tafsir), studying the Prophet’s life (sirah), keeping good company, and making heartfelt supplication (dua). Islam’s message is universal: peace through loving submission to the Creator and service to creation.",
-    // 1 Prophet Muhammad ﷺ
-    "<br><br><strong>Deep dive: Character, mercy, and timeless guidance</strong><br>The Prophet ﷺ embodied mercy in action. He forgave enemies at the Conquest of Makkah, honored treaties, visited the sick (even among those who opposed him), and showed gentleness with children, the elderly, and animals alike. His household set a standard for mutual respect and cooperation; he mended his clothing, helped with chores, and listened attentively. Ethically, he prohibited cheating, usury, tribalism, and cruelty, while commanding justice, trustworthiness, and care for orphans and the poor. Knowledge of his life comes through rigorously authenticated Hadith and Seerah literature preserved via careful chains of transmission (isnad) and textual criticism developed by Muslim scholars. For modern readers, his example offers practical guidance: lead with integrity, resolve conflict fairly, keep promises, and ground ambition in worship and service. To study him well, begin with a concise seerah (e.g., al‑Mubarakpuri’s The Sealed Nectar), pair it with daily readings of forty short hadith, and reflect on how each teaching translates into character (akhlaq) and community benefit today. Loving him means following him—in prayer, in honesty, in generosity, and in mercy toward all.",
-    // 2 XAI
-    "<br><br><strong>Deep dive: Explanation methods and practice</strong><br>Beyond LIME and SHAP, robust XAI blends local and global views: local explanations diagnose a single prediction (why this loan was denied), while global explanations summarize how the model behaves overall (which features tend to matter and where). Techniques include counterfactuals (what minimum change flips the decision), partial dependence and ICE plots (feature–outcome curves), surrogate trees (interpretable stand‑ins), and saliency/Grad‑CAM for vision. Good practice: define your audience first (scientist, reviewer, or end‑user), pre‑register explanation goals (fairness, safety, compliance), and validate explanations with domain experts. Pitfalls: correlated features can distort attributions; explanations can be unstable or create false confidence. Embed XAI into the MLOps lifecycle—store explanations alongside predictions, add bias/robustness checks to CI, and support audit trails for regulators (GDPR/AI‑Act style). Measure success via trust‑calibration (do users rely appropriately?), human‑in‑the‑loop task performance, and fairness metrics across subgroups. XAI is not an afterthought; it is a design constraint for high‑stakes AI.",
-    // 3 Federated Learning
-    "<br><br><strong>Deep dive: Privacy, personalization, and efficiency</strong><br>Modern FL stacks combine secure aggregation (server sees only encrypted updates), differential privacy (bounds information leakage), and attestation of clients to harden the perimeter. Personalization techniques—such as fine‑tuning a small head layer per client or meta‑learning—boost on‑device accuracy without sacrificing the global model. Communication is the bottleneck: use update compression (quantization, sparsification), fewer rounds with larger local steps, and client sampling. Track heterogeneity with metrics like client drift, per‑cluster performance, and fairness across devices/tenants. Practical guardrails: exclude anomalous or poisoned updates with robust aggregation (Median/Krum/Trimmed Mean), add data provenance, and monitor privacy budgets. FL succeeds when privacy requirements are strict, data is siloed, and stakeholders benefit from a shared foundation but retain control of their data.",
-    // 4 RL for Robotics
-    "<br><br><strong>Deep dive: Reward design and sim‑to‑real</strong><br>Reward shaping (penalize jerks, encourage smooth trajectories) stabilizes learning but must avoid introducing shortcuts. Safety layers constrain actions to feasible sets (joint limits, collision cones). Bridging sim‑to‑real needs domain randomization (vary textures, friction, mass), privileged learning (extra sensors only in sim), and system identification to match dynamics. Hierarchical RL decomposes hard tasks into skills (grasp, lift, place) orchestrated by a high‑level policy; curriculum learning starts simple and increases difficulty. Evaluation should include success rate, time‑to‑completion, and recovery after perturbations. For deployment, add anomaly monitors, fallback controllers, and human‑override. The goal isn’t flashy demos; it’s robust policies that work all day on real hardware.",
-    // 5 MLOps
-    "<br><br><strong>Deep dive: Production rigor</strong><br>Make feature stores a first‑class citizen (consistency between training and serving). Adopt a model registry with lineage, approvals, and rollbacks. Automate CI/CD for data and models: unit tests for feature code, data validation gates (Great Expectations), canary model releases, and shadow deployments. Monitor end‑to‑end: prediction quality (ground‑truth when available), drift (data/label), latency, cost, and fairness. Build playbooks for rollback and retraining triggers. Security matters—scan images, lock down secrets, and control PII access. Treat models as living systems: iterate safely, measure impact, and retire models responsibly.",
-    // 6 Transformers beyond NLP
-    "<br><br><strong>Deep dive: Efficient vision Transformers</strong><br>Design choices—patch size, hybrid CNN backbones, and token pruning—affect accuracy and speed. Efficient attention variants (Linformer, Performer, Focal, windowed attentions like Swin) scale to high‑res inputs. For vision tasks beyond classification, pair ViTs with pyramid features, deformable attention, and multi‑scale heads for detection/segmentation. Masked autoencoders (MAE) pretrain on reconstruction for strong downstream transfer. Training data quality and augmentations (RandAugment, Mixup/CutMix) remain decisive. As costs grow, distillation and adapters enable practical deployment on edge devices.",
-    // 7 GNNs
-    "<br><br><strong>Deep dive: Architectures and scale</strong><br>Graph Convolutional Networks (GCN) average neighbor messages; Graph Attention Networks (GAT) learn attention weights; GraphSAGE samples neighbors for inductive learning. Pooling (DiffPool, TopK) yields graph‑level representations; positional encodings and Laplacian features capture structure. For web‑scale graphs, use sampling, mini‑batching, partitioning, and distributed training. Explainability (GNNExplainer, PGExplainer) surfaces influential subgraphs for trust and debugging. Beware oversmoothing and oversquashing—use residuals, jumping knowledge, or rewiring. Real wins come from good schemas, clean node/edge features, and rigorous evaluation splits.",
-    // 8 TinyML
-    "<br><br><strong>Deep dive: Edge constraints and design</strong><br>Target microcontrollers (e.g., ARM Cortex‑M) with tens to hundreds of KB RAM and tight power budgets. Favor event‑driven pipelines (wake on keyword or motion) to extend battery life. Combine quantization‑aware training, pruning, and architecture search for compact models; use CMSIS‑NN or vendor accelerators for speed. Validate with on‑device benchmarks (latency, energy per inference) and real sensor noise. Plan OTA updates and fail‑safe rollbacks. Great domains: wake‑word, anomaly detection, vibration analytics, and simple vision (person detection) at the very edge.",
-    // 9 Diffusion vs GANs
-    "<br><br><strong>Deep dive: Practical generation</strong><br>Latent diffusion operates in a compressed latent space for speed and quality; classifier‑free guidance trades fidelity vs. diversity via a guidance scale. ControlNets and adapters add structure (edges, pose) for controllable outputs. To accelerate sampling, use improved schedulers (DDIM, DPM‑Solver, consistency models) and fewer steps with minimal quality loss. Hybrids exist—adversarial fine‑tuning of diffusion outputs can sharpen results. Guardrails: content filters, watermarking, and provenance metadata are essential for responsible use.",
-    // 10 LLMs for Code
-    "<br><br><strong>Deep dive: Effective use and safety</strong><br>Maximize utility with clear intent comments, small function scopes, and representative examples in the prompt. Use retrieval (RAG) to ground suggestions in your codebase and APIs. Add automated evals (unit tests, fuzzing, static analysis) to catch subtle errors. Mind context windows—summarize or chunk large files. Security: never paste secrets; review for injection and supply‑chain risks; prefer read‑only credentials for tools. Treat AI output as a draft—enforce code review and style checks.",
-    // 11 Multimodal Gen AI
-    "<br><br><strong>Deep dive: Training and alignment</strong><br>Multimodal encoders align modalities with contrastive losses; generators use cross‑attention to condition on text/image/audio embeddings. Data quality is paramount—curate for diversity and reduce spurious correlations. Evaluate with human studies and task‑specific metrics (captioning, VQA, retrieval). Add safety layers: prompt filters, output classifiers, and user controls for style and attribution. Emerging systems blend modalities interactively—edit an image with voice, ground text in a scene, and reason over video.",
-    // 12 Ethical Guardrails
-    "<br><br><strong>Deep dive: Governance in practice</strong><br>Build an AI risk register, classify use‑cases by impact, and apply proportionate controls. Require model cards, data sheets, and change logs. Conduct pre‑release red‑teaming and recurring audits; add incident reporting and kill‑switches for abuse. Implement user‑visible provenance and opt‑outs where feasible. Ethics is operational: incentives, processes, and technical safeguards must align to reduce harm while enabling innovation.",
-    // 13 Fine‑Tuning LLMs
-    "<br><br><strong>Deep dive: Methods and evaluation</strong><br>Instruction‑tuning and SFT (supervised fine‑tuning) set behavior; RLHF or DPO aligns to preferences; PEFT methods (LoRA, adapters) cut compute and enable multi‑persona models. Data quality dominates: deduplicate, balance, and redact sensitive info. Track regressions with task suites and human evals; guard against overfitting and style collapse. Consider domain retrieval (RAG) plus light fine‑tuning for agility.",
-    // 14 AI Agents
-    "<br><br><strong>Deep dive: Tools, memory, and control</strong><br>Agents plan with tree/graph search, task decomposition, or LLM‑based planners. Tools expose safe capabilities (search, DB queries, file I/O) behind strict schemas and rate limits. Memory spans ephemeral scratchpads, episodic logs, and vector memories for retrieval. Safety needs sandboxing, allow‑lists, output filters, human‑in‑the‑loop checkpoints, and reproducible logs. Measure agents by task success, cost, latency, and failure modes—not just demos.",
-    // 15 Multi‑Agent Systems
-    "<br><br><strong>Deep dive: Coordination patterns</strong><br>Use auctions and market mechanisms for allocation, consensus for agreement (RAFT/PBFT in distributed settings), and stigmergy for indirect coordination. MARL techniques (QMIX, MADDPG) train agents to cooperate or compete. Design incentives to avoid tragedy‑of‑the‑commons dynamics. Test at scale with simulators; measure social welfare, fairness, and robustness to adversarial agents.",
-    // 16 Goal Alignment
-    "<br><br><strong>Deep dive: Outer vs. inner alignment</strong><br>Outer alignment matches the specified objective to human values; inner alignment ensures the learned internal objectives faithfully pursue the specified goal. Tools include RLHF/DPO, oversight with scalable supervision, debate and tournament methods, and interpretability to inspect internal circuits. Stress‑test with adversarial prompts and distribution shifts. Alignment is a journey of iterative refinement, evaluation, and humility.",
-    // 17 AI in Science
-    "<br><br><strong>Deep dive: Closing the loop</strong><br>Active learning selects the next best experiment; lab automation executes it; Bayesian optimization guides exploration; and ELNs/LIMS capture provenance. Reproducibility requires open data, benchmarks, and standardized reporting. Pair symbolic priors with deep models to respect physical laws. The prize isn’t faster papers—it’s trustworthy discoveries that translate to real‑world impact.",
-    // 18 AGI
-    "<br><br><strong>Deep dive: Trajectories and guardrails</strong><br>Scaling laws suggest predictable gains with data/compute, but diminishing returns and qualitative gaps (common sense, causality) remain. Competing views span pure scaling vs. architectural and embodied leaps. Regardless of path, invest in safety: evaluation regimes, interpretability, alignment methods, and governance. Global coordination will matter—standards, audits, and incident sharing reduce systemic risk.",
-    // 19 Data Storytelling
-    "<br><br><strong>Deep dive: Craft and clarity</strong><br>Anchor every chart to a single message; remove ink that doesn’t support it. Use preattentive attributes (position, length, color) to direct attention; ensure accessibility (color‑blind palettes, readable text). Avoid common traps: dual y‑axes without clear labeling, 3D charts, and cluttered dashboards. Close with a clear call‑to‑action tied to business outcomes.",
-    // 20 Predictive Analytics in SCM
-    "<br><br><strong>Deep dive: From forecasts to flows</strong><br>Translate forecasts into inventory policies (s,S), reorder points, and safety stock that reflect service levels and lead‑time variability. Integrate S&OP to align demand, supply, and finance. Mitigate bullwhip via information sharing and shorter cycles. Fuse data from POS, IoT, and external signals. Track KPIs—fill rate, OTIF, carrying cost—and run what‑if scenarios to stress‑test resilience.",
-    // 21 Automated Data Prep
-    "<br><br><strong>Deep dive: Trustworthy data</strong><br>Add lineage and catalogs so teams know origin, transformations, and owners. Encode rules as tests (Great Expectations) and enforce in CI. Standardize semantics with governed vocabularies. Use templates/macros (dbt) for repeatable transforms. Automate deduplication and entity resolution; log decisions for auditability. Clean data isn’t a one‑off; it’s a product with SLAs.",
-    // 22 IPA
-    "<br><br><strong>Deep dive: From pilots to scale</strong><br>Start with process mining to map reality, not assumptions. Choose high‑volume, rules‑heavy candidates with measurable SLAs. Design for exceptions and human handoffs; include monitoring, retraining of ML components, and clear rollback paths. Track ROI, cycle time, accuracy, and employee satisfaction. Governance and change management determine long‑term success.",
-    // 23 Causal Inference
-    "<br><br><strong>Deep dive: Tools and traps</strong><br>Causal graphs (DAGs) clarify assumptions; do‑calculus formalizes identification; double machine learning and causal forests blend ML with inference; uplift modeling targets heterogeneous treatment effects. Validate with placebo tests and sensitivity analyses; report assumptions and robustness. Causality is about decisions under uncertainty—be explicit, be humble, be testable.",
-    // 24 Anomaly Detection
-    "<br><br><strong>Deep dive: From alerts to action</strong><br>Combine detectors (statistical, distance‑based, autoencoders) and calibrate thresholds per entity. Embrace streaming and online learning to adapt to drift. Add human‑feedback loops to re‑label borderline cases. Provide rich context in alerts (who/what/where/why), automatic triage, and playbooks. The goal isn’t fewer alerts—it’s faster, more accurate response and learning over time."
-];
 
 /* ========================================================================== */
 /* 14) Blog UI, Share & Popup */
@@ -1883,36 +1636,66 @@ function initializeBlogs() {
 
         // 30 unique, topic-aligned icons (one per blog, no duplicates)
         const iconPaths = [
-            'M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8L12 3zM19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14z',
-            'M3 7h18v10H3V7zm2 2v6h14V9H5zm3 1h2v2H8v-2zm3 0h2v2h-2v-2z',
-            'M12 2a9 9 0 1 0 9 9h-2a7 7 0 1 1-2.05-4.95l-2.45 2.45H22V2l-2.69 2.69A8.97 8.97 0 0 0 12 2z',
-            'M12 2C7 2 3 3.79 3 6v12c0 2.21 4 4 9 4s9-1.79 9-4V6c0-2.21-4-4-9-4zm0 2c4.42 0 7 .99 7 2s-2.58 2-7 2-7-.99-7-2 2.58-2 7-2zm0 16c-4.42 0-7-.99-7-2v-2c1.53 1.03 4.22 1.5 7 1.5s5.47-.47 7-1.5v2c0 1.01-2.58 2-7 2z',
-            'M19.4 13a7.95 7.95 0 0 0 .1-1 8 8 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8.02 8.02 0 0 0-1.7-1l-.4-2.7h-4l-.4 2.7c-.6.2-1.2.5-1.7 1l-2.5-1-2 3.4L4.6 11a7.95 7.95 0 0 0-.1 1c0 .34.03.67.1 1L2.5 14.6l2 3.4 2.5-1c.5.4 1.1.8 1.7 1l.4 2.7h4l.4-2.7c.6-.2 1.2-.5 1.7-1l2.5 1 2-3.4-2.3-1.6zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z',
-            'M12 2l8 4v6c0 5.25-3.4 9.74-8 11-4.6-1.26-8-5.75-8-11V6l8-4zm-1 11l-2-2-1.4 1.4L11 15.8l5.4-5.4L15 9l-4 4z',
-            'M19 18H6a4 4 0 1 1 .62-7.95A5 5 0 0 1 16.2 8.1 3.5 3.5 0 1 1 19 18z',
-            'M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z',
-            'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.02 6.02 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
-            'M10 4h4a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V9a2 2 0 0 1 2-2h3V6a2 2 0 0 1 2-2z',
-            'M4 12l4-4v3h4v2H8v3l-4-4zm16 0l-4 4v-3h-4v-2h4V8l4 4z',
-            'M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 4h8v4h-8v-4z',
-            'M4 4h16v2H4zm0 5h10v2H4zm0 5h16v2H4zm0 5h10v2H4z',
-            'M5 3h14v4h-2V5H7v2H5V3zm7 3 7 4v8l-7 4-7-4v-8l7-4zm0 2.2L7 11v6l5 2.8 5-2.8v-6l-5-2.8z',
-            'M9 2h6v2h-1v2.08A7 7 0 0 1 19 13v5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-5a7 7 0 0 1 5-6.92V4H9V2z',
-            'M12 2l8 4v6c0 5.25-3.4 9.74-8 11-4.6-1.26-8-5.75-8-11V6l8-4zm1 6h-2v4h2V8zm0 6h-2v2h2v-2z',
-            'M3 4h8v8H3V4zm10 0h8v8h-8V4zM3 14h8v6H3v-6zm10 2h8v4h-8v-4z',
-            'M3 5h2v14H3V5zm4 4h2v10H7V9zm4-3h2v13h-2V6zm4 6h2v7h-2v-7zm4-5h2v12h-2V7z',
-            'M7.5 3A4.5 4.5 0 0 0 3 7.5v9A4.5 4.5 0 0 0 7.5 21h9a4.5 4.5 0 0 0 4.5-4.5v-9A4.5 4.5 0 0 0 16.5 3h-9zM12 7l2 3h3l-2.5 2 1 3-3-1.8L9.5 15l1-3L8 10h3l1-3z',
-            'M4 14h16v2H4zm2-4h3v3H6zm5-2h3v5h-3zm5-3h3v8h-3z',
-            'M12 4a8 8 0 0 1 8 8h-2a6 6 0 1 0-2.4 4.8l1.2 1.6A8 8 0 1 1 12 4zm4.2 8.2h-5v-5h2v3h3z',
-            'M3 12h18M12 3v18M5 5l14 14M19 5 5 19',
-            'M3 12a9 9 0 0 1 18 0v1H3v-1zm2 3h14v4H5v-4z',
-            'M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 2h6v4h-6v-4z',
-            'M4 4h16v3H4V4zm0 6h16v10H4V10zm2 2v6h12v-6H6z',
-            'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 5h2v6h5v2h-7V7z',
-            'M3 12l4-4v3h5v2H7v3l-4-4zm18 0-4 4v-3h-5v-2h5V8l4 4z',
-            'M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 3h7v4h-7v-4z',
-            'M3 8l9-5 9 5-9 5-9-5zm2 5l7 4 7-4v3l-7 4-7-4v-3z',
-            'M12 2a5 5 0 0 1 5 5v2h1a2 2 0 0 1 2 2v9h-2v-2H6v2H4v-9a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v2h6V7a3 3 0 0 0-3-3z'
+            // 0: Generative AI Shift (Double sparkle / magic)
+            'M9 4L10.5 7.5L14 9L10.5 10.5L9 14L7.5 10.5L4 9L7.5 7.5L9 4ZM17 12L18 14.5L20.5 15.5L18 16.5L17 19L16 16.5L13.5 15.5L16 14.5L17 12Z',
+            // 1: Edge AI Growth (Mobile NPU)
+            'M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14zm-5-6c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z',
+            // 2: Quantum Advantage Near (Quantum Orbit Atom)
+            'M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 15c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm0-8c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z',
+            // 3: Data Engineering Era (Data Lakehouse Stack)
+            'M12 2C6.5 2 2 3.8 2 6v12c0 2.2 4.5 4 10 4s10-1.8 10-4V6c0-2.2-4.5-4-10-4zm0 2c4.4 0 8 1.3 8 2s-3.6 2-8 2-8-1.3-8-2 3.6-2 8-2zm0 14c-4.4 0-8-1.3-8-2v-3c1.5 1 4.5 1.5 8 1.5s6.5-.5 8-1.5v3c0 .7-3.6 2-8 2zm0-5c-4.4 0-8-1.3-8-2v-3c1.5 1 4.5 1.5 8 1.5s6.5-.5 8-1.5v3c0 .7-3.6 2-8 2z',
+            // 4: MLOps Standardization (DevOps loop)
+            'M18.5 6C16.8 6 15.2 6.8 14 8.2c-1.2-1.4-2.8-2.2-4.5-2.2C5.9 6 3 8.9 3 12.5S5.9 19 9.5 19c1.7 0 3.3-.8 4.5-2.2c1.2 1.4 2.8 2.2 4.5 2.2c3.6 0 6.5-2.9 6.5-6.5S22.1 6 18.5 6zm-9 11c-2.5 0-4.5-2-4.5-4.5S7 8 9.5 8c1.6 0 3 1.1 4 2.8c-1 1.7-2.4 2.8-4 2.8c-.8 0-1.5-.7-1.5-1.5S8.7 10.5 9.5 10.5c.3 0 .5-.2.5-.5s-.2-.5-.5-.5c-1.4 0-2.5 1.1-2.5 2.5s1.1 2.5 2.5 2.5c1.4 0 2.6-.9 3.4-2.2c.4.6.8 1.2 1.3 1.7c-1.1 1.9-2.7 3-4.7 3zm9 0c-2 0-3.6-1.1-4.7-3c.5-.5.9-1.1 1.3-1.7c.8 1.3 2 2.2 3.4 2.2c1.4 0 2.5-1.1 2.5-2.5s-1.1-2.5-2.5-2.5c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5c.3 0 .5.2.5.5s-.2.5-.5.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5c2.5 0 4.5 2 4.5 4.5s-2 4.5-4.5 4.5z',
+            // 5: Responsible AI Rules (Shield with core)
+            'M12 2L3 6v6c0 5.55 3.8 10.74 9 12 5.2-1.26 9-6.45 9-12V6l-9-4zm0 10.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
+            // 6: Cloud Native AI (Cloud Downward processor)
+            'M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM12 17l-4-4h2.5V9h3v4H16l-4 4z',
+            // 7: Computer Vision Retail (Modern eye)
+            'M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z',
+            // 8: AI in Healthcare (Medical cross in heart)
+            'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.02 6.02 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35zm-1.5-12.85h3v3h3v3h-3v3h-3v-3h-3v-3h3v-3z',
+            // 9: Future of Work (Briefcase check)
+            'M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11zm-5-5l-2.5 2.5L10 14l-1.5 1.5 4 4 5-5z',
+            // 10: Federated Learning Rise (Network cluster)
+            'M12 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm-8 12a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm16 0a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM11.5 7.5L5 13.5l1.3 1.4 6.5-6-1.3-1.4zm1.2 0l1.3 1.4 6.5 6 1.3-1.4-6.5-6z',
+            // 11: AutoML Expansion (Auto gear and inner core)
+            'M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z',
+            // 12: Vector Databases Boom (Isometric 3D cube)
+            'M12 2.06l-9 5.2v10.4l9 5.2 9-5.2V7.26l-9-5.2zM12 4.3l7 4.04-7 4.04-7-4.04 7-4.04zM5 9.77l6 3.46v6.93l-6-3.46V9.77zm14 0v6.93l-6 3.46v-6.93l6-3.46z',
+            // 13: TinyML Devices (Silicon Chip / Microcontroller)
+            'M19 9h2V7h-2V5c0-1.1-.9-2-2-2h-2V1h-2v2h-2V1H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9zm-4 6H9V9h6v6z',
+            // 14: Reinforcement Learning Robotics (Robot face)
+            'M19 8h-1.18c-.48-1.78-2.09-3-3.96-3H10.14c-1.87 0-3.48 1.22-3.96 3H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zM12 18c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6-6h-2v2h2v-2zm-10 0H6v2h2v-2z',
+            // 15: Data Privacy Computing (Encrypted lock)
+            'M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z',
+            // 16: Multimodal Models (Multimodal stack layers)
+            'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+            // 17: Serverless Data Pipelines (Cloud lightning function)
+            'M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM11 18v-4H8l5-7v4h3l-5 7z',
+            // 18: Explainable AI Demand (Search magnifying glass)
+            'M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5 11.99 14 9.5 14z',
+            // 19: Sustainable Computing (Leaf shape)
+            'M17 8C13 8 10 10.5 8 14c-.8-2-2-3.8-3.5-5.2C3 7.3 3.3 4 5 3c2.7-1.6 6.3-.5 8.5 2.2c.8-1 2-2 3.5-2.2c2.2-.3 4.2 1.3 4 3.5c-.2 1.8-1.5 3.3-3 3.5zM12 22s-2-5-2-7h4c0 2-2 7-2 7z',
+            // 20: Synthetic Data Era (Double helix)
+            'M8.2 3.2c.4 0 .7.3.7.7v1.1c2 .5 3.6 1.8 4.3 3.6h2.2c.4 0 .7.3.7.7s-.3.7-.7.7h-1.8c.2.6.3 1.3.3 2s-.1 1.4-.3 2h1.8c.4 0 .7.3.7.7s-.3.7-.7.7h-2.2c-.7 1.8-2.3 3.1-4.3 3.6V20c0 .4-.3.7-.7.7s-.7-.3-.7-.7v-1.1c-2-.5-3.6-1.8-4.3-3.6H1.5c-.4 0-.7-.3-.7-.7s.3-.7.7-.7h1.8c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2H1.5c-.4 0-.7-.3-.7-.7s.3-.7.7-.7h2.2c.7-1.8 2.3-3.1 4.3-3.6V4c0-.4.3-.7.7-.7zm3.1 6.3c-.6-.7-1.5-1.1-2.5-1.1S6.9 8.8 6.3 9.5c-.3.4-.3 1 0 1.4c.6.7 1.5 1.1 2.5 1.1s1.9-.4 2.5-1.1c.3-.4.3-1 0-1.4z',
+            // 21: AI Powered Search (Search with internal star/sparkle)
+            'M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5c0-3.59-2.91-6.5-6.5-6.5S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-7l1 2h2l-1.5 1.2.7 2.3-2.2-1.5-2.2 1.5.7-2.3L5.5 8.5h2l1-2z',
+            // 22: Graph Machine Learning (Interconnected node network)
+            'M12 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm-8 12a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm16 0a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM11.5 7.5L5 13.5l1.3 1.4 6.5-6-1.3-1.4zm1.2 0l1.3 1.4 6.5 6 1.3-1.4-6.5-6z',
+            // 23: AI Code Assistants (Code brackets </>)
+            'M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4zM11.4 19.4l4-14.8-1.9-.5-4 14.8 1.9.5z',
+            // 24: Hybrid Cloud Strategy (Cloud with core keyhole)
+            'M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM12 17a2 2 0 1 1 0-4 2 2 0 0 1 0 4z',
+            // 25: Time Series Forecasting (Growth chart columns)
+            'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z',
+            // 26: AI Security Defense (Shield with checkmark)
+            'M12 2L3 6v6c0 5.55 3.8 10.74 9 12 5.2-1.26 9-6.45 9-12V6l-9-4zm-2 15l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z',
+            // 27: Quantum Machine Learning (Orbital spheres / globe)
+            'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z',
+            // 28: Feature Store Adoption (Folder storage shelf)
+            'M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2zm2 10h-2v-2h2v2zm0-4h-2V8h2v2zm4 4h-2v-2h2v2zm0-4h-2V8h2v2z',
+            // 29: Human AI Collaboration (Cooperative circle plus)
+            'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v4H7v2h4v4h2v-4h4v-2h-4V7z'
         ];
 
         return svg(iconPaths[index] || iconPaths[0]);
@@ -1993,11 +1776,21 @@ function initializeBlogs() {
         return ((Math.round(raw) % total) + total) % total;
     }
 
-    function layoutWheel() {
+    let wheelWidth = 0;
+    let wheelHeight = 0;
+    function updateWheelSize() {
         const rect = wheel.getBoundingClientRect();
-        const centerX = rect.width * 0.5;
-        const centerY = rect.height + 42;
-        const radius = Math.min(rect.width * 0.5, rect.height * 0.72);
+        wheelWidth = rect.width;
+        wheelHeight = rect.height;
+    }
+
+    function layoutWheel() {
+        if (wheelWidth === 0 || wheelHeight === 0) {
+            updateWheelSize();
+        }
+        const centerX = wheelWidth * 0.5;
+        const centerY = wheelHeight + 42;
+        const radius = Math.min(wheelWidth * 0.5, wheelHeight * 0.72);
 
         buttons.forEach((button, index) => {
             const angle = index * step + rotation;
@@ -2027,7 +1820,7 @@ function initializeBlogs() {
     wheel.addEventListener('pointerdown', (e) => {
         dragging = true;
         lastY = e.clientY;
-        try { wheel.setPointerCapture(e.pointerId); } catch (_) {}
+        try { wheel.setPointerCapture(e.pointerId); } catch (_) { }
     });
 
     wheel.addEventListener('pointermove', (e) => {
@@ -2043,7 +1836,10 @@ function initializeBlogs() {
     wheel.addEventListener('pointercancel', endDrag);
     wheel.addEventListener('pointerleave', endDrag);
 
-    window.addEventListener('resize', layoutWheel);
+    window.addEventListener('resize', () => {
+        updateWheelSize();
+        layoutWheel();
+    }, { passive: true });
 
     function tick() {
         rotation += velocity;
@@ -2065,121 +1861,7 @@ function initializeBlogs() {
     requestAnimationFrame(tick);
 }
 
-function openBlogPopup(id) {
-    const popup = byId('blogPopup');
-    const title = byId('popupTitle');
-    const content = byId('popupText');
-    if (!popup || !title || !content) return;
-    
-    if (blogData[id]) {
-        title.textContent = blogData[id].title;
-        content.innerHTML = blogData[id].content + (blogExtra[id] || "");
-    } else {
-        title.textContent = "Blog Topic";
-        content.innerHTML = "Content for this blog topic is coming soon...";
-    }
-    
-    // store current blog id for sharing
-    try { popup.dataset.blogId = String(id); } catch(_) {}
 
-    popup.classList.add('show');
-    document.body.classList.add('freeze-scroll');
-
-    // Prepare karaoke and reset speak UI
-    prepareBlogKaraoke();
-    resetBlogSpeakUI();
-
-    // Update share buttons
-    updateBlogShareHandlers();
-}
-
-function closeBlogPopup() {
-    const popup = byId('blogPopup');
-    if (!popup) return;
-    popup.classList.remove('show');
-    document.body.classList.remove('freeze-scroll');
-    try { window.speechSynthesis.cancel(); } catch(_) {}
-    resetBlogSpeakUI();
-}
-
-// Build a shareable URL for the current blog
-function getBlogShareUrl(id) {
-    const url = new URL(window.location.href);
-    // Use a simple query parameter to identify the blog
-    url.searchParams.set('blog', String(id));
-    return url.toString();
-}
-
-function updateBlogShareHandlers() {
-    const popup = byId('blogPopup');
-    if (!popup) return;
-    const id = popup.dataset.blogId || '';
-    if (id === '') return;
-
-    const shareUrl = getBlogShareUrl(id);
-    const title = (blogData[id] && blogData[id].title) ? blogData[id].title : document.title;
-
-    // Copy link
-    const copyBtn = byId('copyBlogLinkBtn');
-    if (copyBtn) {
-        copyBtn.onclick = async (e) => {
-            e.preventDefault();
-
-            // Build original HTML (avoid karaoke spans) and plain text fallback
-            const fullHtml = (() => {
-                const core = (blogData[id] && blogData[id].content) ? blogData[id].content : '';
-                const extra = blogExtra[id] || '';
-                return `<h2>${title}</h2>${core}${extra}`;
-            })();
-
-            // Create plain text from the original HTML
-            const toText = (html) => {
-                const div = document.createElement('div');
-                div.innerHTML = html;
-                return (div.innerText || div.textContent || '').trim();
-            };
-            const fullText = toText(fullHtml);
-
-            // Try rich clipboard first (HTML + plain text)
-            try {
-                if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
-                    const blobHtml = new Blob([fullHtml], { type: 'text/html' });
-                    const blobText = new Blob([fullText], { type: 'text/plain' });
-                    const item = new ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText });
-                    await navigator.clipboard.write([item]);
-                } else {
-                    await navigator.clipboard.writeText(fullText);
-                }
-                showToast('Post copied to clipboard');
-                return;
-            } catch (err) {
-                // Fallback to a temporary textarea
-                const tmp = document.createElement('textarea');
-                tmp.value = fullText;
-                document.body.appendChild(tmp);
-                tmp.select();
-                try { document.execCommand('copy'); } catch(_) {}
-                document.body.removeChild(tmp);
-                showToast('Post copied');
-            }
-        };
-    }
-
-    // X (Twitter)
-    const x = byId('shareXBtn');
-    if (x) {
-        const text = encodeURIComponent(title);
-        const u = encodeURIComponent(shareUrl);
-        x.href = `https://twitter.com/intent/tweet?text=${text}&url=${u}`;
-    }
-
-    // LinkedIn
-    const li = byId('shareLinkedInBtn');
-    if (li) {
-        const u = encodeURIComponent(shareUrl);
-        li.href = `https://www.linkedin.com/sharing/share-offsite/?url=${u}`;
-    }
-}
 
 /* ========================================================================== */
 /* 15) Global Popup Controls */
@@ -2190,26 +1872,18 @@ function handleOutsideClick(event) {
     // Contact form
     const contactPopup = byId('contactPopup');
     const contactForm = document.querySelector('.contact-form');
-    if (contactPopup && contactForm && contactPopup.style.display === 'flex' && !contactForm.contains(event.target) && 
+    if (contactPopup && contactForm && contactPopup.style.display === 'flex' && !contactForm.contains(event.target) &&
         !event.target.matches('#contact-trigger') && !event.target.matches('#footer-contact-trigger') &&
         !event.target.matches('#hireMeBtn') && !event.target.matches('#recruiterContactBtn')) {
         closeContactForm();
     }
-    
+
     // Privacy popup
     const privacyPopup = byId('privacyPopup');
     const privacyContent = document.querySelector('.privacy-content');
-    if (privacyPopup && privacyContent && privacyPopup.style.display === 'flex' && !privacyContent.contains(event.target) && 
+    if (privacyPopup && privacyContent && privacyPopup.style.display === 'flex' && !privacyContent.contains(event.target) &&
         !event.target.matches('#privacy-trigger')) {
         closePrivacyPopup();
-    }
-    
-    // Blog popup
-    const blogPopup = byId('blogPopup');
-    const blogContent = document.querySelector('.popup-content');
-    if (blogPopup && blogContent && blogPopup.classList.contains('show') && !blogContent.contains(event.target) && 
-        !event.target.matches('.topic-button')) {
-        closeBlogPopup();
     }
 }
 
@@ -2218,378 +1892,378 @@ function handleOutsideClick(event) {
 /* ========================================================================== */
 
 const COSMIC_CLOCK = {
-        overlay: null,
-        popup: null,
-        closeBtn: null,
-        sidebarIcon: null,
-        initialized: false,
-        start: null,
-        stop: null
+    overlay: null,
+    popup: null,
+    closeBtn: null,
+    sidebarIcon: null,
+    initialized: false,
+    start: null,
+    stop: null
 };
 
 function initializeCosmicClock() {
-        COSMIC_CLOCK.overlay = byId('cosmicClockOverlay');
-        COSMIC_CLOCK.popup = byId('cosmicClockPopup');
-        COSMIC_CLOCK.closeBtn = byId('cosmicClockCloseBtn');
-        COSMIC_CLOCK.sidebarIcon = document.querySelector('.right-sidebar [data-action="cosmic-clock"]');
+    COSMIC_CLOCK.overlay = byId('cosmicClockOverlay');
+    COSMIC_CLOCK.popup = byId('cosmicClockPopup');
+    COSMIC_CLOCK.closeBtn = byId('cosmicClockCloseBtn');
+    COSMIC_CLOCK.sidebarIcon = document.querySelector('.right-sidebar [data-action="cosmic-clock"]');
 
-        if (!COSMIC_CLOCK.overlay || !COSMIC_CLOCK.popup) return;
-        if (COSMIC_CLOCK.initialized) return;
+    if (!COSMIC_CLOCK.overlay || !COSMIC_CLOCK.popup) return;
+    if (COSMIC_CLOCK.initialized) return;
 
-        const root = COSMIC_CLOCK.popup.querySelector('.cosmic-clock-root');
-        const engine = createCosmicClockEngine(root, COSMIC_CLOCK.popup);
-        COSMIC_CLOCK.start = engine.start;
-        COSMIC_CLOCK.stop = engine.stop;
+    const root = COSMIC_CLOCK.popup.querySelector('.cosmic-clock-root');
+    const engine = createCosmicClockEngine(root, COSMIC_CLOCK.popup);
+    COSMIC_CLOCK.start = engine.start;
+    COSMIC_CLOCK.stop = engine.stop;
 
-        if (COSMIC_CLOCK.closeBtn) {
-                COSMIC_CLOCK.closeBtn.addEventListener('click', () => closeCosmicClockPopup());
-        }
+    if (COSMIC_CLOCK.closeBtn) {
+        COSMIC_CLOCK.closeBtn.addEventListener('click', () => closeCosmicClockPopup());
+    }
 
-        COSMIC_CLOCK.overlay.addEventListener('click', (e) => {
-                if (e.target === COSMIC_CLOCK.overlay) closeCosmicClockPopup();
-        });
+    COSMIC_CLOCK.overlay.addEventListener('click', (e) => {
+        if (e.target === COSMIC_CLOCK.overlay) closeCosmicClockPopup();
+    });
 
-        COSMIC_CLOCK.initialized = true;
+    COSMIC_CLOCK.initialized = true;
 }
 
 function openCosmicClockPopup() {
-        initializeCosmicClock();
-        if (!COSMIC_CLOCK.overlay) return;
+    initializeCosmicClock();
+    if (!COSMIC_CLOCK.overlay) return;
 
-        COSMIC_CLOCK.overlay.classList.add('show');
-        COSMIC_CLOCK.overlay.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('freeze-scroll');
-        if (COSMIC_CLOCK.sidebarIcon) COSMIC_CLOCK.sidebarIcon.classList.add('is-active');
-        if (typeof COSMIC_CLOCK.start === 'function') COSMIC_CLOCK.start();
+    COSMIC_CLOCK.overlay.classList.add('show');
+    COSMIC_CLOCK.overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('freeze-scroll');
+    if (COSMIC_CLOCK.sidebarIcon) COSMIC_CLOCK.sidebarIcon.classList.add('is-active');
+    if (typeof COSMIC_CLOCK.start === 'function') COSMIC_CLOCK.start();
 }
 
 function closeCosmicClockPopup() {
-        if (!COSMIC_CLOCK.overlay) return;
+    if (!COSMIC_CLOCK.overlay) return;
 
-        COSMIC_CLOCK.overlay.classList.remove('show');
-        COSMIC_CLOCK.overlay.setAttribute('aria-hidden', 'true');
-        const gamesOpen = byId('gamesOverlay') && byId('gamesOverlay').classList.contains('show');
-        if (!gamesOpen) document.body.classList.remove('freeze-scroll');
-        if (COSMIC_CLOCK.sidebarIcon) COSMIC_CLOCK.sidebarIcon.classList.remove('is-active');
-        if (typeof COSMIC_CLOCK.stop === 'function') COSMIC_CLOCK.stop();
+    COSMIC_CLOCK.overlay.classList.remove('show');
+    COSMIC_CLOCK.overlay.setAttribute('aria-hidden', 'true');
+    const gamesOpen = byId('gamesOverlay') && byId('gamesOverlay').classList.contains('show');
+    if (!gamesOpen) document.body.classList.remove('freeze-scroll');
+    if (COSMIC_CLOCK.sidebarIcon) COSMIC_CLOCK.sidebarIcon.classList.remove('is-active');
+    if (typeof COSMIC_CLOCK.stop === 'function') COSMIC_CLOCK.stop();
 }
 
 function createCosmicClockEngine(root, popup) {
-        if (!root || !popup) return { start() {}, stop() {} };
+    if (!root || !popup) return { start() { }, stop() { } };
 
-        const canvas = root.querySelector('#canvas');
-        const tooltip = root.querySelector('#tooltip');
-        const currentTimeEl = root.querySelector('#current-time');
-        const currentDateEl = root.querySelector('#current-date');
+    const canvas = root.querySelector('#canvas');
+    const tooltip = root.querySelector('#tooltip');
+    const currentTimeEl = root.querySelector('#current-time');
+    const currentDateEl = root.querySelector('#current-date');
     if (!canvas || !tooltip || !currentTimeEl || !currentDateEl) {
-                return { start() {}, stop() {} };
+        return { start() { }, stop() { } };
+    }
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return { start() { }, stop() { } };
+
+    let width = canvas.width = popup.clientWidth;
+    let height = canvas.height = popup.clientHeight;
+    let centerX = width / 2;
+    let centerY = height / 2;
+    let speedMultiplier = 1;
+    let running = false;
+    let rafId = null;
+    let lastFrameTimestamp = 0;
+    let simulatedTime = new Date();
+
+    const rings = [
+        { name: 'Seconds', color: '#ef4444', divisions: 60, radius: 45, thickness: 4, labels: Array.from({ length: 60 }, (_, i) => i % 10 === 0 ? i.toString() : ''), labelInterval: 10, getValue: (d) => d.getSeconds() + d.getMilliseconds() / 1000, maxValue: 60 },
+        { name: 'Minutes', color: '#f59e0b', divisions: 60, radius: 65, thickness: 5, labels: Array.from({ length: 60 }, (_, i) => i % 10 === 0 ? i.toString() : ''), labelInterval: 10, getValue: (d) => d.getMinutes() + d.getSeconds() / 60, maxValue: 60 },
+        { name: 'Hours', color: '#06b6d4', divisions: 24, radius: 88, thickness: 6, labels: Array.from({ length: 24 }, (_, i) => i % 3 === 0 ? i.toString().padStart(2, '0') : ''), labelInterval: 3, getValue: (d) => d.getHours() + d.getMinutes() / 60, maxValue: 24 },
+        { name: 'Day of Week', color: '#10b981', divisions: 7, radius: 115, thickness: 10, labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], labelInterval: 1, getValue: (d) => d.getDay() + d.getHours() / 24, maxValue: 7 },
+        { name: 'Week', color: '#8b5cf6', divisions: 52, radius: 145, thickness: 7, labels: Array.from({ length: 52 }, (_, i) => (i + 1) % 4 === 0 ? `${i + 1}` : ''), labelInterval: 4, getValue: (d) => getWeekOfYear(d), maxValue: 52 },
+        { name: 'Month', color: '#ec4899', divisions: 12, radius: 178, thickness: 12, labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], labelInterval: 1, getValue: (d) => d.getMonth() + d.getDate() / getDaysInMonth(d), maxValue: 12 },
+        { name: 'Quarter', color: '#3b82f6', divisions: 4, radius: 215, thickness: 10, labels: ['Q1', 'Q2', 'Q3', 'Q4'], labelInterval: 1, getValue: (d) => Math.floor(d.getMonth() / 3) + (d.getMonth() % 3 + d.getDate() / getDaysInMonth(d)) / 3, maxValue: 4 },
+        { name: 'Season', color: '#14b8a6', divisions: 4, radius: 248, thickness: 12, labels: ['Winter', 'Spring', 'Summer', 'Autumn'], labelInterval: 1, getValue: (d) => getSeasonValue(d), maxValue: 4, seasonColors: ['#64748b', '#22c55e', '#eab308', '#f97316'] },
+        { name: 'Year', color: '#f97316', divisions: 12, radius: 285, thickness: 8, labels: [], labelInterval: 12, getValue: (d) => { const start = new Date(d.getFullYear(), 0, 1); const end = new Date(d.getFullYear() + 1, 0, 1); return ((d - start) / (end - start)) * 12; }, maxValue: 12, showPercentage: true }
+    ];
+
+    function handleResize() {
+        width = canvas.width = popup.clientWidth;
+        height = canvas.height = popup.clientHeight;
+        centerX = width / 2;
+        centerY = height / 2;
+    }
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    function getWeekOfYear(date) {
+        const start = new Date(date.getFullYear(), 0, 1);
+        const diff = date - start;
+        const oneWeek = 604800000;
+        return Math.floor(diff / oneWeek) + (date.getDay() + date.getHours() / 24) / 7;
+    }
+
+    function getDaysInMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    }
+
+    function getSeasonValue(date) {
+        const month = date.getMonth();
+        const day = date.getDate();
+        if ((month === 11 && day >= 21) || month === 0 || month === 1 || (month === 2 && day < 20)) {
+            if (month === 11) return (day - 21) / 31 * 0.25;
+            if (month === 0) return 0.25 + day / 31 * 0.25;
+            if (month === 1) return 0.5 + day / 28 * 0.25;
+            return 0.75 + day / 20 * 0.25;
+        } else if ((month === 2 && day >= 20) || month === 3 || month === 4 || (month === 5 && day < 21)) {
+            if (month === 2) return 1 + (day - 20) / 12 * 0.25;
+            if (month === 3) return 1.25 + day / 30 * 0.25;
+            if (month === 4) return 1.5 + day / 31 * 0.25;
+            return 1.75 + day / 21 * 0.25;
+        } else if ((month === 5 && day >= 21) || month === 6 || month === 7 || (month === 8 && day < 22)) {
+            if (month === 5) return 2 + (day - 21) / 10 * 0.25;
+            if (month === 6) return 2.25 + day / 31 * 0.25;
+            if (month === 7) return 2.5 + day / 31 * 0.25;
+            return 2.75 + day / 22 * 0.25;
         }
+        if (month === 8) return 3 + (day - 22) / 9 * 0.25;
+        if (month === 9) return 3.25 + day / 31 * 0.25;
+        if (month === 10) return 3.5 + day / 30 * 0.25;
+        return 3.75 + day / 21 * 0.25;
+    }
 
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return { start() {}, stop() {} };
+    function drawRing(ring, value) {
+        const { radius, thickness, divisions, color, labels, labelInterval, seasonColors, showPercentage } = ring;
+        const baseRadius = Math.min(width, height) * 0.42 * (radius / 285);
 
-        let width = canvas.width = popup.clientWidth;
-        let height = canvas.height = popup.clientHeight;
-        let centerX = width / 2;
-        let centerY = height / 2;
-        let speedMultiplier = 1;
-        let running = false;
-        let rafId = null;
-        let lastFrameTimestamp = 0;
-        let simulatedTime = new Date();
+        for (let i = 0; i < divisions; i++) {
+            const startAngle = (i / divisions) * Math.PI * 2 - Math.PI / 2;
+            const endAngle = ((i + 1) / divisions) * Math.PI * 2 - Math.PI / 2;
 
-        const rings = [
-            { name: 'Seconds', color: '#ef4444', divisions: 60, radius: 45, thickness: 4, labels: Array.from({length: 60}, (_, i) => i % 10 === 0 ? i.toString() : ''), labelInterval: 10, getValue: (d) => d.getSeconds() + d.getMilliseconds() / 1000, maxValue: 60 },
-            { name: 'Minutes', color: '#f59e0b', divisions: 60, radius: 65, thickness: 5, labels: Array.from({length: 60}, (_, i) => i % 10 === 0 ? i.toString() : ''), labelInterval: 10, getValue: (d) => d.getMinutes() + d.getSeconds() / 60, maxValue: 60 },
-            { name: 'Hours', color: '#06b6d4', divisions: 24, radius: 88, thickness: 6, labels: Array.from({length: 24}, (_, i) => i % 3 === 0 ? i.toString().padStart(2, '0') : ''), labelInterval: 3, getValue: (d) => d.getHours() + d.getMinutes() / 60, maxValue: 24 },
-            { name: 'Day of Week', color: '#10b981', divisions: 7, radius: 115, thickness: 10, labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], labelInterval: 1, getValue: (d) => d.getDay() + d.getHours() / 24, maxValue: 7 },
-            { name: 'Week', color: '#8b5cf6', divisions: 52, radius: 145, thickness: 7, labels: Array.from({length: 52}, (_, i) => (i+1) % 4 === 0 ? `${i+1}` : ''), labelInterval: 4, getValue: (d) => getWeekOfYear(d), maxValue: 52 },
-            { name: 'Month', color: '#ec4899', divisions: 12, radius: 178, thickness: 12, labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], labelInterval: 1, getValue: (d) => d.getMonth() + d.getDate() / getDaysInMonth(d), maxValue: 12 },
-            { name: 'Quarter', color: '#3b82f6', divisions: 4, radius: 215, thickness: 10, labels: ['Q1', 'Q2', 'Q3', 'Q4'], labelInterval: 1, getValue: (d) => Math.floor(d.getMonth() / 3) + (d.getMonth() % 3 + d.getDate() / getDaysInMonth(d)) / 3, maxValue: 4 },
-            { name: 'Season', color: '#14b8a6', divisions: 4, radius: 248, thickness: 12, labels: ['Winter', 'Spring', 'Summer', 'Autumn'], labelInterval: 1, getValue: (d) => getSeasonValue(d), maxValue: 4, seasonColors: ['#64748b', '#22c55e', '#eab308', '#f97316'] },
-            { name: 'Year', color: '#f97316', divisions: 12, radius: 285, thickness: 8, labels: [], labelInterval: 12, getValue: (d) => { const start = new Date(d.getFullYear(), 0, 1); const end = new Date(d.getFullYear() + 1, 0, 1); return ((d - start) / (end - start)) * 12; }, maxValue: 12, showPercentage: true }
-        ];
+            let segmentColor = color;
+            if (seasonColors) segmentColor = seasonColors[i];
 
-        function handleResize() {
-                width = canvas.width = popup.clientWidth;
-                height = canvas.height = popup.clientHeight;
-                centerX = width / 2;
-                centerY = height / 2;
-        }
-        window.addEventListener('resize', handleResize, { passive: true });
+            const segmentMidpoint = i + 0.5;
+            const isBeforeCurrent = segmentMidpoint < value;
+            const isCurrent = value >= i && value < i + 1;
 
-        function getWeekOfYear(date) {
-            const start = new Date(date.getFullYear(), 0, 1);
-            const diff = date - start;
-            const oneWeek = 604800000;
-            return Math.floor(diff / oneWeek) + (date.getDay() + date.getHours() / 24) / 7;
-        }
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, baseRadius, startAngle, endAngle);
 
-        function getDaysInMonth(date) {
-            return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-        }
-
-        function getSeasonValue(date) {
-            const month = date.getMonth();
-            const day = date.getDate();
-            if ((month === 11 && day >= 21) || month === 0 || month === 1 || (month === 2 && day < 20)) {
-                if (month === 11) return (day - 21) / 31 * 0.25;
-                if (month === 0) return 0.25 + day / 31 * 0.25;
-                if (month === 1) return 0.5 + day / 28 * 0.25;
-                return 0.75 + day / 20 * 0.25;
-            } else if ((month === 2 && day >= 20) || month === 3 || month === 4 || (month === 5 && day < 21)) {
-                if (month === 2) return 1 + (day - 20) / 12 * 0.25;
-                if (month === 3) return 1.25 + day / 30 * 0.25;
-                if (month === 4) return 1.5 + day / 31 * 0.25;
-                return 1.75 + day / 21 * 0.25;
-            } else if ((month === 5 && day >= 21) || month === 6 || month === 7 || (month === 8 && day < 22)) {
-                if (month === 5) return 2 + (day - 21) / 10 * 0.25;
-                if (month === 6) return 2.25 + day / 31 * 0.25;
-                if (month === 7) return 2.5 + day / 31 * 0.25;
-                return 2.75 + day / 22 * 0.25;
-            }
-            if (month === 8) return 3 + (day - 22) / 9 * 0.25;
-            if (month === 9) return 3.25 + day / 31 * 0.25;
-            if (month === 10) return 3.5 + day / 30 * 0.25;
-            return 3.75 + day / 21 * 0.25;
-        }
-
-        function drawRing(ring, value) {
-            const { radius, thickness, divisions, color, labels, labelInterval, seasonColors, showPercentage } = ring;
-            const baseRadius = Math.min(width, height) * 0.42 * (radius / 285);
-
-            for (let i = 0; i < divisions; i++) {
-                const startAngle = (i / divisions) * Math.PI * 2 - Math.PI / 2;
-                const endAngle = ((i + 1) / divisions) * Math.PI * 2 - Math.PI / 2;
-
-                let segmentColor = color;
-                if (seasonColors) segmentColor = seasonColors[i];
-
-                const segmentMidpoint = i + 0.5;
-                const isBeforeCurrent = segmentMidpoint < value;
-                const isCurrent = value >= i && value < i + 1;
+            if (isBeforeCurrent) {
+                ctx.strokeStyle = segmentColor;
+            } else if (isCurrent) {
+                const partialEnd = startAngle + ((value - i) / 1) * (endAngle - startAngle);
+                ctx.strokeStyle = `${segmentColor}33`;
+                ctx.lineWidth = thickness;
+                ctx.stroke();
 
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, baseRadius, startAngle, endAngle);
-
-                if (isBeforeCurrent) {
-                    ctx.strokeStyle = segmentColor;
-                } else if (isCurrent) {
-                    const partialEnd = startAngle + ((value - i) / 1) * (endAngle - startAngle);
-                    ctx.strokeStyle = `${segmentColor}33`;
-                    ctx.lineWidth = thickness;
-                    ctx.stroke();
-
-                    ctx.beginPath();
-                    ctx.arc(centerX, centerY, baseRadius, startAngle, partialEnd);
-                    ctx.strokeStyle = segmentColor;
-                } else {
-                    ctx.strokeStyle = `${segmentColor}22`;
-                }
-
-                ctx.lineWidth = isCurrent ? thickness * 1.1 : thickness;
-                ctx.lineCap = 'butt';
-                ctx.stroke();
+                ctx.arc(centerX, centerY, baseRadius, startAngle, partialEnd);
+                ctx.strokeStyle = segmentColor;
+            } else {
+                ctx.strokeStyle = `${segmentColor}22`;
             }
 
-            if (labels.some((l) => l)) {
-                ctx.font = `400 ${Math.max(6, thickness * 0.45)}px Inter, sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-
-                for (let i = 0; i < divisions; i++) {
-                    if (i % labelInterval === 0 && labels[i]) {
-                        const angle = ((i + 0.5) / divisions) * Math.PI * 2 - Math.PI / 2;
-                        const labelRadius = baseRadius + thickness / 2 + 10;
-                        const x = centerX + Math.cos(angle) * labelRadius;
-                        const y = centerY + Math.sin(angle) * labelRadius;
-
-                        ctx.save();
-                        ctx.translate(x, y);
-                        let textAngle = angle + Math.PI / 2;
-                        if (angle > 0 && angle < Math.PI) textAngle += Math.PI;
-                        ctx.rotate(textAngle);
-
-                        ctx.fillStyle = value >= i && value < i + 1 ? '#fff' : 'rgba(255,255,255,0.25)';
-                        ctx.fillText(labels[i], 0, 0);
-                        ctx.restore();
-                    }
-                }
-            }
-
-            const indicatorAngle = (value / ring.maxValue) * Math.PI * 2 - Math.PI / 2;
-            ctx.beginPath();
-            ctx.arc(
-                centerX + Math.cos(indicatorAngle) * baseRadius,
-                centerY + Math.sin(indicatorAngle) * baseRadius,
-                thickness / 2 + 1, 0, Math.PI * 2
-            );
-            ctx.fillStyle = '#fff';
-            ctx.fill();
-
-            if (showPercentage) {
-                const percentage = Math.round((value / ring.maxValue) * 100);
-                ctx.font = '500 10px Inter, sans-serif';
-                ctx.fillStyle = color;
-                ctx.textAlign = 'center';
-                ctx.fillText(`${percentage}%`, centerX, centerY + baseRadius + thickness + 16);
-            }
+            ctx.lineWidth = isCurrent ? thickness * 1.1 : thickness;
+            ctx.lineCap = 'butt';
+            ctx.stroke();
         }
 
-        function drawCenter() {
-            const hubRadius = Math.min(width, height) * 0.024;
-
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, hubRadius, 0, Math.PI * 2);
-            ctx.fillStyle = '#0a0a0a';
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            ctx.font = '500 11px Inter, sans-serif';
-            ctx.fillStyle = '#fff';
+        if (labels.some((l) => l)) {
+            ctx.font = `400 ${Math.max(6, thickness * 0.45)}px Inter, sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(simulatedTime.getFullYear(), centerX, centerY);
-        }
 
-        function updateTimeDisplay() {
-            currentTimeEl.textContent = simulatedTime.toLocaleTimeString('en-US', { hour12: false });
-            currentDateEl.textContent = simulatedTime.toLocaleDateString('en-US', {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            });
-        }
+            for (let i = 0; i < divisions; i++) {
+                if (i % labelInterval === 0 && labels[i]) {
+                    const angle = ((i + 0.5) / divisions) * Math.PI * 2 - Math.PI / 2;
+                    const labelRadius = baseRadius + thickness / 2 + 10;
+                    const x = centerX + Math.cos(angle) * labelRadius;
+                    const y = centerY + Math.sin(angle) * labelRadius;
 
-        function frame(timestamp) {
-            if (!running) return;
-            ctx.clearRect(0, 0, width, height);
+                    ctx.save();
+                    ctx.translate(x, y);
+                    let textAngle = angle + Math.PI / 2;
+                    if (angle > 0 && angle < Math.PI) textAngle += Math.PI;
+                    ctx.rotate(textAngle);
 
-            if (!lastFrameTimestamp) lastFrameTimestamp = timestamp;
-            const deltaMs = Math.max(0, Math.min(1000, timestamp - lastFrameTimestamp));
-            lastFrameTimestamp = timestamp;
-
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.012)';
-            for (let x = 50; x < width; x += 50) {
-                for (let y = 50; y < height; y += 50) {
-                    ctx.beginPath();
-                    ctx.arc(x, y, 1, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.fillStyle = value >= i && value < i + 1 ? '#fff' : 'rgba(255,255,255,0.25)';
+                    ctx.fillText(labels[i], 0, 0);
+                    ctx.restore();
                 }
             }
-
-            for (let i = rings.length - 1; i >= 0; i--) {
-                drawRing(rings[i], rings[i].getValue(simulatedTime));
-            }
-            drawCenter();
-
-            if (speedMultiplier === 1) {
-                simulatedTime = new Date();
-            } else {
-                simulatedTime = new Date(simulatedTime.getTime() + deltaMs * speedMultiplier);
-            }
-
-            updateTimeDisplay();
-            rafId = requestAnimationFrame(frame);
         }
 
-        root.querySelectorAll('.control-btn').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                root.querySelectorAll('.control-btn').forEach((b) => b.classList.remove('active'));
-                btn.classList.add('active');
-                speedMultiplier = parseInt(btn.dataset.speed, 10);
-                if (speedMultiplier === 1) simulatedTime = new Date();
-            });
+        const indicatorAngle = (value / ring.maxValue) * Math.PI * 2 - Math.PI / 2;
+        ctx.beginPath();
+        ctx.arc(
+            centerX + Math.cos(indicatorAngle) * baseRadius,
+            centerY + Math.sin(indicatorAngle) * baseRadius,
+            thickness / 2 + 1, 0, Math.PI * 2
+        );
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+
+        if (showPercentage) {
+            const percentage = Math.round((value / ring.maxValue) * 100);
+            ctx.font = '500 10px Inter, sans-serif';
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.fillText(`${percentage}%`, centerX, centerY + baseRadius + thickness + 16);
+        }
+    }
+
+    function drawCenter() {
+        const hubRadius = Math.min(width, height) * 0.024;
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, hubRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.font = '500 11px Inter, sans-serif';
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(simulatedTime.getFullYear(), centerX, centerY);
+    }
+
+    function updateTimeDisplay() {
+        currentTimeEl.textContent = simulatedTime.toLocaleTimeString('en-US', { hour12: false });
+        currentDateEl.textContent = simulatedTime.toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
+    }
 
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const rootRect = root.getBoundingClientRect();
+    function frame(timestamp) {
+        if (!running) return;
+        ctx.clearRect(0, 0, width, height);
 
-            function placeTooltipNearCursor() {
-                const offset = 12;
-                const tooltipW = tooltip.offsetWidth || 240;
-                const tooltipH = tooltip.offsetHeight || 100;
-                const pad = 8;
+        if (!lastFrameTimestamp) lastFrameTimestamp = timestamp;
+        const deltaMs = Math.max(0, Math.min(1000, timestamp - lastFrameTimestamp));
+        lastFrameTimestamp = timestamp;
 
-                let left = (e.clientX - rootRect.left) + offset;
-                let top = (e.clientY - rootRect.top) + offset;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.012)';
+        for (let x = 50; x < width; x += 50) {
+            for (let y = 50; y < height; y += 50) {
+                ctx.beginPath();
+                ctx.arc(x, y, 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
-                if (left + tooltipW > rootRect.width - pad) {
-                    left = (e.clientX - rootRect.left) - tooltipW - offset;
-                }
-                if (top + tooltipH > rootRect.height - pad) {
-                    top = (e.clientY - rootRect.top) - tooltipH - offset;
-                }
+        for (let i = rings.length - 1; i >= 0; i--) {
+            drawRing(rings[i], rings[i].getValue(simulatedTime));
+        }
+        drawCenter();
 
-                left = Math.max(pad, Math.min(left, rootRect.width - tooltipW - pad));
-                top = Math.max(pad, Math.min(top, rootRect.height - tooltipH - pad));
+        if (speedMultiplier === 1) {
+            simulatedTime = new Date();
+        } else {
+            simulatedTime = new Date(simulatedTime.getTime() + deltaMs * speedMultiplier);
+        }
 
-                tooltip.style.left = `${left}px`;
-                tooltip.style.top = `${top}px`;
+        updateTimeDisplay();
+        rafId = requestAnimationFrame(frame);
+    }
+
+    root.querySelectorAll('.control-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            root.querySelectorAll('.control-btn').forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+            speedMultiplier = parseInt(btn.dataset.speed, 10);
+            if (speedMultiplier === 1) simulatedTime = new Date();
+        });
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rootRect = root.getBoundingClientRect();
+
+        function placeTooltipNearCursor() {
+            const offset = 12;
+            const tooltipW = tooltip.offsetWidth || 240;
+            const tooltipH = tooltip.offsetHeight || 100;
+            const pad = 8;
+
+            let left = (e.clientX - rootRect.left) + offset;
+            let top = (e.clientY - rootRect.top) + offset;
+
+            if (left + tooltipW > rootRect.width - pad) {
+                left = (e.clientX - rootRect.left) - tooltipW - offset;
+            }
+            if (top + tooltipH > rootRect.height - pad) {
+                top = (e.clientY - rootRect.top) - tooltipH - offset;
             }
 
-            const dx = x - centerX;
-            const dy = y - centerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            left = Math.max(pad, Math.min(left, rootRect.width - tooltipW - pad));
+            top = Math.max(pad, Math.min(top, rootRect.height - tooltipH - pad));
 
-            let hoveredRing = null;
-            for (const ring of rings) {
-                const baseRadius = Math.min(width, height) * 0.42 * (ring.radius / 285);
-                if (Math.abs(distance - baseRadius) < ring.thickness) {
-                    hoveredRing = ring;
-                    break;
-                }
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top}px`;
+        }
+
+        const dx = x - centerX;
+        const dy = y - centerY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        let hoveredRing = null;
+        for (const ring of rings) {
+            const baseRadius = Math.min(width, height) * 0.42 * (ring.radius / 285);
+            if (Math.abs(distance - baseRadius) < ring.thickness) {
+                hoveredRing = ring;
+                break;
             }
+        }
 
-            if (hoveredRing) {
-                const angle = Math.atan2(dy, dx) + Math.PI / 2;
-                const normalizedAngle = angle < 0 ? angle + Math.PI * 2 : angle;
-                const segmentIndex = Math.floor((normalizedAngle / (Math.PI * 2)) * hoveredRing.divisions);
-                const label = hoveredRing.fullLabels ? hoveredRing.fullLabels[segmentIndex] : hoveredRing.labels[segmentIndex];
+        if (hoveredRing) {
+            const angle = Math.atan2(dy, dx) + Math.PI / 2;
+            const normalizedAngle = angle < 0 ? angle + Math.PI * 2 : angle;
+            const segmentIndex = Math.floor((normalizedAngle / (Math.PI * 2)) * hoveredRing.divisions);
+            const label = hoveredRing.fullLabels ? hoveredRing.fullLabels[segmentIndex] : hoveredRing.labels[segmentIndex];
 
-                tooltip.style.display = 'block';
-                tooltip.innerHTML = `
+            tooltip.style.display = 'block';
+            tooltip.innerHTML = `
                     <h3>${hoveredRing.name}</h3>
                     <div class="detail">${label || `Segment ${segmentIndex + 1}`}</div>
                     <div class="detail" style="color:${hoveredRing.color}">${segmentIndex + 1} of ${hoveredRing.divisions}</div>
                 `;
-                placeTooltipNearCursor();
-                canvas.style.cursor = 'default';
-            } else {
-                tooltip.style.display = 'none';
-                canvas.style.cursor = 'default';
-            }
-        });
-
-        canvas.addEventListener('mouseleave', () => {
+            placeTooltipNearCursor();
+            canvas.style.cursor = 'default';
+        } else {
             tooltip.style.display = 'none';
             canvas.style.cursor = 'default';
-        });
+        }
+    });
 
-        return {
-            start() {
-                if (running) return;
-                handleResize();
-                simulatedTime = new Date();
-                lastFrameTimestamp = performance.now();
-                updateTimeDisplay();
-                running = true;
-                rafId = requestAnimationFrame(frame);
-            },
-            stop() {
-                running = false;
-                if (rafId) {
-                    cancelAnimationFrame(rafId);
-                    rafId = null;
-                }
-                lastFrameTimestamp = 0;
-                tooltip.style.display = 'none';
-                canvas.style.cursor = 'default';
+    canvas.addEventListener('mouseleave', () => {
+        tooltip.style.display = 'none';
+        canvas.style.cursor = 'default';
+    });
+
+    return {
+        start() {
+            if (running) return;
+            handleResize();
+            simulatedTime = new Date();
+            lastFrameTimestamp = performance.now();
+            updateTimeDisplay();
+            running = true;
+            rafId = requestAnimationFrame(frame);
+        },
+        stop() {
+            running = false;
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
             }
-        };
+            lastFrameTimestamp = 0;
+            tooltip.style.display = 'none';
+            canvas.style.cursor = 'default';
+        }
+    };
 }
 
 const COURSES_EXPLORER = {
@@ -2675,7 +2349,7 @@ async function openCoursesExplorer() {
         }
     }
 
-    try { COURSES_EXPLORER.tree.focus(); } catch (_) {}
+    try { COURSES_EXPLORER.tree.focus(); } catch (_) { }
 }
 
 function closeCoursesExplorer() {
@@ -2753,9 +2427,9 @@ function renderCoursesTree() {
 
         rows.push(
             `<div class="courses-tree-node${selected}${openClass}" data-path="${escapeCoursesAttr(node.path)}" data-type="${node.type}" style="padding-left:${8 + depth * 16}px">` +
-                `<span class="courses-tree-arrow${arrowClass}">▸</span>` +
-                `<span class="courses-tree-icon">${icon}</span>` +
-                `<span class="courses-tree-label">${escapeCoursesHtml(node.name)}</span>` +
+            `<span class="courses-tree-arrow${arrowClass}">▸</span>` +
+            `<span class="courses-tree-icon">${icon}</span>` +
+            `<span class="courses-tree-label">${escapeCoursesHtml(node.name)}</span>` +
             `</div>`
         );
 
@@ -2851,7 +2525,7 @@ function showCoursesImage(path, altText) {
     COURSES_EXPLORER.textViewer.style.display = 'block';
     COURSES_EXPLORER.textViewer.innerHTML =
         `<div class="courses-image-preview">` +
-            `<img class="courses-image-preview-img" src="${encodeURI(path)}" alt="${escapeCoursesAttr(altText || 'Image preview')}" loading="lazy" />` +
+        `<img class="courses-image-preview-img" src="${encodeURI(path)}" alt="${escapeCoursesAttr(altText || 'Image preview')}" loading="lazy" />` +
         `</div>`;
 
     const imageEl = COURSES_EXPLORER.textViewer.querySelector('.courses-image-preview-img');
@@ -2959,7 +2633,7 @@ function ensureCoursesSelectionVisible() {
     if (!node) return;
     try {
         node.scrollIntoView({ block: 'nearest' });
-    } catch (_) {}
+    } catch (_) { }
 }
 
 function escapeCoursesHtml(value) {
@@ -3049,7 +2723,6 @@ function handleGlobalKeyDown(e) {
     const coursesOverlay = byId('coursesOverlay');
     const cosmicClockOverlay = byId('cosmicClockOverlay');
     const gamesOverlay = byId('gamesOverlay');
-    const blogPopup = byId('blogPopup');
     const privacyPopup = byId('privacyPopup');
     const contactPopup = byId('contactPopup');
     if (coursesOverlay && coursesOverlay.classList.contains('show')) {
@@ -3064,7 +2737,6 @@ function handleGlobalKeyDown(e) {
         closeGameHub();
         return;
     }
-    if (blogPopup && blogPopup.classList.contains('show')) closeBlogPopup();
     if (privacyPopup && privacyPopup.style.display === 'flex') closePrivacyPopup();
     if (contactPopup && contactPopup.style.display === 'flex') closeContactForm();
 }
@@ -3158,7 +2830,7 @@ function initializeGameHub() {
     if (GAME_HUB.soundBtn) {
         GAME_HUB.soundBtn.addEventListener('click', () => {
             GAME_HUB.soundOn = !GAME_HUB.soundOn;
-            try { localStorage.setItem('games.soundOn', GAME_HUB.soundOn ? 'true' : 'false'); } catch (_) {}
+            try { localStorage.setItem('games.soundOn', GAME_HUB.soundOn ? 'true' : 'false'); } catch (_) { }
             updateGamesSoundButton();
             playGameBeep(660, 0.04);
         });
@@ -3217,7 +2889,7 @@ function openGameHub() {
     switchGameTab(GAME_HUB.activeGameId || 'snake', true);
     if (GAME_HUB.viewport) {
         setTimeout(() => {
-            try { GAME_HUB.viewport.focus(); } catch (_) {}
+            try { GAME_HUB.viewport.focus(); } catch (_) { }
         }, 120);
     }
 }
@@ -3346,7 +3018,7 @@ function beginCurrentGame() {
     }
     playGameBeep(700, 0.03);
     if (GAME_HUB.viewport) {
-        try { GAME_HUB.viewport.focus(); } catch (_) {}
+        try { GAME_HUB.viewport.focus(); } catch (_) { }
     }
 }
 
@@ -3448,7 +3120,7 @@ function getStoredNumber(key, fallback = 0) {
 }
 
 function setStoredNumber(key, val) {
-    try { localStorage.setItem(key, String(val)); } catch (_) {}
+    try { localStorage.setItem(key, String(val)); } catch (_) { }
 }
 
 function updateGamesHighScoreText(gameId) {
@@ -3485,7 +3157,7 @@ function playGameBeep(freq = 440, duration = 0.05) {
         gainNode.connect(ctx.destination);
         oscillator.start();
         oscillator.stop(ctx.currentTime + duration);
-    } catch (_) {}
+    } catch (_) { }
 }
 
 function createSnakeGame() {
@@ -3716,7 +3388,7 @@ function createSnakeGame() {
             return `Snake · Score: ${state.score} · Speed: ${state.speed.toFixed(1)}x`;
         },
         restart() { reset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas && state.onPointerDown) {
                 GAME_HUB.canvas.removeEventListener('pointerdown', state.onPointerDown);
@@ -3897,7 +3569,7 @@ function createLudoGame() {
             return `Ludo · Wins: ${state.score} · AI Level: ${state.aiLevel} · Turn: ${state.turn}`;
         },
         restart() { reset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas) {
                 GAME_HUB.canvas.removeEventListener('pointerdown', playerRoll);
@@ -4134,7 +3806,7 @@ function createBreakoutGame() {
             return `Breakout · Score: ${state.score} · Lives: ${state.lives} · Level: ${state.level}`;
         },
         restart() { fullReset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas && state.pointerMove) {
                 GAME_HUB.canvas.removeEventListener('pointermove', state.pointerMove);
@@ -4340,7 +4012,7 @@ function createDodgerGame() {
             return `Dodger · Score: ${state.score} · Difficulty: ${state.difficulty} · Hazards: ${state.danger.length}`;
         },
         restart() { reset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas && state.pointerMove) {
                 GAME_HUB.canvas.removeEventListener('pointermove', state.pointerMove);
@@ -4476,7 +4148,7 @@ function createTargetRushGame() {
             return `Target Rush · Score: ${state.score} · Time: ${state.timer.toFixed(1)}s · Streak: ${state.streak}`;
         },
         restart() { reset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas && state.pointerDown) {
                 GAME_HUB.canvas.removeEventListener('pointerdown', state.pointerDown);
@@ -4683,7 +4355,7 @@ function createPongGame() {
             return `Pong · You ${state.playerScore} - ${state.aiScore} AI · First to 7`;
         },
         restart() { reset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas && state.pointerMove) {
                 GAME_HUB.canvas.removeEventListener('pointermove', state.pointerMove);
@@ -4827,7 +4499,7 @@ function createMemoryFlipGame() {
             state.height = height;
             recalcPositions();
         },
-        onKeyDown() {},
+        onKeyDown() { },
         update(dt) {
             if (!state.locked) return;
             state.lockTimer -= dt;
@@ -4873,7 +4545,7 @@ function createMemoryFlipGame() {
             return `Memory Flip · Score: ${state.score} · Moves: ${state.moves} · Pairs: ${state.matches}/${(state.cols * state.rows) / 2}`;
         },
         restart() { reset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas && state.pointerDown) {
                 GAME_HUB.canvas.removeEventListener('pointerdown', state.pointerDown);
@@ -5056,7 +4728,7 @@ function createLaneEscapeGame() {
             return `Lane Escape · Score: ${Math.floor(state.score)} · Speed: ${Math.floor(state.speed)} · Obstacles: ${state.obstacles.length}`;
         },
         restart() { reset(); },
-        setPaused() {},
+        setPaused() { },
         destroy() {
             if (GAME_HUB.canvas && state.pointerDown) {
                 GAME_HUB.canvas.removeEventListener('pointerdown', state.pointerDown);
@@ -5457,223 +5129,27 @@ function createOfflineRunnerGame() {
     };
 }
 
-/* ========================================================================== */
-/* 17) Blog Text-to-Speech with Karaoke Highlight */
-/* ========================================================================== */
 
-let blogWordSpans = [];
-let blogCurrentWord = -1;
-let blogChunks = [];
-let blogChunkWordCounts = [];
-let blogBaseWordIndex = 0;
-let blogCancelRequested = false;
-
-function setupBlogSpeaker() {
-    const btn = byId('blogSpeakBtn');
-    if (!btn) return;
-
-    const supported = ('speechSynthesis' in window) && (typeof window.SpeechSynthesisUtterance !== 'undefined');
-    if (!supported) {
-        btn.style.display = 'none';
-        return;
-    }
-
-    // Warm-up voices list
-    try {
-        window.speechSynthesis.getVoices();
-        if (typeof window.speechSynthesis.onvoiceschanged !== 'undefined') {
-            window.speechSynthesis.onvoiceschanged = () => {};
-        }
-    } catch(_) {}
-
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleSpeakBlog();
-    });
-}
-
-// selectPreferredVoice defined above (shared by About and Blog TTS)
-
-function prepareBlogKaraoke() {
-    clearBlogKaraoke();
-    const container = byId('popupText');
-    if (!container) return;
-
-    // Walk text nodes and wrap words into spans
-    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
-        acceptNode(node) {
-            if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-            return NodeFilter.FILTER_ACCEPT;
-        }
-    });
-
-    const textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
-
-    const wordRegex = /(\S+)|(\s+)/g; 
-    textNodes.forEach(textNode => {
-        const parent = textNode.parentNode;
-        const frag = document.createDocumentFragment();
-        const text = textNode.nodeValue;
-        let match;
-        while ((match = wordRegex.exec(text)) !== null) {
-            if (match[1]) {
-                const span = document.createElement('span');
-                span.className = 'karaoke-word';
-                span.textContent = match[1];
-                blogWordSpans.push(span);
-                frag.appendChild(span);
-            } else if (match[2]) {
-                frag.appendChild(document.createTextNode(match[2]));
-            }
-        }
-        parent.replaceChild(frag, textNode);
-    });
-}
-
-function clearBlogKaraoke() {
-    blogWordSpans = [];
-    blogCurrentWord = -1;
-}
-
-function highlightWord(index) {
-    if (blogCurrentWord === index) return;
-    if (blogCurrentWord >= 0 && blogCurrentWord < blogWordSpans.length) {
-        blogWordSpans[blogCurrentWord].classList.remove('highlight');
-    }
-    blogCurrentWord = index;
-    if (blogCurrentWord >= 0 && blogCurrentWord < blogWordSpans.length) {
-        blogWordSpans[blogCurrentWord].classList.add('highlight');
-        // Optional: ensure visibility
-        try { blogWordSpans[blogCurrentWord].scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch(_) {}
-    }
-}
-
-function resetBlogSpeakUI() {
-    const btn = byId('blogSpeakBtn');
-    if (btn) {
-        btn.classList.remove('speaking');
-        btn.setAttribute('aria-pressed', 'false');
-        btn.setAttribute('aria-label', 'Speak blog');
-    }
-    // Remove any highlights
-    blogWordSpans.forEach(s => s.classList.remove('highlight'));
-    blogCurrentWord = -1;
-    blogChunks = [];
-    blogChunkWordCounts = [];
-    blogBaseWordIndex = 0;
-    blogCancelRequested = false;
-}
-
-function toggleSpeakBlog() {
-    const btn = byId('blogSpeakBtn');
-    const container = byId('popupText');
-    if (!btn || !container) return;
-
-    const synth = window.speechSynthesis;
-    if (synth.speaking) {
-        try { synth.cancel(); } catch(_) {}
-        blogCancelRequested = true;
-        resetBlogSpeakUI();
-        return;
-    }
-
-    // Build the text to read from the DOM (after wrapping): join all word spans and whitespace nodes
-    const textContent = container.innerText.trim();
-    if (!textContent) return;
-
-    // Split into manageable chunks to avoid long-utterance failures
-    buildBlogChunks(textContent, 1600);
-
-    if (blogChunks.length === 0) return;
-
-    btn.classList.add('speaking');
-    btn.setAttribute('aria-pressed', 'true');
-    btn.setAttribute('aria-label', 'Stop speaking');
-    blogCancelRequested = false;
-    blogBaseWordIndex = 0;
-    speakBlogChunk(0);
-}
-
-function buildBlogChunks(text, maxLen) {
-    blogChunks = [];
-    blogChunkWordCounts = [];
-    // Split by sentence boundaries, keep punctuation
-    const sentences = text.split(/(?<=[.!?])\s+/);
-    let current = '';
-    for (let i = 0; i < sentences.length; i++) {
-        const s = sentences[i];
-        if ((current + ' ' + s).trim().length > maxLen && current) {
-            blogChunks.push(current.trim());
-            blogChunkWordCounts.push(current.trim().split(/\s+/).length);
-            current = s;
-        } else {
-            current = (current ? current + ' ' : '') + s;
-        }
-    }
-    if (current && current.trim().length) {
-        blogChunks.push(current.trim());
-        blogChunkWordCounts.push(current.trim().split(/\s+/).length);
-    }
-}
-
-function speakBlogChunk(index) {
-    if (blogCancelRequested) { resetBlogSpeakUI(); return; }
-    if (index >= blogChunks.length) { resetBlogSpeakUI(); return; }
-
-    const synth = window.speechSynthesis;
-    const chunkText = blogChunks[index];
-    const blogUtter = new SpeechSynthesisUtterance(chunkText);
-    const voice = selectPreferredVoice();
-    if (voice) {
-        blogUtter.voice = voice;
-        if (voice.lang) blogUtter.lang = voice.lang;
-    } else {
-        blogUtter.lang = 'en-US';
-    }
-    blogUtter.rate = 1;
-    blogUtter.pitch = 1;
-
-    let localBoundary = 0;
-    blogUtter.onboundary = (e) => {
-        if (e && (e.name === 'word' || e.charLength > 0)) {
-            highlightWord(blogBaseWordIndex + localBoundary);
-            localBoundary += 1;
-        }
-    };
-    blogUtter.onend = () => {
-        blogBaseWordIndex += blogChunkWordCounts[index] || localBoundary;
-        if (blogCancelRequested) { resetBlogSpeakUI(); return; }
-        if (index + 1 < blogChunks.length) {
-            speakBlogChunk(index + 1);
-        } else {
-            resetBlogSpeakUI();
-        }
-    };
-    blogUtter.onerror = () => { resetBlogSpeakUI(); };
-
-    try { synth.speak(blogUtter); } catch(_) { resetBlogSpeakUI(); }
-}
 
 /* ========================================================================== */
 /* 17) Loader & Hero Animation */
 /* ========================================================================== */
 
 // Page load animation
-$(window).on('load', function() {
+window.addEventListener('load', function () {
     const loader = byId('loader');
     const hero = byId('hero');
-    
+
     if (loader) {
         gsap.to('#loader', {
             duration: 0,
             y: "-100%",
             opacity: 0,
-            onComplete: function() {
-                $('#loader').css("display", "none");
+            onComplete: function () {
+                loader.style.display = "none";
                 if (hero) {
-                    $('#hero').css("display", "block");
-                    gsap.fromTo('#hero', 
+                    hero.style.display = "block";
+                    gsap.fromTo('#hero',
                         { scale: 0.6, opacity: 0 },
                         { duration: 1.5, scale: 1, opacity: 1, ease: "power2.out" }
                     );
@@ -5681,8 +5157,8 @@ $(window).on('load', function() {
             }
         });
     } else if (hero) {
-        $('#hero').css("display", "block");
-        gsap.fromTo('#hero', 
+        hero.style.display = "block";
+        gsap.fromTo('#hero',
             { scale: 0.6, opacity: 0 },
             { duration: 1.5, scale: 1, opacity: 1, ease: "power2.out" }
         );
@@ -5706,14 +5182,14 @@ function initializeCertificationsSlider() {
 
     function updateSlide(newIndex) {
         if (newIndex < 0 || newIndex >= totalSlides) return;
-        
+
         slides.forEach((slide, index) => {
             if (slide && slide.classList) {
                 slide.classList.remove('seq-in');
                 if (index !== newIndex) slide.classList.add('seq-out');
             }
         });
-        
+
         currentSlide = newIndex;
         if (slides[currentSlide] && slides[currentSlide].classList) {
             slides[currentSlide].classList.remove('seq-out');
@@ -5742,8 +5218,8 @@ function initializeCertificationsSlider() {
     function handleMove(e) {
         const rect = sequenceElement.getBoundingClientRect();
         const x = e.clientX - rect.left;
-        const leftZone = rect.width * 0.18;  
-        const rightZone = rect.width * 0.18;  
+        const leftZone = rect.width * 0.18;
+        const rightZone = rect.width * 0.18;
         const nearLeft = x >= 0 && x <= leftZone;
         const nearRight = x >= rect.width - rightZone && x <= rect.width;
 
@@ -5812,13 +5288,13 @@ function initializeCertificationsSlider() {
         const diffX = touchStartX - touchEndX;
 
         if (Math.abs(diffX) > 50) {
-            diffX > 0 ? updateSlide((currentSlide + 1) % totalSlides) 
-                      : updateSlide((currentSlide - 1 + totalSlides) % totalSlides);
+            diffX > 0 ? updateSlide((currentSlide + 1) % totalSlides)
+                : updateSlide((currentSlide - 1 + totalSlides) % totalSlides);
         }
 
         startAutoAdvance();
     });
-    
+
     // Restart timer after manual navigation (clicks or keys)
     if (nextButton) {
         nextButton.addEventListener('click', () => startAutoAdvance());
@@ -5836,103 +5312,359 @@ function initializeCertificationsSlider() {
 /* ========================================================================== */
 
 // Initialize when document is ready
-$(document).ready(function() {
-    initializePage();
-    initializeEventListeners();
+(function () {
+    const runInit = () => {
+        initializePage();
+        initializeEventListeners();
 
-    // Scroll to top button
-    const scrollTopBtn = document.getElementById('scrollTopBtn');
-    if (scrollTopBtn) {
-        const checkScroll = function() {
-            const scrolled = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-            scrollTopBtn.classList.toggle('visible', scrolled > 200);
-        };
-        window.addEventListener('scroll', checkScroll, { passive: true });
-        document.addEventListener('scroll', checkScroll, { passive: true });
-        checkScroll();
-        scrollTopBtn.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        });
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        if (scrollTopBtn) {
+            let scrollTimeout;
+            const checkScroll = function () {
+                if (scrollTimeout) return;
+                scrollTimeout = requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                    scrollTopBtn.classList.toggle('visible', scrolled > 200);
+                    scrollTimeout = null;
+                });
+            };
+            window.addEventListener('scroll', checkScroll, { passive: true });
+            document.addEventListener('scroll', checkScroll, { passive: true });
+            checkScroll();
+            scrollTopBtn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            });
+        }
+
+        // Scroll reveal animations
+        (function initScrollReveal() {
+            // Selectors for elements to animate
+            var revealSelectors = [
+                '.about-section .section-title',
+                '.about-image-container',
+                '.about-text-container',
+                '.about-card',
+                '.certifications-section .section-title',
+                '.cert-grid',
+                '.services-section .section-title',
+                '.service-card',
+                '.projects-section .section-title',
+                '.project-accordion-item',
+                '.blog-section .section-title',
+                '.blog-page-wrap',
+                '.main-footer'
+            ];
+
+            // Cards that should stagger
+            var staggerGroups = [
+                { parent: '.services-section', child: '.service-card' },
+                { parent: '.projects-section', child: '.project-accordion-item' }
+            ];
+
+            // Add scroll-reveal class to all target elements
+            revealSelectors.forEach(function (sel) {
+                document.querySelectorAll(sel).forEach(function (el) {
+                    if (!el.classList.contains('scroll-reveal')) {
+                        el.classList.add('scroll-reveal');
+                    }
+                });
+            });
+
+            // Add image-specific: from-left for images, from-right for text
+            document.querySelectorAll('.about-image-container').forEach(function (el) {
+                el.classList.add('from-left');
+            });
+            document.querySelectorAll('.about-text-container').forEach(function (el) {
+                el.classList.add('from-right');
+            });
+
+            // Add zoom-in for project cards
+            document.querySelectorAll('.project-accordion-item').forEach(function (el) {
+                el.classList.add('zoom-in');
+            });
+
+            // Add stagger delays
+            staggerGroups.forEach(function (group) {
+                document.querySelectorAll(group.parent).forEach(function (parent) {
+                    parent.querySelectorAll(group.child).forEach(function (child, i) {
+                        if (i < 7) child.classList.add('stagger-' + (i + 1));
+                    });
+                });
+            });
+
+            // IntersectionObserver
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+                document.querySelectorAll('.scroll-reveal').forEach(function (el) {
+                    observer.observe(el);
+                });
+            } else {
+                // Fallback: show everything
+                document.querySelectorAll('.scroll-reveal').forEach(function (el) {
+                    el.classList.add('revealed');
+                });
+            }
+        })();
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runInit);
+    } else {
+        runInit();
     }
+})();
 
-    // Scroll reveal animations
-    (function initScrollReveal() {
-        // Selectors for elements to animate
-        var revealSelectors = [
-            '.about-section .section-title',
-            '.about-image-container',
-            '.about-text-container',
-            '.about-card',
-            '.certifications-section .section-title',
-            '.cert-grid',
-            '.services-section .section-title',
-            '.service-card',
-            '.projects-section .section-title',
-            '.project-card',
-            '.blog-section .section-title',
-            '.blog-page-wrap',
-            '.main-footer'
-        ];
+function initializeProjectFilters() {
+    const filters = document.querySelectorAll('.project-filters .filter-btn');
+    const items = document.querySelectorAll('.projects-accordion .project-accordion-item');
+    if (filters.length === 0 || items.length === 0) return;
 
-        // Cards that should stagger
-        var staggerGroups = [
-            { parent: '.services-section', child: '.service-card' },
-            { parent: '.projects-section', child: '.project-card' }
-        ];
+    filters.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filterValue = btn.getAttribute('data-filter');
+            
+            // Toggle active state on buttons
+            filters.forEach(f => {
+                f.classList.remove('active');
+                f.setAttribute('aria-selected', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
 
-        // Add scroll-reveal class to all target elements
-        revealSelectors.forEach(function(sel) {
-            document.querySelectorAll(sel).forEach(function(el) {
-                if (!el.classList.contains('scroll-reveal')) {
-                    el.classList.add('scroll-reveal');
+            // Collapse non-matching items to zero-width, keep matching items expanding smoothly
+            items.forEach(item => {
+                const category = item.getAttribute('data-category');
+                const isMatch = filterValue === 'all' || category === filterValue;
+                
+                if (isMatch) {
+                    item.classList.remove('is-collapsed-to-zero');
+                } else {
+                    item.classList.add('is-collapsed-to-zero');
                 }
             });
         });
+    });
 
-        // Add image-specific: from-left for images, from-right for text
-        document.querySelectorAll('.about-image-container').forEach(function(el) {
-            el.classList.add('from-left');
-        });
-        document.querySelectorAll('.about-text-container').forEach(function(el) {
-            el.classList.add('from-right');
-        });
+    // --- Smooth JS-driven accordion hover ---
+    let hoverTimer = null;
+    let currentExpanded = null;
 
-        // Add zoom-in for project cards
-        document.querySelectorAll('.project-card').forEach(function(el) {
-            el.classList.add('zoom-in');
-        });
+    items.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            // Clear any pending collapse
+            if (hoverTimer) {
+                clearTimeout(hoverTimer);
+                hoverTimer = null;
+            }
 
-        // Add stagger delays
-        staggerGroups.forEach(function(group) {
-            document.querySelectorAll(group.parent).forEach(function(parent) {
-                parent.querySelectorAll(group.child).forEach(function(child, i) {
-                    if (i < 7) child.classList.add('stagger-' + (i + 1));
-                });
-            });
-        });
+            // Skip if already expanded
+            if (currentExpanded === item) return;
 
-        // IntersectionObserver
-        if ('IntersectionObserver' in window) {
-            var observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('revealed');
-                        observer.unobserve(entry.target);
+            // Small debounce to prevent rapid toggling when mouse crosses between items
+            hoverTimer = setTimeout(() => {
+                currentExpanded = item;
+                items.forEach(other => {
+                    if (other === item) {
+                        other.classList.add('is-expanded');
+                        other.classList.remove('is-contracted');
+                    } else if (!other.classList.contains('is-collapsed-to-zero')) {
+                        other.classList.remove('is-expanded');
+                        other.classList.add('is-contracted');
                     }
                 });
-            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+                hoverTimer = null;
+            }, 60);
+        });
+    });
 
-            document.querySelectorAll('.scroll-reveal').forEach(function(el) {
-                observer.observe(el);
+    // Single mouseleave on the container for clean reset
+    const accordion = document.querySelector('.projects-accordion');
+    if (accordion) {
+        accordion.addEventListener('mouseleave', () => {
+            if (hoverTimer) {
+                clearTimeout(hoverTimer);
+                hoverTimer = null;
+            }
+            currentExpanded = null;
+            items.forEach(item => {
+                item.classList.remove('is-expanded', 'is-contracted');
             });
-        } else {
-            // Fallback: show everything
-            document.querySelectorAll('.scroll-reveal').forEach(function(el) {
-                el.classList.add('revealed');
+        });
+    }
+
+    // Spotlight card mouse movement glow tracking
+    const cards = document.querySelectorAll('.project-accordion-card');
+    cards.forEach(card => {
+        let rect = null;
+        let updateRaf = null;
+
+        card.addEventListener('pointerenter', () => {
+            rect = card.getBoundingClientRect();
+        }, { passive: true });
+
+        card.addEventListener('pointerleave', () => {
+            rect = null;
+        }, { passive: true });
+
+        card.addEventListener('mousemove', (e) => {
+            if (updateRaf) return;
+            if (!rect) rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            updateRaf = requestAnimationFrame(() => {
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+                updateRaf = null;
             });
-        }
-    })();
-});
+        }, { passive: true });
+
+        window.addEventListener('resize', () => { rect = null; }, { passive: true });
+    });
+}
+
+// ==========================================================================
+// 21) Interactive Console Dashboard for Areas of Expertise
+// ==========================================================================
+(function initExpertiseConsole() {
+    const tabs = document.querySelectorAll('.console-nav .nav-item');
+    const panels = document.querySelectorAll('.console-display .display-panel');
+    const display = document.getElementById('expertise-display');
+    
+    if (!tabs.length || !display) return;
+
+    // Define accent mappings for dynamic holographic coloring
+    const accentColors = {
+        software: { color: '#8b5cf6', rgb: '139, 92, 246', glow: 'rgba(139, 92, 246, 0.15)' },
+        aiml: { color: '#f43f5e', rgb: '244, 63, 94', glow: 'rgba(244, 63, 94, 0.15)' },
+        datasci: { color: '#10b981', rgb: '16, 185, 129', glow: 'rgba(16, 185, 129, 0.15)' }
+    };
+
+    // Tab Selection Logic
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            if (tab.classList.contains('active')) return;
+
+            const discipline = tab.getAttribute('data-discipline');
+
+            // Deactivate other tabs and panels
+            tabs.forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+            });
+            panels.forEach(p => p.classList.remove('active'));
+
+            // Activate current tab & panel
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            const targetPanel = document.getElementById(`panel-${discipline}`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+
+            // Update Console custom properties
+            const theme = accentColors[discipline];
+            if (theme) {
+                display.style.setProperty('--console-accent', theme.color);
+                display.style.setProperty('--console-accent-rgb', theme.rgb);
+                display.style.setProperty('--console-accent-glow', theme.glow);
+            }
+        });
+    });
+
+    // 3D Parallax Tilt and Mouse Spotlight Glow on the Screen Monitor
+    let rect = null;
+    let updateRaf = null;
+
+    display.addEventListener('pointerenter', () => {
+        rect = display.getBoundingClientRect();
+    }, { passive: true });
+
+    display.addEventListener('pointerleave', () => {
+        rect = null;
+        display.style.setProperty('--rx', '0deg');
+        display.style.setProperty('--ry', '0deg');
+    }, { passive: true });
+
+    display.addEventListener('mousemove', (e) => {
+        if (!rect) rect = display.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (updateRaf) return;
+
+        updateRaf = requestAnimationFrame(() => {
+            // Track spotlight glow coordinates
+            display.style.setProperty('--mouse-x', `${x}px`);
+            display.style.setProperty('--mouse-y', `${y}px`);
+
+            // Compute pitch and yaw tilt angle values (max 8 degrees for clean display reading)
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const percentX = (x - centerX) / centerX;
+            const percentY = (y - centerY) / centerY;
+
+            const maxTilt = 8;
+            const rx = -percentY * maxTilt;
+            const ry = percentX * maxTilt;
+
+            display.style.setProperty('--rx', `${rx}deg`);
+            display.style.setProperty('--ry', `${ry}deg`);
+
+            updateRaf = null;
+        });
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+        rect = null;
+    }, { passive: true });
+})();
+
+// Stream Paragraph Typing Animation
+(function initParagraphStreaming() {
+    const target = document.querySelector('.about-stream-paragraph');
+    if (!target) return;
+
+    const fullText = target.getAttribute('data-fulltext') || target.innerText;
+    target.textContent = ''; // clear initially
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Small delay before typing starts
+                setTimeout(startStreaming, 300);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    observer.observe(target);
+
+    function startStreaming() {
+        let charIdx = 0;
+        const speed = 35; // Speed of typing characters in ms (35ms is smooth and natural)
+        const timer = setInterval(() => {
+            if (charIdx < fullText.length) {
+                target.textContent += fullText[charIdx];
+                charIdx++;
+            } else {
+                clearInterval(timer);
+            }
+        }, speed);
+    }
+})();
+
+
 
