@@ -8,27 +8,35 @@ from app.utils.logger import get_logger
 logger = get_logger(__name__)
 
 SYSTEM_PROMPT = """
-You are a highly precise and concise AI assistant. Your task is to answer the user's question using ONLY the provided context.
+You are Asim's Personal Assistant on his portfolio website. You were created and developed by Asim Husain using custom RAG (Retrieval-Augmented Generation) architecture.
 
 Context:
 {context}
 
-CRITICAL INSTRUCTIONS:
-1. Provide a highly focused, direct, and short response.
-2. Answer ONLY the specific question asked. Do NOT include unrelated background, extra details, or surrounding context.
-3. If the user asks about a specific topic (e.g. only "skills" or only "experience"), describe ONLY that topic. Do NOT summarize the entire resume or other sections.
-4. Do NOT cite any sources, files, or document names in your response.
-5. Do NOT start your response with "Based on the context," or similar phrases. Answer directly and naturally.
+Response Guidelines:
+1. **Identity & Creator Attribution**:
+   - If asked "Who are you?", "Who created you?", "Who developed you?", "Who made you?", or any related identity question, respond directly: "I'm Asim's Personal Assistant. Asim developed and created me." (or a similar concise phrasing).
+   - NEVER say or imply that OpenAI created, developed, trained, or owns you. OpenAI models/APIs are only backend components used by Asim. All development, design, and creation credits belong solely to Asim Husain.
+2. **Direct & Concise**: Answer only what is asked. Keep responses minimal, crisp, and 100% relevant without filler, unnecessary background info, or repetition.
+3. **Natural ChatGPT Tone**: Speak directly and naturally. Never start responses with meta-phrases like "Based on the provided context," or "According to the document,".
+4. **Structured & Readable**: Use bullet points or short paragraphs for lists (skills, experience, projects) to keep reading effortless.
+5. **Preserve Accuracy**: If a short answer is sufficient, provide only the short answer. Ensure no critical details needed for accuracy are omitted.
 """
+
 
 class AnswerGenerator:
     def __init__(self):
         logger.info(f"Initializing LLM: {settings.GENERATION_MODEL} at {settings.OPENAI_BASE_URL}")
+        api_key = (settings.OPENAI_API_KEY or "").strip()
+        if not api_key:
+            api_key = "dummy-key"
         self.llm = ChatOpenAI(
             model=settings.GENERATION_MODEL,
-            api_key=settings.OPENAI_API_KEY,
+            api_key=api_key,
             base_url=settings.OPENAI_BASE_URL,
-            temperature=0.0
+            temperature=0.1,
+            max_tokens=600,
+            request_timeout=15.0
         )
         self.prompt = ChatPromptTemplate.from_messages([
             ("system", SYSTEM_PROMPT),
@@ -47,10 +55,10 @@ class AnswerGenerator:
         
         logger.info("Sending query to LLM...")
         try:
-            # Build messages list dynamically with history
+            # Build messages list dynamically with history (trimmed to last 4 to keep context fast)
             messages = [("system", SYSTEM_PROMPT.format(context=context_str))]
             if history:
-                for msg in history:
+                for msg in history[-4:]:
                     role = "human" if msg["role"] == "user" else "ai"
                     messages.append((role, msg["content"]))
             messages.append(("human", query))
@@ -74,7 +82,7 @@ class AnswerGenerator:
         try:
             messages = [("system", SYSTEM_PROMPT.format(context=context_str))]
             if history:
-                for msg in history:
+                for msg in history[-4:]:
                     role = "human" if msg["role"] == "user" else "ai"
                     messages.append((role, msg["content"]))
             messages.append(("human", query))
@@ -98,7 +106,7 @@ class AnswerGenerator:
         try:
             messages = [("system", SYSTEM_PROMPT.format(context=context_str))]
             if history:
-                for msg in history:
+                for msg in history[-4:]:
                     role = "human" if msg["role"] == "user" else "ai"
                     messages.append((role, msg["content"]))
             messages.append(("human", query))
@@ -109,3 +117,4 @@ class AnswerGenerator:
         except Exception as e:
             logger.error(f"Error in streaming generation: {e}")
             yield "\nAn error occurred while generating the answer. Please try again later."
+

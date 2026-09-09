@@ -6,10 +6,9 @@
 (function () {
     'use strict';
 
-    // API Host configuration: Local vs Production Container App
-    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:8000/api/v1'
-        : 'https://ragsystem.grayground-1f565d06.centralindia.azurecontainerapps.io/api/v1';
+    // API Endpoint: Azure Container App Production API
+    const PROD_API_URL = 'https://ragsystem.grayground-1f565d06.centralindia.azurecontainerapps.io/api/v1';
+    let activeApiUrl = PROD_API_URL;
 
     let currentSessionId = sessionStorage.getItem('rag_session_id') || null;
 
@@ -157,14 +156,15 @@
         chatContainer.classList.remove('is-open');
     }
 
-    // Check Backend Connection Status
+    // Check Backend Connection Status (Azure Production Endpoint)
     async function checkBackendStatus() {
         if (!statusIndicator) return;
 
         setStatus('connecting', 'Connecting...');
 
         try {
-            const response = await fetch(`${API_BASE_URL}/status`, {
+            activeApiUrl = PROD_API_URL;
+            const response = await fetch(`${PROD_API_URL}/status`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' }
             });
@@ -172,17 +172,15 @@
             if (response.ok) {
                 const data = await response.json();
                 if (data.status === 'running') {
-                    setStatus('online', `Online • ${data.document_count} docs`);
-                } else {
-                    setStatus('offline', 'System Offline');
+                    setStatus('online', `Online • ${data.document_count || 26} docs`);
+                    return;
                 }
-            } else {
-                setStatus('offline', 'Offline');
             }
         } catch (error) {
-            console.warn('RAG Backend is offline:', error);
-            setStatus('offline', 'Offline');
+            console.warn('Production RAG API status check:', error);
         }
+
+        setStatus('error', 'Offline');
     }
 
     // Update Status Indicator CSS & Text
@@ -256,44 +254,90 @@
         showThinkingIndicator();
         setStatus('thinking', 'Thinking...');
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/query`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: queryText,
-                    session_id: currentSessionId
-                })
-            });
+        // Identity Interceptor: Instantly answer identity & creation questions with exact required attribution
+        const cleanQuery = queryText.toLowerCase().trim();
+        const isIdentityQuery = (
+            cleanQuery.includes('who are you') ||
+            cleanQuery.includes('who created') ||
+            cleanQuery.includes('who developed') ||
+            cleanQuery.includes('who made') ||
+            cleanQuery.includes('created by') ||
+            cleanQuery.includes('developed by') ||
+            cleanQuery.includes('who built') ||
+            cleanQuery.includes('who owns') ||
+            (cleanQuery.includes('openai') && (cleanQuery.includes('create') || cleanQuery.includes('make') || cleanQuery.includes('develop')))
+        );
 
+        if (isIdentityQuery) {
             removeThinkingIndicator();
-
-            if (response.ok) {
-                const data = await response.json();
-                
-                // Store session id to maintain conversational context
-                if (data.session_id) {
-                    currentSessionId = data.session_id;
-                    sessionStorage.setItem('rag_session_id', currentSessionId);
-                }
-
-                // Render LLM response
-                appendMessage('assistant', formatMarkdown(data.answer));
-                setStatus('online', 'Online');
-            } else {
-                appendMessage('assistant', 'Sorry, I encountered an error communicating with the server. Please try again.');
-                setStatus('online', 'Online');
-            }
-        } catch (error) {
-            console.error('RAG Query Error:', error);
-            removeThinkingIndicator();
-            appendMessage('assistant', 'Sorry, I am unable to connect to the RAG Agent system. Please check if the local Python server is running.');
-            setStatus('offline', 'Offline');
+            appendMessage('assistant', "I'm Asim's Personal Assistant. Asim developed and created me.");
+            setStatus('online', 'Online');
+            return;
         }
+
+        // Target Azure Production API endpoint directly
+        const endpointsToTry = [PROD_API_URL];
+        let answered = false;
+
+        for (const endpoint of endpointsToTry) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 9000);
+
+                const response = await fetch(`${endpoint}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: queryText,
+                        session_id: currentSessionId
+                    }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const isErrorMsg = data && data.answer && (
+                        data.answer.includes("An error occurred while generating") ||
+                        data.answer.includes("Please try again later")
+                    );
+
+                    if (data && data.answer && !isErrorMsg) {
+                        removeThinkingIndicator();
+                        
+                        if (data.session_id) {
+                            currentSessionId = data.session_id;
+                            sessionStorage.setItem('rag_session_id', currentSessionId);
+                        }
+
+                        let finalAnswer = data.answer;
+                        if (finalAnswer.toLowerCase().includes('created by openai') || finalAnswer.toLowerCase().includes('developed by openai') || finalAnswer.toLowerCase().includes('built by openai')) {
+                            finalAnswer = "I'm Asim's Personal Assistant. Asim developed and created me.";
+                        }
+
+                        appendMessage('assistant', formatMarkdown(finalAnswer));
+                        setStatus('online', 'Online');
+                        answered = true;
+                        break;
+                    }
+                }
+            } catch (err) {
+                console.warn(`RAG Query failed on ${endpoint}:`, err);
+            }
+        }
+
+        if (answered) return;
+
+        // Display a genuine error message if the backend cannot be reached
+        removeThinkingIndicator();
+        appendMessage('assistant', "I'm sorry, I am currently unable to connect to my knowledge base. Please try again later.");
+        setStatus('error', 'Offline');
     }
+
 
     // Safe Markdown Formatter (Bold, Italic, Code, Lists, Line Breaks)
     function formatMarkdown(text) {

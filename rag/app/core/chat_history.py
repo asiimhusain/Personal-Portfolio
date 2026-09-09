@@ -11,18 +11,30 @@ logger = get_logger(__name__)
 class ChatHistoryManager:
     def __init__(self, db_path: Optional[str] = None):
         self.db_path = db_path or str(settings.DB_DIR / "chats.db")
+        self._conn = None
         self._init_db()
+
+    def close(self):
+        if self._conn is not None:
+            try:
+                self._conn.close()
+            except Exception:
+                pass
+            self._conn = None
+
+    def _get_conn(self):
+        if self._conn is None:
+            self._conn = sqlite3.connect(self.db_path, check_same_thread=False)
+            self._conn.row_factory = sqlite3.Row
+            self._conn.execute("PRAGMA journal_mode=WAL")
+            self._conn.execute("PRAGMA synchronous=NORMAL")
+            self._conn.execute("PRAGMA foreign_keys=ON")
+        return self._conn
 
     @contextlib.contextmanager
     def _connection(self):
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        try:
-            conn.execute("PRAGMA journal_mode=WAL")
-            conn.execute("PRAGMA synchronous=NORMAL")
-            yield conn
-        finally:
-            conn.close()
+        conn = self._get_conn()
+        yield conn
 
     def _init_db(self):
         with self._connection() as conn:
@@ -100,10 +112,10 @@ class ChatHistoryManager:
     def delete_session(self, session_id: str):
         with self._connection() as conn:
             with conn:
-                conn.execute("PRAGMA foreign_keys = ON")
                 conn.execute("DELETE FROM sessions WHERE id = ?", (session_id,))
 
     def rename_session(self, session_id: str, title: str):
         with self._connection() as conn:
             with conn:
                 conn.execute("UPDATE sessions SET title = ? WHERE id = ?", (title, session_id))
+

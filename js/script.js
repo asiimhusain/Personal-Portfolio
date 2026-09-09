@@ -482,7 +482,7 @@ function initializeTopControlsReveal() {
         setTimeout(() => {
             if (topNav) topNav.classList.add('is-revealed');
         }, 120);
-    }, 2500);
+    }, 150);
 }
 
 /* ========================================================================== */
@@ -565,6 +565,7 @@ function initializeGooeyButtons() {
 
     elems.forEach(el => {
         let rect = null;
+        let moveRaf = null;
 
         // ensure custom properties exist
         el.style.setProperty('--x', 50);
@@ -573,10 +574,18 @@ function initializeGooeyButtons() {
 
         function moveBg(e) {
             if (!rect) rect = el.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width * 100;
-            const y = (e.clientY - rect.top) / rect.height * 100;
-            el.style.setProperty('--x', x);
-            el.style.setProperty('--y', y);
+            const clientX = e.clientX;
+            const clientY = e.clientY;
+            if (moveRaf) return;
+            moveRaf = requestAnimationFrame(() => {
+                if (rect) {
+                    const x = (clientX - rect.left) / rect.width * 100;
+                    const y = (clientY - rect.top) / rect.height * 100;
+                    el.style.setProperty('--x', x);
+                    el.style.setProperty('--y', y);
+                }
+                moveRaf = null;
+            });
         }
 
         el.addEventListener('pointermove', moveBg, { passive: true });
@@ -862,9 +871,9 @@ function initializeIconSideReveal() {
             requestAnimationFrame(() => {
                 if (social) social.style.transition = '';
             });
-        }, 2500);
+        }, 150);
     } else {
-        setTimeout(reveal, 2500);
+        setTimeout(reveal, 200);
     }
 }
 
@@ -1724,6 +1733,13 @@ function initializeBlogs() {
     let activeIndex = -1;
     let updateTimer = null;
 
+    let wheelRafId = null;
+    function startTick() {
+        if (!wheelRafId) {
+            wheelRafId = requestAnimationFrame(tick);
+        }
+    }
+
     const buttons = entries.map((entry, index) => {
         const button = document.createElement('button');
         button.type = 'button';
@@ -1737,6 +1753,7 @@ function initializeBlogs() {
             const diff = Math.atan2(Math.sin(target - rotation), Math.cos(target - rotation));
             velocity += diff * 0.12;
             setActive(index);
+            startTick();
         });
         track.appendChild(button);
         return button;
@@ -1815,12 +1832,14 @@ function initializeBlogs() {
     wheel.addEventListener('wheel', (e) => {
         e.preventDefault();
         velocity += e.deltaY * 0.00008;
+        startTick();
     }, { passive: false });
 
     wheel.addEventListener('pointerdown', (e) => {
         dragging = true;
         lastY = e.clientY;
         try { wheel.setPointerCapture(e.pointerId); } catch (_) { }
+        startTick();
     });
 
     wheel.addEventListener('pointermove', (e) => {
@@ -1829,6 +1848,7 @@ function initializeBlogs() {
         lastY = e.clientY;
         rotation += dy * 0.01;
         velocity = dy * 0.006;
+        startTick();
     });
 
     const endDrag = () => { dragging = false; };
@@ -1839,26 +1859,38 @@ function initializeBlogs() {
     window.addEventListener('resize', () => {
         updateWheelSize();
         layoutWheel();
+        startTick();
     }, { passive: true });
 
     function tick() {
         rotation += velocity;
         velocity *= 0.93;
 
+        let isSettled = false;
         if (!dragging && Math.abs(velocity) < 0.0008) {
             const target = Math.PI / 2 - nearestIndex() * step;
             const diff = Math.atan2(Math.sin(target - rotation), Math.cos(target - rotation));
             rotation += diff * 0.14;
-            if (Math.abs(diff) < 0.0002) velocity = 0;
+            if (Math.abs(diff) < 0.0002) {
+                rotation = target;
+                velocity = 0;
+                isSettled = true;
+            }
         }
 
         layoutWheel();
-        requestAnimationFrame(tick);
+
+        if (isSettled && !dragging) {
+            wheelRafId = null;
+            return;
+        }
+
+        wheelRafId = requestAnimationFrame(tick);
     }
 
     layoutWheel();
     setActive(0);
-    requestAnimationFrame(tick);
+    startTick();
 }
 
 
@@ -2176,66 +2208,73 @@ function createCosmicClockEngine(root, popup) {
         });
     });
 
+    let clockMouseRaf = null;
     canvas.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const rootRect = root.getBoundingClientRect();
+        if (clockMouseRaf) return;
+        const clientX = e.clientX;
+        const clientY = e.clientY;
+        clockMouseRaf = requestAnimationFrame(() => {
+            clockMouseRaf = null;
+            const rect = canvas.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+            const rootRect = root.getBoundingClientRect();
 
-        function placeTooltipNearCursor() {
-            const offset = 12;
-            const tooltipW = tooltip.offsetWidth || 240;
-            const tooltipH = tooltip.offsetHeight || 100;
-            const pad = 8;
+            function placeTooltipNearCursor() {
+                const offset = 12;
+                const tooltipW = tooltip.offsetWidth || 240;
+                const tooltipH = tooltip.offsetHeight || 100;
+                const pad = 8;
 
-            let left = (e.clientX - rootRect.left) + offset;
-            let top = (e.clientY - rootRect.top) + offset;
+                let left = (clientX - rootRect.left) + offset;
+                let top = (clientY - rootRect.top) + offset;
 
-            if (left + tooltipW > rootRect.width - pad) {
-                left = (e.clientX - rootRect.left) - tooltipW - offset;
+                if (left + tooltipW > rootRect.width - pad) {
+                    left = (clientX - rootRect.left) - tooltipW - offset;
+                }
+                if (top + tooltipH > rootRect.height - pad) {
+                    top = (clientY - rootRect.top) - tooltipH - offset;
+                }
+
+                left = Math.max(pad, Math.min(left, rootRect.width - tooltipW - pad));
+                top = Math.max(pad, Math.min(top, rootRect.height - tooltipH - pad));
+
+                tooltip.style.left = `${left}px`;
+                tooltip.style.top = `${top}px`;
             }
-            if (top + tooltipH > rootRect.height - pad) {
-                top = (e.clientY - rootRect.top) - tooltipH - offset;
+
+            const dx = x - centerX;
+            const dy = y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            let hoveredRing = null;
+            for (const ring of rings) {
+                const baseRadius = Math.min(width, height) * 0.42 * (ring.radius / 285);
+                if (Math.abs(distance - baseRadius) < ring.thickness) {
+                    hoveredRing = ring;
+                    break;
+                }
             }
 
-            left = Math.max(pad, Math.min(left, rootRect.width - tooltipW - pad));
-            top = Math.max(pad, Math.min(top, rootRect.height - tooltipH - pad));
+            if (hoveredRing) {
+                const angle = Math.atan2(dy, dx) + Math.PI / 2;
+                const normalizedAngle = angle < 0 ? angle + Math.PI * 2 : angle;
+                const segmentIndex = Math.floor((normalizedAngle / (Math.PI * 2)) * hoveredRing.divisions);
+                const label = hoveredRing.fullLabels ? hoveredRing.fullLabels[segmentIndex] : hoveredRing.labels[segmentIndex];
 
-            tooltip.style.left = `${left}px`;
-            tooltip.style.top = `${top}px`;
-        }
-
-        const dx = x - centerX;
-        const dy = y - centerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        let hoveredRing = null;
-        for (const ring of rings) {
-            const baseRadius = Math.min(width, height) * 0.42 * (ring.radius / 285);
-            if (Math.abs(distance - baseRadius) < ring.thickness) {
-                hoveredRing = ring;
-                break;
+                tooltip.style.display = 'block';
+                tooltip.innerHTML = `
+                        <h3>${hoveredRing.name}</h3>
+                        <div class="detail">${label || `Segment ${segmentIndex + 1}`}</div>
+                        <div class="detail" style="color:${hoveredRing.color}">${segmentIndex + 1} of ${hoveredRing.divisions}</div>
+                    `;
+                placeTooltipNearCursor();
+                canvas.style.cursor = 'default';
+            } else {
+                tooltip.style.display = 'none';
+                canvas.style.cursor = 'default';
             }
-        }
-
-        if (hoveredRing) {
-            const angle = Math.atan2(dy, dx) + Math.PI / 2;
-            const normalizedAngle = angle < 0 ? angle + Math.PI * 2 : angle;
-            const segmentIndex = Math.floor((normalizedAngle / (Math.PI * 2)) * hoveredRing.divisions);
-            const label = hoveredRing.fullLabels ? hoveredRing.fullLabels[segmentIndex] : hoveredRing.labels[segmentIndex];
-
-            tooltip.style.display = 'block';
-            tooltip.innerHTML = `
-                    <h3>${hoveredRing.name}</h3>
-                    <div class="detail">${label || `Segment ${segmentIndex + 1}`}</div>
-                    <div class="detail" style="color:${hoveredRing.color}">${segmentIndex + 1} of ${hoveredRing.divisions}</div>
-                `;
-            placeTooltipNearCursor();
-            canvas.style.cursor = 'default';
-        } else {
-            tooltip.style.display = 'none';
-            canvas.style.cursor = 'default';
-        }
+        });
     });
 
     canvas.addEventListener('mouseleave', () => {
@@ -5149,19 +5188,13 @@ window.addEventListener('load', function () {
                 loader.style.display = "none";
                 if (hero) {
                     hero.style.display = "block";
-                    gsap.fromTo('#hero',
-                        { scale: 0.6, opacity: 0 },
-                        { duration: 1.5, scale: 1, opacity: 1, ease: "power2.out" }
-                    );
+                    gsap.set('#hero', { scale: 1, opacity: 1 });
                 }
             }
         });
     } else if (hero) {
         hero.style.display = "block";
-        gsap.fromTo('#hero',
-            { scale: 0.6, opacity: 0 },
-            { duration: 1.5, scale: 1, opacity: 1, ease: "power2.out" }
-        );
+        gsap.set('#hero', { scale: 1, opacity: 1 });
     }
 });
 
@@ -5330,7 +5363,6 @@ function initializeCertificationsSlider() {
                 });
             };
             window.addEventListener('scroll', checkScroll, { passive: true });
-            document.addEventListener('scroll', checkScroll, { passive: true });
             checkScroll();
             scrollTopBtn.addEventListener('click', function () {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -5630,40 +5662,6 @@ function initializeProjectFilters() {
     window.addEventListener('resize', () => {
         rect = null;
     }, { passive: true });
-})();
-
-// Stream Paragraph Typing Animation
-(function initParagraphStreaming() {
-    const target = document.querySelector('.about-stream-paragraph');
-    if (!target) return;
-
-    const fullText = target.getAttribute('data-fulltext') || target.innerText;
-    target.textContent = ''; // clear initially
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Small delay before typing starts
-                setTimeout(startStreaming, 300);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.15 });
-
-    observer.observe(target);
-
-    function startStreaming() {
-        let charIdx = 0;
-        const speed = 35; // Speed of typing characters in ms (35ms is smooth and natural)
-        const timer = setInterval(() => {
-            if (charIdx < fullText.length) {
-                target.textContent += fullText[charIdx];
-                charIdx++;
-            } else {
-                clearInterval(timer);
-            }
-        }, speed);
-    }
 })();
 
 

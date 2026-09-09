@@ -63,8 +63,10 @@ body {
   user-select: none;
   font-family: 'Poppins', sans-serif;
   transition: background-color 200ms ease, color 200ms ease;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -2485,7 +2487,6 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  animation: scale 1.5s ease;
   position: relative;
   display: block;
 }
@@ -2796,7 +2797,7 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
   width: 100%;
   justify-content: center;
   align-items: center;
-  gap: 55px;
+  gap: 90px;
 }
 
 .about-text-container {
@@ -2815,74 +2816,88 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
   min-width: 340px;
 }
 
-.about-card h2 {
-  font-size: 28px;
-  margin-bottom: 12px;
-  color: var(--primary);
-  font-family: Poppins, sans-serif;
+/* Clean Typography & Highlight Style (Matching Reference Image) */
+.about-clean-content {
+  padding: 10px 0;
+  max-width: 620px;
 }
 
-/* Speaker button next to About heading */
-.about-card .speak-btn {
+.about-clean-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.about-clean-title {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+/* Audio Listen Button inline after bio text */
+.speak-btn-clean {
   background: transparent;
-  border: 1px solid var(--border);
-  padding: 4px;
-  margin-left: 8px;
-  color: inherit;
+  border: none;
+  padding: 0 4px;
+  color: var(--text);
   cursor: pointer;
-  line-height: 1;
-  vertical-align: middle;
-  border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  vertical-align: middle;
+  transition: all 0.25s ease;
+  margin-left: 6px;
+  margin-top: 0;
 }
 
-.about-card .speak-btn svg {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
+.speak-btn-clean:hover {
+  color: var(--primary);
+  transform: scale(1.15);
 }
 
-.about-card .speak-btn:hover {
-  opacity: 0.95;
-  border-color: var(--primary);
+.speak-btn-clean.speaking {
+  color: var(--primary);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--primary) 60%, transparent));
 }
 
-.about-card .speak-btn:focus {
-  outline: 2px solid var(--border);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-.about-card .speak-btn.speaking {
-  opacity: 1;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
-  filter: none;
-}
-
-.about-card p {
-  font-size: 18px;
-  line-height: 1.6;
+/* Clean Bio Text with Pastel Underline Highlights */
+.about-clean-bio {
+  font-size: 17px;
+  line-height: 1.8;
   color: var(--text-muted);
+  font-family: 'Ubuntu', sans-serif;
+  margin-bottom: 32px;
 }
 
-/* Add vertical spacing between the about description and the Hire Me button */
-#hireMeBtn {
-  display: inline-block;
-  margin-top: 24px;
+.highlight-underline {
+  background-image: linear-gradient(120deg, rgba(254, 205, 211, 0.85) 0%, rgba(254, 205, 211, 0.85) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 35%;
+  background-position: 0 88%;
+  color: var(--text);
+  font-weight: 600;
+  padding: 0 3px;
+  border-radius: 2px;
 }
 
-/* Streaming Paragraph About Style */
-.about-stream-paragraph {
-  font-size: 1.1rem !important;
-  line-height: 1.7 !important;
-  color: var(--text-muted) !important;
-  text-align: justify;
-  margin-top: 16px;
-  min-height: 160px;
-  /* reserve space to prevent layout shifting while typing */
+[data-theme="dark"] .highlight-underline {
+  background-image: linear-gradient(120deg, rgba(225, 29, 72, 0.35) 0%, rgba(225, 29, 72, 0.35) 100%);
+  color: var(--text);
+}
+
+/* CTA Action */
+.about-clean-action {
+  display: flex;
+  align-items: center;
+}
+
+.about-clean-action #hireMeBtn {
+  margin-top: 0;
 }
 
 .profile-image {
@@ -3535,6 +3550,7 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
   display: flex;
   gap: 16px;
   width: 100%;
+  max-width: 820px;
   height: 270px;
   overflow: hidden;
   z-index: 2;
@@ -4257,7 +4273,7 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
   right: 0;
   bottom: 0;
   background: radial-gradient(circle at 50% 50%, rgba(39, 85, 210, 0.15), transparent 60%),
-              rgba(0, 0, 0, 0.5);
+    rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 9999;
@@ -4274,7 +4290,7 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
   padding: 28px 24px;
   width: 90%;
   max-width: 440px;
-  box-shadow: 
+  box-shadow:
     0 4px 30px rgba(0, 0, 0, 0.1),
     0 20px 50px rgba(0, 0, 0, 0.25),
     inset 0 1px 1px rgba(255, 255, 255, 0.05);
@@ -4376,7 +4392,7 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
 .input-wrapper:focus-within {
   border-color: var(--primary);
   background: color-mix(in srgb, var(--bg) 95%, transparent);
-  box-shadow: 
+  box-shadow:
     0 0 0 4px color-mix(in srgb, var(--primary) 15%, transparent),
     0 10px 20px rgba(0, 0, 0, 0.05);
 }
@@ -4418,8 +4434,15 @@ body.recruiter-mode .recruiter-mode-panel.recruiter-animate-in .rec-view.is-acti
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Close Button Redesign */
@@ -5003,16 +5026,48 @@ body.freeze-scroll {
 
   .about-text-container {
     text-align: center;
+    padding: 0;
   }
 
-  .about-card h2 {
-    font-size: 20px;
+  .about-luxury-card {
+    padding: 26px 20px;
   }
 
-  .about-card p {
-    font-size: 12px;
-    line-height: 1.5;
-    text-align: justify;
+  .about-luxury-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-luxury-headline {
+    font-size: 24px;
+  }
+
+  .about-luxury-bio {
+    font-size: 13.5px;
+    line-height: 1.65;
+    text-align: left;
+  }
+
+  .about-linear-metrics {
+    padding: 14px 10px;
+    gap: 6px;
+  }
+
+  .metric-num {
+    font-size: 16px;
+  }
+
+  .metric-title {
+    font-size: 10px;
+  }
+
+  .about-luxury-tags {
+    justify-content: center;
+  }
+
+  .about-luxury-footer {
+    justify-content: center;
   }
 
   .about-section {
@@ -5818,6 +5873,7 @@ body.freeze-scroll {
 .scroll-reveal.revealed {
   opacity: 1;
   transform: translateY(0) translateX(0) scale(1);
+  will-change: auto;
 }
 
 /* Stagger children: delay increases per item */
@@ -5902,7 +5958,8 @@ body.freeze-scroll {
   right: 24px;
   z-index: 10000;
   font-family: 'Poppins', 'Ubuntu', sans-serif;
-  pointer-events: none; /* Let pointer events pass through to elements underneath */
+  pointer-events: none;
+  /* Let pointer events pass through to elements underneath */
 }
 
 .rag-chat-container {
@@ -6071,7 +6128,7 @@ body.freeze-scroll {
 
 .rag-message-bubble {
   padding: 8px 12px;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.4;
   border-radius: 12px;
   word-break: break-word;
@@ -6331,6 +6388,7 @@ body.freeze-scroll {
 }
 
 @media (max-width: 768px) {
+
   .footer-left-btn:hover,
   .footer-left-btn:focus-visible {
     transform: scale(1.05);

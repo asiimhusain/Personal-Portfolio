@@ -36,3 +36,4 @@ class ChatMessage(BaseModel):
 
 class RenameSessionRequest(BaseModel):
     title: str
+

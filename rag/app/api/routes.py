@@ -1,7 +1,9 @@
 import os
+import io
 import shutil
 import uuid
 import json
+from pydantic import BaseModel
 from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks
 from fastapi.responses import StreamingResponse
 from typing import List
@@ -25,6 +27,7 @@ _doc_processor = None
 _vector_store = None
 _retriever = None
 _generator = None
+_chat_history = None
 
 def get_doc_processor():
     global _doc_processor
@@ -50,8 +53,6 @@ def get_generator():
         _generator = AnswerGenerator()
     return _generator
 
-_chat_history = None
-
 def get_chat_history():
     global _chat_history
     if _chat_history is None:
@@ -71,7 +72,7 @@ def process_file_background(file_path: str):
 
 @router.post("/upload")
 def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
-    """Uploads a document and indexes it in the background."""
+    """Uploads a document, extracts content, and indexes it in the background."""
     if not file.filename:
         raise HTTPException(status_code=400, detail="No file uploaded")
     
@@ -83,14 +84,17 @@ def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(.
         logger.error(f"File save error: {e}")
         raise HTTPException(status_code=500, detail="Failed to save file")
     
-    # Process in background to keep endpoint responsive
+    # Extract text content for immediate context
+    extracted_text = get_doc_processor().extract_text_content(str(file_path))
+    
+    # Process and index in background
     background_tasks.add_task(process_file_background, str(file_path))
     
-    return {"message": "File uploaded successfully and submitted for indexing.", "filename": file.filename}
-def is_simple_greeting(query: str) -> bool:
-    clean = query.strip().lower().strip("?!. ")
-    greetings = {"hi", "hello", "hey", "hola", "greetings", "good morning", "good afternoon", "good evening", "yo", "hi there", "hello there"}
-    return clean in greetings or len(clean) < 4
+    return {
+        "message": "File uploaded successfully and submitted for indexing.",
+        "filename": file.filename,
+        "extracted_text": extracted_text[:8000] if extracted_text else ""
+    }
 
 @router.post("/query", response_model=QueryResponse)
 async def query_system(req: QueryRequest):
@@ -104,36 +108,36 @@ async def query_system(req: QueryRequest):
         # First message query sets the session title
         title = req.query[:40] + ("..." if len(req.query) > 40 else "")
         get_chat_history().create_session(session_id, title)
-    else:
-        # Just in case session is provided but not initialized
-        get_chat_history().create_session(session_id, "New Chat")
         
     # Get previous conversation messages for context
     history = get_chat_history().get_messages(session_id)
     
-    # Retrieve documents using RAG pipeline (skip for simple greetings to optimize performance)
-    if is_simple_greeting(req.query):
-        top_docs = []
-    else:
+    try:
+        # Retrieve documents using RAG pipeline
         top_docs = await get_retriever().async_retrieve_and_rerank(req.query, top_k=req.top_k, top_n=req.top_n)
-    
-    # Generate response incorporating recent history
-    answer = await get_generator().generate_async(req.query, top_docs, history)
-    
-    sources = [DocumentChunk(**doc) for doc in top_docs]
-    
-    # Save user message and assistant answer to SQLite
-    get_chat_history().add_message(session_id, "user", req.query)
-    # Serialize sources as dictionary list to store in database
-    sources_dict = [doc for doc in top_docs]
-    get_chat_history().add_message(session_id, "assistant", answer, sources_dict)
-    
-    return QueryResponse(
-        query=req.query,
-        answer=answer,
-        sources=sources,
-        session_id=session_id
-    )
+        
+        # Generate response incorporating recent history
+        answer = await get_generator().generate_async(req.query, top_docs, history)
+        
+        sources = [DocumentChunk(**doc) for doc in top_docs]
+        
+        # Save user message and assistant answer to SQLite
+        get_chat_history().add_message(session_id, "user", req.query)
+        # Serialize sources as dictionary list to store in database
+        sources_dict = [doc for doc in top_docs]
+        get_chat_history().add_message(session_id, "assistant", answer, sources_dict)
+        
+        return QueryResponse(
+            query=req.query,
+            answer=answer,
+            sources=sources,
+            session_id=session_id
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error processing query: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/query/stream")
 async def query_system_stream(req: QueryRequest):
@@ -145,34 +149,41 @@ async def query_system_stream(req: QueryRequest):
         session_id = str(uuid.uuid4())
         title = req.query[:40] + ("..." if len(req.query) > 40 else "")
         get_chat_history().create_session(session_id, title)
-    else:
-        get_chat_history().create_session(session_id, "New Chat")
         
     history = get_chat_history().get_messages(session_id)
     
-    # Retrieve documents using RAG pipeline (skip for simple greetings to optimize performance)
-    if is_simple_greeting(req.query):
-        top_docs = []
-    else:
+    try:
         top_docs = await get_retriever().async_retrieve_and_rerank(req.query, top_k=req.top_k, top_n=req.top_n)
-        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in stream retrieval: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
     sources = [DocumentChunk(**doc) for doc in top_docs]
     sources_dict = [doc for doc in top_docs]
     
     async def event_generator():
-        yield f"data: {json.dumps({'type': 'metadata', 'session_id': session_id, 'sources': [s.model_dump() for s in sources]})}\n\n"
-        
-        full_answer = ""
-        async for chunk in get_generator().generate_stream(req.query, top_docs, history):
-            full_answer += chunk
-            yield f"data: {json.dumps({'type': 'token', 'content': chunk})}\n\n"
-        
-        get_chat_history().add_message(session_id, "user", req.query)
-        get_chat_history().add_message(session_id, "assistant", full_answer, sources_dict)
-        
-        yield "data: [DONE]\n\n"
- 
+        try:
+            yield f"data: {json.dumps({'type': 'metadata', 'session_id': session_id, 'sources': [s.model_dump() for s in sources]})}\n\n"
+            
+            full_answer = ""
+            async for chunk in get_generator().generate_stream(req.query, top_docs, history):
+                full_answer += chunk
+                yield f"data: {json.dumps({'type': 'token', 'content': chunk})}\n\n"
+            
+            get_chat_history().add_message(session_id, "user", req.query)
+            get_chat_history().add_message(session_id, "assistant", full_answer, sources_dict)
+            
+            yield "data: [DONE]\n\n"
+        except Exception as e:
+            logger.error(f"Error during stream generation: {e}")
+            err_content = f"\n\n[Error: {str(e)}]"
+            yield f"data: {json.dumps({'type': 'token', 'content': err_content})}\n\n"
+            yield "data: [DONE]\n\n"
+
     return StreamingResponse(event_generator(), media_type="text/event-stream")
+
 
 @router.get("/status", response_model=StatusResponse)
 def system_status():
@@ -229,3 +240,4 @@ def rename_session(session_id: str, req: RenameSessionRequest):
     """Renames a chat session."""
     get_chat_history().rename_session(session_id, req.title)
     return {"message": f"Session renamed to {req.title}."}
+
