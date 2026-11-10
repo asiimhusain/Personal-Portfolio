@@ -9,7 +9,7 @@ A modern, responsive portfolio website showcasing AI/ML and full-stack engineeri
 ![JavaScript](https://img.shields.io/badge/Powered_by-JavaScript-yellow)
 
 ## 🌐 Live Website
-**👉 [www.asimhusain.dev](https://www.asimhusain.dev)**
+**👉 [www.asimhusain.me](https://www.asimhusain.me)**
 
 ---
 
