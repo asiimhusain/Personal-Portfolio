@@ -172,8 +172,8 @@ function initializeParticleBackground() {
 
     const areaToCount = () => {
         const area = Math.max(320, width) * Math.max(320, height);
-        const target = Math.floor(area / (isMobileDevice() ? 1900 : 900));
-        return Math.max(300, Math.min(target, isMobileDevice() ? 450 : 950));
+        const target = Math.floor(area / (isMobileDevice() ? 2800 : 2200));
+        return Math.max(isMobileDevice() ? 180 : 300, Math.min(target, isMobileDevice() ? 260 : 500));
     };
 
     const randomRange = (min, max) => min + Math.random() * (max - min);
@@ -1725,8 +1725,13 @@ function initializeBlogs() {
     const entries = blogData.map(makeEntry);
     const total = entries.length;
     const step = (Math.PI * 2) / total;
+    const iconColors = [
+        '#2755d2', '#14b8a6', '#7c3aed', '#ef4444', '#f59e0b',
+        '#06b6d4', '#ec4899', '#22c55e', '#8b5cf6', '#0ea5e9',
+        '#f97316', '#10b981', '#3b82f6', '#d946ef', '#eab308'
+    ];
 
-    let rotation = Math.PI / 2;
+    let rotation = -Math.PI / 2;
     let velocity = 0;
     let dragging = false;
     let lastY = 0;
@@ -1744,12 +1749,13 @@ function initializeBlogs() {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'blog-wheel-icon';
+        button.style.color = iconColors[index % iconColors.length];
         button.setAttribute('role', 'option');
         button.setAttribute('aria-label', entry.title);
         button.setAttribute('title', entry.title);
         button.innerHTML = getBlogIconSvg(entry.title, index);
         button.addEventListener('click', () => {
-            const target = Math.PI / 2 - index * step;
+            const target = -Math.PI / 2 - index * step;
             const diff = Math.atan2(Math.sin(target - rotation), Math.cos(target - rotation));
             velocity += diff * 0.12;
             setActive(index);
@@ -1773,6 +1779,7 @@ function initializeBlogs() {
             const isActive = i === index;
             button.classList.toggle('is-active', isActive);
             button.setAttribute('aria-current', isActive ? 'true' : 'false');
+            button.style.color = isActive ? '#ffffff' : iconColors[i % iconColors.length];
         });
 
         if (updateTimer) clearTimeout(updateTimer);
@@ -1789,7 +1796,7 @@ function initializeBlogs() {
     }
 
     function nearestIndex() {
-        const raw = (Math.PI / 2 - rotation) / step;
+        const raw = (-Math.PI / 2 - rotation) / step;
         return ((Math.round(raw) % total) + total) % total;
     }
 
@@ -1805,25 +1812,37 @@ function initializeBlogs() {
         if (wheelWidth === 0 || wheelHeight === 0) {
             updateWheelSize();
         }
+        const isStackedLayout = window.innerWidth <= 1120;
+        const radius = isStackedLayout
+            ? Math.min(wheelWidth * 0.5, wheelHeight * 0.72)
+            : Math.min(wheelWidth * 0.38, wheelHeight * 0.38);
         const centerX = wheelWidth * 0.5;
-        const centerY = wheelHeight + 42;
-        const radius = Math.min(wheelWidth * 0.5, wheelHeight * 0.72);
+        const centerY = isStackedLayout ? wheelHeight + 42 : wheelHeight * 0.5;
 
         buttons.forEach((button, index) => {
             const angle = index * step + rotation;
-            const normalized = ((angle % (Math.PI * 2)) + (Math.PI * 2)) % (Math.PI * 2);
-            const visible = normalized >= 0 && normalized <= Math.PI;
-            const depth = Math.sin(normalized);
+            let x;
+            let y;
+            let visible;
 
-            const x = centerX + Math.cos(angle) * radius;
-            const y = centerY - Math.sin(angle) * radius;
-            const scale = 0.72 + depth * 0.45;
-            const opacity = visible ? (0.22 + depth * 0.78) : 0;
+            if (isStackedLayout) {
+                const normalized = ((angle % (Math.PI * 2)) + (Math.PI * 2)) % (Math.PI * 2);
+                visible = normalized >= 0 && normalized <= Math.PI;
+                x = centerX + Math.cos(angle) * radius;
+                y = centerY - Math.sin(angle) * radius;
+                const depth = Math.sin(normalized);
+                button.style.opacity = String(visible ? (0.22 + depth * 0.78) : 0);
+                button.style.pointerEvents = visible ? 'auto' : 'none';
+            } else {
+                x = centerX + Math.cos(angle) * radius;
+                y = centerY + Math.sin(angle) * radius;
+                visible = true;
+                button.style.opacity = '1';
+                button.style.pointerEvents = 'auto';
+            }
 
-            button.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${scale})`;
-            button.style.opacity = String(opacity);
-            button.style.zIndex = String(10 + Math.round(depth * 100));
-            button.style.pointerEvents = visible ? 'auto' : 'none';
+            button.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+            button.style.zIndex = visible ? '10' : '1';
         });
 
         setActive(nearestIndex());
@@ -1868,7 +1887,7 @@ function initializeBlogs() {
 
         let isSettled = false;
         if (!dragging && Math.abs(velocity) < 0.0008) {
-            const target = Math.PI / 2 - nearestIndex() * step;
+            const target = -Math.PI / 2 - nearestIndex() * step;
             const diff = Math.atan2(Math.sin(target - rotation), Math.cos(target - rotation));
             rotation += diff * 0.14;
             if (Math.abs(diff) < 0.0002) {

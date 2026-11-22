@@ -8,7 +8,8 @@
     <meta name="keywords" content="portfolio, resume, software developer, machine learning engineer" />
     <meta name="author" content="Asim Husain" />
     <title>Asim Husain</title>
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/webp" href="images/favicon.webp">
+    <link rel="preload" as="image" href="images/dp.webp" fetchpriority="high">
 
     <!-- Apply theme as early as possible: user's stored preference or system default -->
     <script>
@@ -29,9 +30,11 @@
     </script>
 
     <!-- CSS & Scripts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="css/style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Raleway:wght@300&family=Ubuntu&display=swap" rel="stylesheet">
 
 </head>
 
@@ -100,7 +103,7 @@
         <div class="nav-container">
             <main id="app" class="dark">
                 <div>
-                    <button type="button" class="gooey-btn" id="agent-nav-btn">ASIM's PA</button>
+                    <button type="button" class="gooey-btn" id="agent-nav-btn">MY&nbsp;ASSISTANT</button>
                     <button type="button" class="gooey-btn" data-target="#projects">MY&nbsp;WORK</button>
                     <button type="button" class="gooey-btn" id="recruiter-trigger-btn">RECRUITER&nbsp;MODE</button>
                     <a id="resume-trigger" class="gooey-btn" href="files/resume.pdf" target="_blank" rel="noopener"
@@ -147,11 +150,6 @@
                         class="rec-sidebar-project-link">
                         <span class="rec-sidebar-proj-dot" style="--dot-color:#10b981"></span><span>PredicTrade</span>
                     </a>
-                    <a href="https://www.asimhusain.dev" target="_blank" rel="noopener"
-                        class="rec-sidebar-project-link">
-                        <span class="rec-sidebar-proj-dot" style="--dot-color:#ef4444"></span><span>Personal
-                            Website</span>
-                    </a>
                 </div>
                 <div class="rec-sidebar-info">
                     <h4 class="rec-sidebar-section-title">Info</h4>
@@ -189,7 +187,7 @@
                 <header class="rec-header">
                     <div class="rec-header-left">
                         <h2 id="recruiterModeTitle" class="rec-header-title">Asim Husain</h2>
-                        <span class="rec-header-subtitle">AI/ML &nbsp;&amp;&nbsp; SDE</span>
+                        <span class="rec-header-subtitle">AI/ML Engineer</span>
                     </div>
                     <div class="rec-header-right">
                         <span class="rec-header-badge">
@@ -202,9 +200,7 @@
                 <div class="rec-view rec-view--dashboard is-active" data-rec-view="dashboard">
 
                     <!-- Summary Line -->
-                    <p class="recruiter-summary">Software Engineer and B.Tech CS student specialized in AI/ML. Builds
-                        scalable, data-driven systems with Python, SQL, and modern engineering practices. Seeking SWE or
-                        AI-focused roles.</p>
+                    <p class="recruiter-summary">AI ML Engineer and B.Tech CS student specialized in AI/ML. Builds scalable, data-driven systems with Python, SQL, and modern engineering practices. Seeking SWE or AI-focused roles.</p>
 
                     <!-- Metric Cards Row -->
                     <div class="recruiter-metrics-grid" aria-label="Key metrics">
@@ -218,7 +214,7 @@
                                     <rect x="14" y="14" width="7" height="7" rx="1" />
                                 </svg>
                             </div>
-                            <p class="recruiter-metric-number" data-value="5" data-suffix="+">0</p>
+                            <p class="recruiter-metric-number" data-value="4" data-suffix="+">0</p>
                             <p class="recruiter-metric-label">Live Projects</p>
                         </article>
                         <article class="recruiter-metric-card">
@@ -533,9 +529,9 @@
             <div class="hero-text">
                 <div class="hero-name"><span class="accent-color">Asim </span>Husain</div>
                 <div class="hero-title">
-                    I'm a
+                    I'm
                     <span class="typewriter-text accent-color" data-period="1200"
-                        data-rotate='[ " AI/ML Engineer.", "Software Developer", " Prompt Engineer" ]'></span>
+                        data-rotate='[ " AI/ML Engineer.", "Data Analyst.", "Automation Engineer." ]'></span>
                     <span class="typewriter-cursor">|</span>
                 </div>
             </div>
@@ -546,7 +542,7 @@
     <section id="about" class="about-section">
         <div class="about-container">
             <div class="about-image-container">
-                <img src="images/dp.png" alt="Asim Husain" class="profile-image" loading="lazy" decoding="async">
+                <img src="images/dp.webp" alt="Asim Husain" class="profile-image" decoding="async" fetchpriority="high">
                 <h3 class="profile-name">Asim Husain</h3>
                 <p class="profile-role">AI/ML Engineer</p>
             </div>
@@ -559,8 +555,7 @@
                     </div>
 
                     <p id="aboutDescription" class="about-clean-bio">
-                        AI/ML Engineer and Software Engineer focused on building
-                        practical,
+                        AI/ML Engineer focused on building practical,
                         scalable, and production-ready AI solutions and software systems. I'm skilled in Python,
                         SQL,
                         MLOps, LLMs, RAG, Generative AI, Backend and familiar with Agentic AI, Autonomous Agents. I
@@ -608,8 +603,6 @@
             <div class="projects-accordion">
                 <!-- RAG System -->
                 <div class="project-accordion-item" data-category="ai-ml">
-                    <a href="https://ragsystem.grayground-1f565d06.centralindia.azurecontainerapps.io" target="_blank"
-                        class="project-accordion-link">
                         <div class="project-accordion-card" style="--glow-color: #06b6d4;">
                             <div class="project-accordion-glow"></div>
 
@@ -617,7 +610,7 @@
                             <div class="project-accordion-collapsed-part">
                                 <span class="proj-acc-num">01</span>
                                 <div class="proj-acc-collapsed-icon-wrap">
-                                    <img src="images/rag.png" alt="RAG System" class="project-card-icon" loading="lazy"
+                                    <img src="images/rag.webp" alt="RAG System" class="project-card-icon" loading="lazy"
                                         decoding="async">
                                 </div>
                                 <h3 class="proj-acc-vertical-title">RAG System</h3>
@@ -627,7 +620,7 @@
                             <div class="project-accordion-expanded-part">
                                 <div class="project-card-header">
                                     <div class="project-card-icon-wrap">
-                                        <img src="images/rag.png" alt="RAG System" class="project-card-icon"
+                                        <img src="images/rag.webp" alt="RAG System" class="project-card-icon"
                                             loading="lazy" decoding="async">
                                     </div>
                                     <span class="project-card-tag">AI / ML</span>
@@ -643,14 +636,16 @@
                                     <span>RAG</span>
                                     <span>Docker</span>
                                 </div>
+                                <div class="project-card-actions">
+                                    <a class="project-card-action" href="https://github.com/asiimhusain/RAG-System.git" target="_blank" rel="noopener">Repo</a>
+                                    <a class="project-card-action" href="https://ragsystem.grayground-1f565d06.centralindia.azurecontainerapps.io" target="_blank" rel="noopener">Live</a>
+                                </div>
                             </div>
                         </div>
-                    </a>
                 </div>
 
                 <!-- CureHelp+ -->
                 <div class="project-accordion-item" data-category="web-apps">
-                    <a href="https://www.curehelplus.me" target="_blank" class="project-accordion-link">
                         <div class="project-accordion-card" style="--glow-color: #2755d2;">
                             <div class="project-accordion-glow"></div>
 
@@ -658,7 +653,7 @@
                             <div class="project-accordion-collapsed-part">
                                 <span class="proj-acc-num">02</span>
                                 <div class="proj-acc-collapsed-icon-wrap">
-                                    <img src="images/curehelp.png" alt="CureHelp+" class="project-card-icon"
+                                    <img src="images/curehelp.webp" alt="CureHelp+" class="project-card-icon"
                                         loading="lazy" decoding="async">
                                 </div>
                                 <h3 class="proj-acc-vertical-title">CureHelp+</h3>
@@ -668,7 +663,7 @@
                             <div class="project-accordion-expanded-part">
                                 <div class="project-card-header">
                                     <div class="project-card-icon-wrap">
-                                        <img src="images/curehelp.png" alt="CureHelp+" class="project-card-icon"
+                                        <img src="images/curehelp.webp" alt="CureHelp+" class="project-card-icon"
                                             loading="lazy" decoding="async">
                                     </div>
                                     <span class="project-card-tag">Web Apps</span>
@@ -684,14 +679,16 @@
                                     <span>Web Services</span>
                                     <span>Python</span>
                                 </div>
+                                <div class="project-card-actions">
+                                    <a class="project-card-action" href="https://github.com/asiimhusain/CureHelplus.git" target="_blank" rel="noopener">Repo</a>
+                                    <a class="project-card-action" href="https://www.curehelplus.me" target="_blank" rel="noopener">Live</a>
+                                </div>
                             </div>
                         </div>
-                    </a>
                 </div>
 
                 <!-- IntervBot -->
                 <div class="project-accordion-item" data-category="ai-ml">
-                    <a href="https://intervbot.vercel.app" target="_blank" class="project-accordion-link">
                         <div class="project-accordion-card" style="--glow-color: #14b8a6;">
                             <div class="project-accordion-glow"></div>
 
@@ -699,7 +696,7 @@
                             <div class="project-accordion-collapsed-part">
                                 <span class="proj-acc-num">03</span>
                                 <div class="proj-acc-collapsed-icon-wrap">
-                                    <img src="images/interview.png" alt="Interview Project" class="project-card-icon"
+                                    <img src="images/interview.webp" alt="Interview Project" class="project-card-icon"
                                         loading="lazy" decoding="async">
                                 </div>
                                 <h3 class="proj-acc-vertical-title">IntervBot</h3>
@@ -709,7 +706,7 @@
                             <div class="project-accordion-expanded-part">
                                 <div class="project-card-header">
                                     <div class="project-card-icon-wrap">
-                                        <img src="images/interview.png" alt="Interview Project"
+                                        <img src="images/interview.webp" alt="Interview Project"
                                             class="project-card-icon" loading="lazy" decoding="async">
                                     </div>
                                     <span class="project-card-tag">AI / ML</span>
@@ -725,14 +722,16 @@
                                     <span>PostgreSQL</span>
                                     <span>REST APIs</span>
                                 </div>
+                                <div class="project-card-actions">
+                                    <a class="project-card-action" href="https://github.com/asiimhusain/Virtual-Interviewer.git" target="_blank" rel="noopener">Repo</a>
+                                    <a class="project-card-action" href="https://intervbot.vercel.app" target="_blank" rel="noopener">Live</a>
+                                </div>
                             </div>
                         </div>
-                    </a>
                 </div>
 
                 <!-- TinyURL -->
                 <div class="project-accordion-item" data-category="web-apps">
-                    <a href="https://tiniurl-wine.vercel.app" target="_blank" class="project-accordion-link">
                         <div class="project-accordion-card" style="--glow-color: #7c3aed;">
                             <div class="project-accordion-glow"></div>
 
@@ -740,7 +739,7 @@
                             <div class="project-accordion-collapsed-part">
                                 <span class="proj-acc-num">04</span>
                                 <div class="proj-acc-collapsed-icon-wrap">
-                                    <img src="images/url.png" alt="URL Project" class="project-card-icon" loading="lazy"
+                                    <img src="images/url.webp" alt="URL Project" class="project-card-icon" loading="lazy"
                                         decoding="async">
                                 </div>
                                 <h3 class="proj-acc-vertical-title">TinyURL</h3>
@@ -750,7 +749,7 @@
                             <div class="project-accordion-expanded-part">
                                 <div class="project-card-header">
                                     <div class="project-card-icon-wrap">
-                                        <img src="images/url.png" alt="URL Project" class="project-card-icon"
+                                        <img src="images/url.webp" alt="URL Project" class="project-card-icon"
                                             loading="lazy" decoding="async">
                                     </div>
                                     <span class="project-card-tag">Web Apps</span>
@@ -766,14 +765,16 @@
                                     <span>Python</span>
                                     <span>Automation</span>
                                 </div>
+                                <div class="project-card-actions">
+                                    <a class="project-card-action" href="https://github.com/asiimhusain/URL-Shortener..QR-Gnerator.git" target="_blank" rel="noopener">Repo</a>
+                                    <a class="project-card-action" href="https://tiniurl-wine.vercel.app" target="_blank" rel="noopener">Live</a>
+                                </div>
                             </div>
                         </div>
-                    </a>
                 </div>
 
                 <!-- PredicTrade -->
                 <div class="project-accordion-item" data-category="ai-ml">
-                    <a href="https://predictrade.streamlit.app/" target="_blank" class="project-accordion-link">
                         <div class="project-accordion-card" style="--glow-color: #10b981;">
                             <div class="project-accordion-glow"></div>
 
@@ -781,7 +782,7 @@
                             <div class="project-accordion-collapsed-part">
                                 <span class="proj-acc-num">05</span>
                                 <div class="proj-acc-collapsed-icon-wrap">
-                                    <img src="images/stock.png" alt="Stock Project" class="project-card-icon"
+                                    <img src="images/stock.webp" alt="Stock Project" class="project-card-icon"
                                         loading="lazy" decoding="async">
                                 </div>
                                 <h3 class="proj-acc-vertical-title">PredicTrade</h3>
@@ -791,7 +792,7 @@
                             <div class="project-accordion-expanded-part">
                                 <div class="project-card-header">
                                     <div class="project-card-icon-wrap">
-                                        <img src="images/stock.png" alt="Stock Project" class="project-card-icon"
+                                        <img src="images/stock.webp" alt="Stock Project" class="project-card-icon"
                                             loading="lazy" decoding="async">
                                     </div>
                                     <span class="project-card-tag">AI / ML</span>
@@ -807,9 +808,12 @@
                                     <span>Data Analytics</span>
                                     <span>Python</span>
                                 </div>
+                                <div class="project-card-actions">
+                                    <span class="project-card-action is-unavailable" aria-disabled="true">Repo</span>
+                                    <a class="project-card-action" href="https://predictrade.streamlit.app/" target="_blank" rel="noopener">Live</a>
+                                </div>
                             </div>
                         </div>
-                    </a>
                 </div>
             </div>
         </div>
@@ -825,7 +829,7 @@
                     id="tab-software" data-discipline="software">
                     <div class="nav-icon-wrapper">
                         <div class="service-icon">
-                            <img src="images/developer.png" alt="Developer Icon" loading="lazy" decoding="async" />
+                            <img src="images/developer.webp" alt="Developer Icon" loading="lazy" decoding="async" />
                         </div>
                     </div>
                     <div class="nav-text">
@@ -838,7 +842,7 @@
                     data-discipline="aiml">
                     <div class="nav-icon-wrapper">
                         <div class="service-icon">
-                            <img src="images/ml.png" alt="ML Icon" loading="lazy" decoding="async" />
+                            <img src="images/ml.webp" alt="ML Icon" loading="lazy" decoding="async" />
                         </div>
                     </div>
                     <div class="nav-text">
@@ -851,7 +855,7 @@
                     data-discipline="datasci">
                     <div class="nav-icon-wrapper">
                         <div class="service-icon">
-                            <img src="images/da.png" alt="Data Science Icon" loading="lazy" decoding="async" />
+                            <img src="images/da.webp" alt="Data Science Icon" loading="lazy" decoding="async" />
                         </div>
                     </div>
                     <div class="nav-text">
@@ -984,6 +988,23 @@
                     <div class="vcenter">
                         <div class="cert-grid">
                             <div class="cert-info">
+                                <h2 data-seq class="certificate-title">Winner Medal (TMU)</h2>
+                                <p class="certificate-description">
+                                    Recognized for winning achievement at Teerthanker Mahaveer University through
+                                    innovation, technical execution, and presentation excellence.
+                                </p>
+                            </div>
+                            <div class="cert-visual">
+                                <img data-seq class="certificate-feature" src="certificate/winnermedal.webp"
+                                    alt="Winner Medal" loading="eager" decoding="async" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="step1 valign">
+                    <div class="vcenter">
+                        <div class="cert-grid">
+                            <div class="cert-info">
                                 <h2 data-seq class="certificate-title">Microsoft AI ML Engineering (Coursera)</h2>
                                 <p class="certificate-description">
                                     Developed practical expertise in AI and machine learning systems, covering core ML
@@ -994,13 +1015,13 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate1.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate1.webp"
                                     alt="Certificate 1" loading="lazy" decoding="async" />
                             </div>
                         </div>
                     </div>
                 </li>
-                <li class="step2 valign seq-in">
+                <li class="step2 valign">
                     <div class="vcenter">
                         <div class="cert-grid">
                             <div class="cert-info">
@@ -1013,7 +1034,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate2.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate2.webp"
                                     alt="Certificate 1" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1032,7 +1053,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate3.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate3.webp"
                                     alt="Certificate 2" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1051,7 +1072,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate4.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate4.webp"
                                     alt="Certificate 7" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1070,7 +1091,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate5.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate5.webp"
                                     alt="Certificate 12" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1090,7 +1111,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate6.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate6.webp"
                                     alt="Certificate 12" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1110,7 +1131,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate7.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate7.webp"
                                     alt="Certificate 3" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1130,7 +1151,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate8.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate8.webp"
                                     alt="Certificate 5" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1150,7 +1171,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate9.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate9.webp"
                                     alt="Certificate 6" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1169,7 +1190,7 @@
                                 </p>
                             </div>
                             <div class="cert-visual">
-                                <img data-seq class="certificate-feature" src="certificate/certificate10.jpg"
+                                <img data-seq class="certificate-feature" src="certificate/certificate10.webp"
                                     alt="Certificate 14" loading="lazy" decoding="async" />
                             </div>
                         </div>
@@ -1213,7 +1234,7 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <h3>ASIM HUSAIN</h3>
-                <p>AI/ML Engineer &amp; Software Engineer</p>
+                <p>AI/ML Engineer</p>
             </div>
             <div class="footer-contact-info">
                 <span>
@@ -1533,7 +1554,7 @@
             <div class="rag-chat-header">
                 <div class="rag-chat-header-info">
                     <div class="rag-chat-title-group">
-                        <h3 class="rag-chat-title">ASIM's PA</h3>
+                        <h3 class="rag-chat-title">MY ASSISTANT</h3>
                         <span id="rag-status-indicator" class="rag-status-indicator offline">
                             <span class="status-dot"></span>
                             <span class="status-text">Connecting...</span>
@@ -1574,8 +1595,8 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="js/script.js"></script>
-    <script src="js/rag-agent.js"></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/rag-agent.js" defer></script>
 </body>
 
 </html>
