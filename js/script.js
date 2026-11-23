@@ -2429,7 +2429,7 @@ function closeCoursesExplorer() {
 
 async function loadCoursesManifest() {
     try {
-        const response = await fetch(`Notes/notes-index.json?v=${Date.now()}`);
+        const response = await fetch(`notes/notes-index.json?v=${Date.now()}`);
         if (!response.ok) throw new Error('Could not load Notes index');
         const payload = await response.json();
         COURSES_EXPLORER.manifestRoot = normalizeCoursesNode(payload.root || payload);
@@ -2438,7 +2438,7 @@ async function loadCoursesManifest() {
         }
         hideCoursesState();
     } catch (_) {
-        setCoursesState('Unable to load Notes folder index. Please ensure Notes/notes-index.json exists.');
+        setCoursesState('Unable to load Notes folder index. Please ensure notes/notes-index.json exists.');
     }
 }
 

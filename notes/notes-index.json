@@ -1,0 +1,2562 @@
+﻿{
+    "root":  {
+                 "name":  "Notes",
+                 "type":  "folder",
+                 "path":  "Notes",
+                 "children":  [
+                                  {
+                                      "name":  "Algorithms",
+                                      "type":  "folder",
+                                      "path":  "Notes/Algorithms",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Algorithms.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Algorithms/Algorithms.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Artificial Intelligence",
+                                      "type":  "folder",
+                                      "path":  "Notes/Artificial Intelligence",
+                                      "children":  [
+                                                       {
+                                                           "name":  "ai4all.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Artificial Intelligence/ai4all.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Cheat Sheets for AI.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Artificial Intelligence/Cheat Sheets for AI.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Artificial Intelligence/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "super-cheatsheet-artificial-intelligence.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Artificial Intelligence/super-cheatsheet-artificial-intelligence.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Big Data",
+                                      "type":  "folder",
+                                      "path":  "Notes/Big Data",
+                                      "children":  [
+                                                       {
+                                                           "name":  "AP.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/AP.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "BIG Data Analytics.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/BIG Data Analytics.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "big-data-analytics-emerging-architecture.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/big-data-analytics-emerging-architecture.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "bigdata-case-studybook_final.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/bigdata-case-studybook_final.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Big-Data-Cheat-Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/Big-Data-Cheat-Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Hadoop-and-mapreduce-cheat-sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/Hadoop-and-mapreduce-cheat-sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "hadoop-and-spark-performance-for-the-enterprise.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/hadoop-and-spark-performance-for-the-enterprise.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "hadoop-hdfs-commands-cheatsheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/hadoop-hdfs-commands-cheatsheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Hortonworks.CheatSheet.SQLtoHive.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/Hortonworks.CheatSheet.SQLtoHive.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "migrating-big-data-analytics.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/migrating-big-data-analytics.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "planning-for-big-data.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/planning-for-big-data.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Big Data/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "books",
+                                      "type":  "folder",
+                                      "path":  "Notes/books",
+                                      "children":  [
+                                                       {
+                                                           "name":  "free-programming-books-ar.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ar.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-az.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-az.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-bg.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-bg.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-bn.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-bn.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ca.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ca.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-cs.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-cs.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-cs-cp.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-cs-cp.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-da.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-da.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-de.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-de.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-el.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-el.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-en.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-en.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-es.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-es.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-et.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-et.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-fa_IR.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-fa_IR.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-fi.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-fi.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-fr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-fr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-he.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-he.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-hi.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-hi.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-hu.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-hu.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-hy.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-hy.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-id.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-id.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-it.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-it.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ja.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ja.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ko.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ko.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-langs.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-langs.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-lv.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-lv.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ml.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ml.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-my.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-my.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-nl.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-nl.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-no.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-no.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-pl.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-pl.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-pt_BR.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-pt_BR.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-pt_PT.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-pt_PT.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ro.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ro.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ru.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ru.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-sk.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-sk.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-sl.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-sl.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-sr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-sr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-subjects.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-subjects.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-sv.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-sv.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ta.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ta.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-te.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-te.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-th.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-th.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-tr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-tr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-uk.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-uk.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-ur.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-ur.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-vi.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-vi.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-books-zh.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/books/free-programming-books-zh.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "casts",
+                                      "type":  "folder",
+                                      "path":  "Notes/casts",
+                                      "children":  [
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-ar.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-ar.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-cs.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-cs.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-de.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-de.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-en.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-en.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-es.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-es.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-fa_IR.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-fa_IR.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-fi.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-fi.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-fr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-fr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-he.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-he.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-id.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-id.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-my.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-my.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-nl.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-nl.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-pl.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-pl.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-pt_BR.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-pt_BR.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-pt_PT.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-pt_PT.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-ru.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-ru.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-si.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-si.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-sv.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-sv.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-tr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-tr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-uk.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-uk.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-podcasts-screencasts-zh.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/casts/free-podcasts-screencasts-zh.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "courses",
+                                      "type":  "folder",
+                                      "path":  "Notes/courses",
+                                      "children":  [
+                                                       {
+                                                           "name":  "free-courses-ar.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ar.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-bg.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-bg.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-bn.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-bn.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-de.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-de.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-el.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-el.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-en.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-en.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-es.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-es.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-fa_IR.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-fa_IR.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-fi.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-fi.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-fr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-fr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-he.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-he.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-hi.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-hi.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-id.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-id.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-it.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-it.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ja.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ja.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-kk.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-kk.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-km.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-km.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-kn.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-kn.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ko.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ko.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ml.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ml.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-mr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-mr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-my.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-my.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ne.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ne.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-no.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-no.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-pa.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-pa.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-pl.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-pl.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-pt_BR.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-pt_BR.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-pt_PT.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-pt_PT.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ro.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ro.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ru.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ru.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-si.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-si.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-sv.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-sv.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ta.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ta.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-te.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-te.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-th.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-th.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-tr.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-tr.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-uk.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-uk.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-ur.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-ur.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-vi.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-vi.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-zh.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-zh.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-courses-zh_TW.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/courses/free-courses-zh_TW.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Data Engineering",
+                                      "type":  "folder",
+                                      "path":  "Notes/Data Engineering",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Data Engineering CookBook.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Engineering/Data Engineering CookBook.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "GDE.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Engineering/GDE.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Engineering/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Data Mining",
+                                      "type":  "folder",
+                                      "path":  "Notes/Data Mining",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Data Mining Process, Techniques, Tools.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Mining/Data Mining Process, Techniques, Tools.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "OLTP vs OLAP.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Mining/OLTP vs OLAP.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Mining/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "What Is Data Warehousing.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Mining/What Is Data Warehousing.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "What is Dimensional Model.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Mining/What is Dimensional Model.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "What is OLAP.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Mining/What is OLAP.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Data Science",
+                                      "type":  "folder",
+                                      "path":  "Notes/Data Science",
+                                      "children":  [
+                                                       {
+                                                           "name":  "50YearsDataScience-1533532686598.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/50YearsDataScience-1533532686598.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "beginners_guide_to_data_science-_a_twics_guide__1_.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/beginners_guide_to_data_science-_a_twics_guide__1_.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "BIvsDS.jpg",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/BIvsDS.jpg",
+                                                           "ext":  ".jpg"
+                                                       },
+                                                       {
+                                                           "name":  "Building Data Science Teams.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Building Data Science Teams.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "building-data-science-teams.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/building-data-science-teams.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Cheat Sheets for AI, Neural Networks, Machine Learning, Deep Learning, Big Data.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Cheat Sheets for AI, Neural Networks, Machine Learning, Deep Learning, Big Data.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data Driven Creating a Data Culture .pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Data Driven Creating a Data Culture .pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data Science Cheat Sheet(Python_R).pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Data Science Cheat Sheet(Python_R).pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data Science Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Data Science Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Feature Engineering.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Feature Engineering.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Getting Analytics Right .pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Getting Analytics Right .pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Going Pro in Data Science .pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Going Pro in Data Science .pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Handbook_Pt1.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Handbook_Pt1.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Handbook_Pt2.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Handbook_Pt2.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Handbook_Pt3.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Handbook_Pt3.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Handbook_Pt4.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Handbook_Pt4.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "how-data-science-is-transforming-health-care.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/how-data-science-is-transforming-health-care.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "INTRODUCTION TO DATA SCIENCE.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/INTRODUCTION TO DATA SCIENCE.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "PythonForDataScience.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/PythonForDataScience.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "The 5 Feature Selection Algorithms every Data Scientist should know.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/The 5 Feature Selection Algorithms every Data Scientist should know.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "The-365-Data-Science-Booklet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/The-365-Data-Science-Booklet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "The-365-Data-Science-Guide.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/The-365-Data-Science-Guide.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "The-Ultimate-Guide-to-Effective-Data-Collection.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/The-Ultimate-Guide-to-Effective-Data-Collection.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Top Data Science Libraries.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Top Data Science Libraries.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Ultimate Guide to Data Cleaning.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/Ultimate Guide to Data Cleaning.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "VIP Cheat Sheet (ML , DL , AI).pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/VIP Cheat Sheet (ML , DL , AI).pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "What is Exploratory Data Analysis_ - Towards Data Science.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Science/What is Exploratory Data Analysis_ - Towards Data Science.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Data Visualization",
+                                      "type":  "folder",
+                                      "path":  "Notes/Data Visualization",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Advanced_Plotting.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Advanced_Plotting.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Awesome Visualization Techniques for every dataset.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Awesome Visualization Techniques for every dataset.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data Visualization GÇô How to Pick the Right Chart Type.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Data Visualization GÇô How to Pick the Right Chart Type.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data Visualization in R.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Data Visualization in R.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data_Visualization_101_How_to_Design_Charts_and_Graphs.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Data_Visualization_101_How_to_Design_Charts_and_Graphs.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data_Visualization_Grossberg_lecture1.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Data_Visualization_Grossberg_lecture1.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "data-visualization-storytelling.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/data-visualization-storytelling.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "desktop.ini",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/desktop.ini",
+                                                           "ext":  ".ini"
+                                                       },
+                                                       {
+                                                           "name":  "ggplot2.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/ggplot2.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ggplot2_cheatsheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/ggplot2_cheatsheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Graphics.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Graphics.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Introducing Plotly Express - Plotly - Medium.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Introducing Plotly Express - Plotly - Medium.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "plotly.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/plotly.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Practical Statistics _ Visualization With Python _ Plotly.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/Practical Statistics _ Visualization With Python _ Plotly.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "The Art of Effective Visualization of Multi-dimensional Data.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/The Art of Effective Visualization of Multi-dimensional Data.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "The Next Level of Data Visualization in Python - Towards Data Science.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Visualization/The Next Level of Data Visualization in Python - Towards Data Science.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Data Warehouse",
+                                      "type":  "folder",
+                                      "path":  "Notes/Data Warehouse",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Data Warehouse Concepts.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Warehouse/Data Warehouse Concepts.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Data Warehouse/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Deep Learning",
+                                      "type":  "folder",
+                                      "path":  "Notes/Deep Learning",
+                                      "children":  [
+                                                       {
+                                                           "name":  "A Selective Overview of Deep Learning.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Deep Learning/A Selective Overview of Deep Learning.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Coursera Deep Learning course Notes.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Deep Learning/Coursera Deep Learning course Notes.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Interview Questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Deep Learning/Interview Questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Math of Deep Learning Neural Networks.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Deep Learning/Math of Deep Learning Neural Networks.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "nli_tutorial.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Deep Learning/nli_tutorial.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Deep Learning/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "super-cheatsheet-deep-learning.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Deep Learning/super-cheatsheet-deep-learning.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "DevOps",
+                                      "type":  "folder",
+                                      "path":  "Notes/DevOps",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Ansible-Cheat_Sheet_Edureka.png",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/Ansible-Cheat_Sheet_Edureka.png",
+                                                           "ext":  ".png"
+                                                       },
+                                                       {
+                                                           "name":  "DevOps.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/DevOps.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Docker Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/Docker Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "docker CLI _ Dockerfile Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/docker CLI _ Dockerfile Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "docker_cheat sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/docker_cheat sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "kubernetes.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/kubernetes.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "periodic-table-of-devops-tools-v3.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/periodic-table-of-devops-tools-v3.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/DevOps/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Docker and Kubernetes",
+                                      "type":  "folder",
+                                      "path":  "Notes/Docker and Kubernetes",
+                                      "children":  [
+                                                       {
+                                                           "name":  "docker-cheat-sheet.png",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Docker and Kubernetes/docker-cheat-sheet.png",
+                                                           "ext":  ".png"
+                                                       },
+                                                       {
+                                                           "name":  "kubectl_cheat_sheet.jpg",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Docker and Kubernetes/kubectl_cheat_sheet.jpg",
+                                                           "ext":  ".jpg"
+                                                       },
+                                                       {
+                                                           "name":  "Kubectl-Commands-Cheat-Sheet.png",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Docker and Kubernetes/Kubectl-Commands-Cheat-Sheet.png",
+                                                           "ext":  ".png"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Docker and Kubernetes/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Excel",
+                                      "type":  "folder",
+                                      "path":  "Notes/Excel",
+                                      "children":  [
+                                                       {
+                                                           "name":  "DAX.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Excel/DAX.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Excel Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Excel/Excel Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Excel Formulas Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Excel/Excel Formulas Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Pivot Table.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Excel/Pivot Table.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "powerpivot.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Excel/powerpivot.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Excel/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Git",
+                                      "type":  "folder",
+                                      "path":  "Notes/Git",
+                                      "children":  [
+                                                       {
+                                                           "name":  "atlassian-git-cheatsheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Git/atlassian-git-cheatsheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "git_cheat_sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Git/git_cheat_sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "git-cheat-sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Git/git-cheat-sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "GitNotesForProfessionals.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Git/GitNotesForProfessionals.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Git/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Images",
+                                      "type":  "folder",
+                                      "path":  "Notes/Images",
+                                      "children":  [
+                                                       {
+                                                           "name":  "100_numpy.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/100_numpy.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "101_numpy_exercises.jpg",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/101_numpy_exercises.jpg",
+                                                           "ext":  ".jpg"
+                                                       },
+                                                       {
+                                                           "name":  "coursera-deep-learning.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/coursera-deep-learning.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "DA_Pandas.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/DA_Pandas.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "Pandas_10mins.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/Pandas_10mins.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "python_cheatsheet.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/python_cheatsheet.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "pythonforDA.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/pythonforDA.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "PythonForDS.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/PythonForDS.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "R.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/R.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "R_cheatsheet.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/R_cheatsheet.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "RW_Panda.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/RW_Panda.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "SpaCy.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/SpaCy.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "super-cheatsheet-deep-learning.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/super-cheatsheet-deep-learning.PNG",
+                                                           "ext":  ".PNG"
+                                                       },
+                                                       {
+                                                           "name":  "supervised-and-unsupervised-learning.PNG",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Images/supervised-and-unsupervised-learning.PNG",
+                                                           "ext":  ".PNG"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Interview Questions",
+                                      "type":  "folder",
+                                      "path":  "Notes/Interview Questions",
+                                      "children":  [
+                                                       {
+                                                           "name":  "A BeginnerGÇÖs Guide to-á Getting Your First Data-á Science Job 2019 Edition.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/A BeginnerGÇÖs Guide to-á Getting Your First Data-á Science Job 2019 Edition.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "AI Questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/AI Questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Data Science Interview Questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/Data Science Interview Questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Getting Your First Job in DS.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/Getting Your First Job in DS.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Machine Learning Interview Questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/Machine Learning Interview Questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML Questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/ML Questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "Top 100 Python questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/Top 100 Python questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Top Deep Learning Interview Questions You Must Know.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Interview Questions/Top Deep Learning Interview Questions You Must Know.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Linux",
+                                      "type":  "folder",
+                                      "path":  "Notes/Linux",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Linux Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Linux/Linux Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Linux Command Line Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Linux/Linux Command Line Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Linux.png",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Linux/Linux.png",
+                                                           "ext":  ".png"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Linux/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "systemd.cheat.sheet.png",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Linux/systemd.cheat.sheet.png",
+                                                           "ext":  ".png"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Machine Learning",
+                                      "type":  "folder",
+                                      "path":  "Notes/Machine Learning",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Cheat Sheet Algorithms for Supervised and Unsupervised Learning.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Cheat Sheet Algorithms for Supervised and Unsupervised Learning.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Core of ML.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Core of ML.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "evaluating-machine-learning-models.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/evaluating-machine-learning-models.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Handling imbalanced datasets.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Handling imbalanced datasets.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Linear Discriminant Analysis.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Linear Discriminant Analysis.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Linear Regression in Python GÇô Real Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Linear Regression in Python GÇô Real Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Machine Learning Cheatsheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Machine Learning Cheatsheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Machine Learning Cheatsheet_NEW.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Machine Learning Cheatsheet_NEW.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Machine Learning is Fun.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Machine Learning is Fun.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Machine Learning Modelling in R.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Machine Learning Modelling in R.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Mathematics for Machine Learning.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Mathematics for Machine Learning.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Mathemitcs of Neural Networks.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Mathemitcs of Neural Networks.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML Formulas.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/ML Formulas.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML God.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/ML God.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML interview questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/ML interview questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML PROS N CONS.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/ML PROS N CONS.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML VIP Cheat Sheat.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/ML VIP Cheat Sheat.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML_AndrewNG.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/ML_AndrewNG.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "ML-02-linear-regression.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/ML-02-linear-regression.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "mlr.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/mlr.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Mutivariate Regression Analysis.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Mutivariate Regression Analysis.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Ng-MLY01-13.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Ng-MLY01-13.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Outlier Detection.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Outlier Detection.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Pytorch.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Pytorch.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Quick Reference Sheet - ML , DL , AI.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Quick Reference Sheet - ML , DL , AI.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "Self-Supervised Learning.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Self-Supervised Learning.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Statistics Machine Learning Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Statistics Machine Learning Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "StatisticsMachineLearningPython.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/StatisticsMachineLearningPython.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Supervised Machine Learning.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Supervised Machine Learning.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "The 5 Feature Selection Algorithms every Data Scientist should know.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/The 5 Feature Selection Algorithms every Data Scientist should know.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Time series analysis in Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Time series analysis in Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Top 10 Machine Learning Algorithms.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Top 10 Machine Learning Algorithms.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Train_Test Split and Cross Validation.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Train_Test Split and Cross Validation.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Understanding and Creating Neural Networks.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Machine Learning/Understanding and Creating Neural Networks.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Mathematics",
+                                      "type":  "folder",
+                                      "path":  "Notes/Mathematics",
+                                      "children":  [
+                                                       {
+                                                           "name":  "Algebra_Cheat_Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Mathematics/Algebra_Cheat_Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "all_in_one_cheat_sheet_v2.6_web.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Mathematics/all_in_one_cheat_sheet_v2.6_web.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "CS229_Linear_Algebra.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Mathematics/CS229_Linear_Algebra.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "LinearAlgebra.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Mathematics/LinearAlgebra.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "READMe.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Mathematics/READMe.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "vmls-slides.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Mathematics/vmls-slides.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Matlab",
+                                      "type":  "folder",
+                                      "path":  "Notes/Matlab",
+                                      "children":  [
+                                                       {
+                                                           "name":  "matlab_guide.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Matlab/matlab_guide.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Matlab/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "more",
+                                      "type":  "folder",
+                                      "path":  "Notes/more",
+                                      "children":  [
+                                                       {
+                                                           "name":  "free-programming-cheatsheets.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-cheatsheets.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-interactive-tutorials-de.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-interactive-tutorials-de.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-interactive-tutorials-en.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-interactive-tutorials-en.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-interactive-tutorials-ja.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-interactive-tutorials-ja.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-interactive-tutorials-ru.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-interactive-tutorials-ru.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-interactive-tutorials-zh.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-interactive-tutorials-zh.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-playgrounds.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-playgrounds.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-playgrounds-de.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-playgrounds-de.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "free-programming-playgrounds-zh.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/free-programming-playgrounds-zh.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "problem-sets-competitive-programming.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/more/problem-sets-competitive-programming.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "NLP",
+                                      "type":  "folder",
+                                      "path":  "Notes/NLP",
+                                      "children":  [
+                                                       {
+                                                           "name":  "A Practitioner\u0027s Guide to Natural Language Processing (Part I) GÇö Processing Understanding Text.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/NLP/A Practitioner\u0027s Guide to Natural Language Processing (Part I) GÇö Processing Understanding Text.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "desktop.ini",
+                                                           "type":  "file",
+                                                           "path":  "Notes/NLP/desktop.ini",
+                                                           "ext":  ".ini"
+                                                       },
+                                                       {
+                                                           "name":  "Gentle Start to Natural Language Processing using Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/NLP/Gentle Start to Natural Language Processing using Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Machine Learning, NLP_ Text Classification using scikit-learn, python and NLTK_.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/NLP/Machine Learning, NLP_ Text Classification using scikit-learn, python and NLTK_.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Natural Language Processing is Fun! - Adam Geitgey - Medium.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/NLP/Natural Language Processing is Fun! - Adam Geitgey - Medium.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/NLP/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Numpy",
+                                      "type":  "folder",
+                                      "path":  "Notes/Numpy",
+                                      "children":  [
+                                                       {
+                                                           "name":  "100_numpy_exercises.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Numpy/100_numpy_exercises.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "desktop.ini",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Numpy/desktop.ini",
+                                                           "ext":  ".ini"
+                                                       },
+                                                       {
+                                                           "name":  "numpy_cheat_sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Numpy/numpy_cheat_sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Numpy/README.md",
+                                                           "ext":  ".md"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Ordinary Differential Equations",
+                                      "type":  "folder",
+                                      "path":  "Notes/Ordinary Differential Equations",
+                                      "children":  [
+                                                       {
+                                                           "name":  "calculus.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/calculus.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "cheatsheet-applications.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/cheatsheet-applications.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "cheatsheet-first-ode.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/cheatsheet-first-ode.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "cheatsheet-second-ode.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/cheatsheet-second-ode.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Linear Algebra and Calculus.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/Linear Algebra and Calculus.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "linear-algebra.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/linear-algebra.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "trigonometry.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Ordinary Differential Equations/trigonometry.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Pandas",
+                                      "type":  "folder",
+                                      "path":  "Notes/Pandas",
+                                      "children":  [
+                                                       {
+                                                           "name":  "10 Python Pandas tricks that make your work more efficient.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/10 Python Pandas tricks that make your work more efficient.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "desktop.ini",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/desktop.ini",
+                                                           "ext":  ".ini"
+                                                       },
+                                                       {
+                                                           "name":  "MANIPULATING DATAFRAMES WITH PANDAS.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/MANIPULATING DATAFRAMES WITH PANDAS.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Pandas Exercises for Data Analysis GÇô Machine Learning Plus.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/Pandas Exercises for Data Analysis GÇô Machine Learning Plus.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "pandas_cheat_sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/pandas_cheat_sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "pandas-10min.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/pandas-10min.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Reading and Writing data with PANDAS.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/Reading and Writing data with PANDAS.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "Step by Step Guide to Data Cleaning with Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Pandas/Step by Step Guide to Data Cleaning with Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Python",
+                                      "type":  "folder",
+                                      "path":  "Notes/Python",
+                                      "children":  [
+                                                       {
+                                                           "name":  "A guide to Face Detection in Python - Towards Data Science.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/A guide to Face Detection in Python - Towards Data Science.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "DataWrangling.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/DataWrangling.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Face Detection with Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Face Detection with Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "How to scrape websites with Python and BeautifulSoup.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/How to scrape websites with Python and BeautifulSoup.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "How to Use Python lambda Functions GÇô Real Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/How to Use Python lambda Functions GÇô Real Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Identify Top Topics using Word Cloud - Towards Data Science.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Identify Top Topics using Word Cloud - Towards Data Science.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Interview Questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Interview Questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Learning Python_ From Zero to Hero - freeCodeCamp.org - Medium.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Learning Python_ From Zero to Hero - freeCodeCamp.org - Medium.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "numpy.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/numpy.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "NumpyForDataScieceDataCamp.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/NumpyForDataScieceDataCamp.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "OCR.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/OCR.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "pandas.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/pandas.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Python for Data Analysis.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Python for Data Analysis.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Python Interview Questions.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Python Interview Questions.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Python Print function.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Python Print function.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "python_basics.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/python_basics.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Python_cheatsheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Python_cheatsheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "python-cheatsheets-ds.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/python-cheatsheets-ds.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "PythonForDataScience.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/PythonForDataScience.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "PythonNotesForProfessionals.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/PythonNotesForProfessionals.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "spaCy.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/spaCy.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "Ultimate Guide To Speech Recognition With Python.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/Ultimate Guide To Speech Recognition With Python.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "web scrapping.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Python/web scrapping.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "R Cheat Sheet",
+                                      "type":  "folder",
+                                      "path":  "Notes/R Cheat Sheet",
+                                      "children":  [
+                                                       {
+                                                           "name":  "basicR.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/R Cheat Sheet/basicR.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "R Cheat Sheets.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/R Cheat Sheet/R Cheat Sheets.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "R Programming Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/R Cheat Sheet/R Programming Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/R Cheat Sheet/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "R-reference-card.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/R Cheat Sheet/R-reference-card.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "shiny-cheatsheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/R Cheat Sheet/shiny-cheatsheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Scala",
+                                      "type":  "folder",
+                                      "path":  "Notes/Scala",
+                                      "children":  [
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Scala/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "ScalaByExample.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Scala/ScalaByExample.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "scala-quick-reference.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Scala/scala-quick-reference.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "SQL",
+                                      "type":  "folder",
+                                      "path":  "Notes/SQL",
+                                      "children":  [
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/SQL/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "SQL for DS.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/SQL/SQL for DS.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "SQL.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/SQL/SQL.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "SQL-cheat-sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/SQL/SQL-cheat-sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "Statistics",
+                                      "type":  "folder",
+                                      "path":  "Notes/Statistics",
+                                      "children":  [
+                                                       {
+                                                           "name":  "cheatsheet-statistics.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Statistics/cheatsheet-statistics.pdf",
+                                                           "ext":  ".pdf"
+                                                       },
+                                                       {
+                                                           "name":  "README.md",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Statistics/README.md",
+                                                           "ext":  ".md"
+                                                       },
+                                                       {
+                                                           "name":  "Statistics Cheat Sheet.pdf",
+                                                           "type":  "file",
+                                                           "path":  "Notes/Statistics/Statistics Cheat Sheet.pdf",
+                                                           "ext":  ".pdf"
+                                                       }
+                                                   ]
+                                  },
+                                  {
+                                      "name":  "217 MACHINE LEARNING PROJECTS.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/217 MACHINE LEARNING PROJECTS.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "600 MACHINE LEARNING REAL WORLD PROJECTS.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/600 MACHINE LEARNING REAL WORLD PROJECTS.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "80 Questions To Master Python PDF.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/80 Questions To Master Python PDF.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "90 Data Science Roadmap.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/90 Data Science Roadmap.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "A Tutorial for GitHub.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/A Tutorial for GitHub.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "BASICS OF STATISTICS.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/BASICS OF STATISTICS.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Data Science Interview Questions.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Data Science Interview Questions.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "DSA interview questions .pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/DSA interview questions .pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "EDA .pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/EDA .pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Excel Formulas.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Excel Formulas.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Hiring Agencies \u0026 Job Boards by Zubair Pradhan.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Hiring Agencies \u0026 Job Boards by Zubair Pradhan.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "HR interview Q \u0026 A.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/HR interview Q \u0026 A.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "INTERMEDIATE PYTHON NOTES.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/INTERMEDIATE PYTHON NOTES.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Interview Question \u0026 Answers.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Interview Question \u0026 Answers.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "LINEAR ALGEBRA FOR MACHINE LEARNING.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/LINEAR ALGEBRA FOR MACHINE LEARNING.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "MACHINE LEARNING-1.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/MACHINE LEARNING-1.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Python 100 Programs.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Python 100 Programs.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Python for beginners .pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Python for beginners .pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Python interview Q \u0026 A.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Python interview Q \u0026 A.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "PYTHON TUTORIAL (CODES).pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/PYTHON TUTORIAL (CODES).pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Python.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Python.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "SQL interview Q \u0026 A.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/SQL interview Q \u0026 A.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "SQL.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/SQL.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "STATISTICS NOTES.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/STATISTICS NOTES.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Top 50 OOPS Interview Questions and Answers!!.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Top 50 OOPS Interview Questions and Answers!!.pdf",
+                                      "ext":  ".pdf"
+                                  },
+                                  {
+                                      "name":  "Updated_Indian_IT_Companies_Placement_Sheet_With_High_Paying.pdf",
+                                      "type":  "file",
+                                      "path":  "Notes/Updated_Indian_IT_Companies_Placement_Sheet_With_High_Paying.pdf",
+                                      "ext":  ".pdf"
+                                  }
+                              ]
+             },
+    "generatedAt":  "2026-02-22T19:53:12.6245183+05:30"
+}
