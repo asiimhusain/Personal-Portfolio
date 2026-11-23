@@ -29,12 +29,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Artificial Intelligence/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "super-cheatsheet-artificial-intelligence.pdf",
                         "type": "file",
                         "path": "notes/Artificial Intelligence/super-cheatsheet-artificial-intelligence.pdf",
@@ -112,693 +106,6 @@
                         "type": "file",
                         "path": "notes/Big Data/planning-for-big-data.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Big Data/README.md",
-                        "ext": ".md"
-                    }
-                ]
-            },
-            {
-                "name": "books",
-                "type": "folder",
-                "path": "notes/books",
-                "children": [
-                    {
-                        "name": "free-programming-books-ar.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ar.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-az.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-az.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-bg.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-bg.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-bn.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-bn.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ca.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ca.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-cs-cp.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-cs-cp.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-cs.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-cs.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-da.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-da.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-de.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-de.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-el.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-el.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-en.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-en.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-es.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-es.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-et.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-et.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-fa_IR.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-fa_IR.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-fi.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-fi.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-fr.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-fr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-he.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-he.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-hi.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-hi.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-hu.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-hu.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-hy.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-hy.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-id.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-id.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-it.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-it.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ja.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ja.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ko.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ko.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-langs.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-langs.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-lv.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-lv.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ml.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ml.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-my.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-my.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-nl.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-nl.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-no.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-no.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-pl.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-pl.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-pt_BR.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-pt_BR.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-pt_PT.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-pt_PT.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ro.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ro.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ru.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ru.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-sk.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-sk.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-sl.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-sl.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-sr.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-sr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-subjects.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-subjects.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-sv.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-sv.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ta.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ta.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-te.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-te.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-th.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-th.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-tr.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-tr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-uk.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-uk.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-ur.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-ur.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-vi.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-vi.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-books-zh.md",
-                        "type": "file",
-                        "path": "notes/books/free-programming-books-zh.md",
-                        "ext": ".md"
-                    }
-                ]
-            },
-            {
-                "name": "casts",
-                "type": "folder",
-                "path": "notes/casts",
-                "children": [
-                    {
-                        "name": "free-podcasts-screencasts-ar.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-ar.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-cs.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-cs.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-de.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-de.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-en.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-en.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-es.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-es.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-fa_IR.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-fa_IR.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-fi.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-fi.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-fr.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-fr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-he.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-he.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-id.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-id.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-my.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-my.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-nl.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-nl.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-pl.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-pl.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-pt_BR.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-pt_BR.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-pt_PT.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-pt_PT.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-ru.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-ru.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-si.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-si.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-sv.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-sv.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-tr.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-tr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-uk.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-uk.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-podcasts-screencasts-zh.md",
-                        "type": "file",
-                        "path": "notes/casts/free-podcasts-screencasts-zh.md",
-                        "ext": ".md"
-                    }
-                ]
-            },
-            {
-                "name": "courses",
-                "type": "folder",
-                "path": "notes/courses",
-                "children": [
-                    {
-                        "name": "free-courses-ar.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ar.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-bg.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-bg.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-bn.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-bn.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-de.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-de.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-el.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-el.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-en.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-en.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-es.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-es.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-fa_IR.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-fa_IR.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-fi.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-fi.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-fr.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-fr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-he.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-he.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-hi.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-hi.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-id.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-id.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-it.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-it.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ja.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ja.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-kk.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-kk.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-km.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-km.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-kn.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-kn.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ko.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ko.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ml.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ml.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-mr.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-mr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-my.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-my.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ne.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ne.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-no.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-no.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-pa.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-pa.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-pl.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-pl.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-pt_BR.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-pt_BR.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-pt_PT.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-pt_PT.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ro.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ro.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ru.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ru.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-si.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-si.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-sv.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-sv.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ta.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ta.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-te.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-te.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-th.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-th.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-tr.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-tr.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-uk.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-uk.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-ur.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-ur.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-vi.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-vi.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-zh.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-zh.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-courses-zh_TW.md",
-                        "type": "file",
-                        "path": "notes/courses/free-courses-zh_TW.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -818,12 +125,6 @@
                         "type": "file",
                         "path": "notes/Data Engineering/GDE.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Data Engineering/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -843,12 +144,6 @@
                         "type": "file",
                         "path": "notes/Data Mining/OLTP vs OLAP.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Data Mining/README.md",
-                        "ext": ".md"
                     },
                     {
                         "name": "What Is Data Warehousing.pdf",
@@ -960,12 +255,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Data Science/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "The-365-Data-Science-Guide.pdf",
                         "type": "file",
                         "path": "notes/Data Science/The-365-Data-Science-Guide.pdf",
@@ -1051,12 +340,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "desktop.ini",
-                        "type": "file",
-                        "path": "notes/Data Visualization/desktop.ini",
-                        "ext": ".ini"
-                    },
-                    {
                         "name": "ggplot2_cheatsheet.pdf",
                         "type": "file",
                         "path": "notes/Data Visualization/ggplot2_cheatsheet.pdf",
@@ -1087,12 +370,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Data Visualization/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "The Art of Effective Visualization of Multi-dimensional Data.pdf",
                         "type": "file",
                         "path": "notes/Data Visualization/The Art of Effective Visualization of Multi-dimensional Data.pdf",
@@ -1116,12 +393,6 @@
                         "type": "file",
                         "path": "notes/Data Warehouse/Data Warehouse Concepts.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Data Warehouse/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1153,12 +424,6 @@
                         "type": "file",
                         "path": "notes/Deep Learning/nli_tutorial.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Deep Learning/README.md",
-                        "ext": ".md"
                     },
                     {
                         "name": "super-cheatsheet-deep-learning.pdf",
@@ -1214,12 +479,6 @@
                         "type": "file",
                         "path": "notes/DevOps/periodic-table-of-devops-tools-v3.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/DevOps/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1245,12 +504,6 @@
                         "type": "file",
                         "path": "notes/Docker and Kubernetes/kubectl_cheat_sheet.jpg",
                         "ext": ".jpg"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Docker and Kubernetes/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1288,12 +541,6 @@
                         "type": "file",
                         "path": "notes/Excel/powerpivot.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Excel/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1325,12 +572,6 @@
                         "type": "file",
                         "path": "notes/Git/GitNotesForProfessionals.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Git/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1400,12 +641,6 @@
                         "ext": ".png"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Images/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "RW_Panda.PNG",
                         "type": "file",
                         "path": "notes/Images/RW_Panda.PNG",
@@ -1473,12 +708,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Interview Questions/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "Top 100 Python questions.pdf",
                         "type": "file",
                         "path": "notes/Interview Questions/Top 100 Python questions.pdf",
@@ -1514,12 +743,6 @@
                         "type": "file",
                         "path": "notes/Linux/Linux.png",
                         "ext": ".png"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Linux/README.md",
-                        "ext": ".md"
                     },
                     {
                         "name": "systemd.cheat.sheet.png",
@@ -1673,12 +896,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Machine Learning/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "Self-Supervised Learning.pdf",
                         "type": "file",
                         "path": "notes/Machine Learning/Self-Supervised Learning.pdf",
@@ -1758,12 +975,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "READMe.md",
-                        "type": "file",
-                        "path": "notes/Mathematics/READMe.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "vmls-slides.pdf",
                         "type": "file",
                         "path": "notes/Mathematics/vmls-slides.pdf",
@@ -1781,79 +992,6 @@
                         "type": "file",
                         "path": "notes/Matlab/matlab_guide.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Matlab/README.md",
-                        "ext": ".md"
-                    }
-                ]
-            },
-            {
-                "name": "more",
-                "type": "folder",
-                "path": "notes/more",
-                "children": [
-                    {
-                        "name": "free-programming-cheatsheets.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-cheatsheets.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-interactive-tutorials-de.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-interactive-tutorials-de.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-interactive-tutorials-en.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-interactive-tutorials-en.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-interactive-tutorials-ja.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-interactive-tutorials-ja.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-interactive-tutorials-ru.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-interactive-tutorials-ru.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-interactive-tutorials-zh.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-interactive-tutorials-zh.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-playgrounds-de.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-playgrounds-de.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-playgrounds-zh.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-playgrounds-zh.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "free-programming-playgrounds.md",
-                        "type": "file",
-                        "path": "notes/more/free-programming-playgrounds.md",
-                        "ext": ".md"
-                    },
-                    {
-                        "name": "problem-sets-competitive-programming.md",
-                        "type": "file",
-                        "path": "notes/more/problem-sets-competitive-programming.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1867,12 +1005,6 @@
                         "type": "file",
                         "path": "notes/NLP/A Practitioner's Guide to Natural Language Processing (Part I) GÇö Processing Understanding Text.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "desktop.ini",
-                        "type": "file",
-                        "path": "notes/NLP/desktop.ini",
-                        "ext": ".ini"
                     },
                     {
                         "name": "Gentle Start to Natural Language Processing using Python.pdf",
@@ -1891,12 +1023,6 @@
                         "type": "file",
                         "path": "notes/NLP/Natural Language Processing is Fun! - Adam Geitgey - Medium.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/NLP/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1912,22 +1038,10 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "desktop.ini",
-                        "type": "file",
-                        "path": "notes/Numpy/desktop.ini",
-                        "ext": ".ini"
-                    },
-                    {
                         "name": "numpy_cheat_sheet.pdf",
                         "type": "file",
                         "path": "notes/Numpy/numpy_cheat_sheet.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Numpy/README.md",
-                        "ext": ".md"
                     }
                 ]
             },
@@ -1973,12 +1087,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Ordinary Differential Equations/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "trigonometry.pdf",
                         "type": "file",
                         "path": "notes/Ordinary Differential Equations/trigonometry.pdf",
@@ -1996,12 +1104,6 @@
                         "type": "file",
                         "path": "notes/Pandas/10 Python Pandas tricks that make your work more efficient.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "desktop.ini",
-                        "type": "file",
-                        "path": "notes/Pandas/desktop.ini",
-                        "ext": ".ini"
                     },
                     {
                         "name": "MANIPULATING DATAFRAMES WITH PANDAS.pdf",
@@ -2026,12 +1128,6 @@
                         "type": "file",
                         "path": "notes/Pandas/Reading and Writing data with PANDAS.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Pandas/README.md",
-                        "ext": ".md"
                     },
                     {
                         "name": "Step by Step Guide to Data Cleaning with Python.pdf",
@@ -2167,12 +1263,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Python/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "spaCy.pdf",
                         "type": "file",
                         "path": "notes/Python/spaCy.pdf",
@@ -2216,12 +1306,6 @@
                         "ext": ".pdf"
                     },
                     {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/R Cheat Sheet/README.md",
-                        "ext": ".md"
-                    },
-                    {
                         "name": "shiny-cheatsheet.pdf",
                         "type": "file",
                         "path": "notes/R Cheat Sheet/shiny-cheatsheet.pdf",
@@ -2234,12 +1318,6 @@
                 "type": "folder",
                 "path": "notes/Scala",
                 "children": [
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Scala/README.md",
-                        "ext": ".md"
-                    },
                     {
                         "name": "scala-quick-reference.pdf",
                         "type": "file",
@@ -2259,12 +1337,6 @@
                 "type": "folder",
                 "path": "notes/SQL",
                 "children": [
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/SQL/README.md",
-                        "ext": ".md"
-                    },
                     {
                         "name": "SQL for DS.pdf",
                         "type": "file",
@@ -2295,12 +1367,6 @@
                         "type": "file",
                         "path": "notes/Statistics/cheatsheet-statistics.pdf",
                         "ext": ".pdf"
-                    },
-                    {
-                        "name": "README.md",
-                        "type": "file",
-                        "path": "notes/Statistics/README.md",
-                        "ext": ".md"
                     },
                     {
                         "name": "Statistics Cheat Sheet.pdf",
