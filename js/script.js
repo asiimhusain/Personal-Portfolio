@@ -2531,7 +2531,7 @@ async function openCoursesFile(node, showLoading = true) {
 
     if (extension === '.md' || extension === '.txt') {
         try {
-            const response = await fetch(encodeURI(node.path));
+            const response = await fetch(getCoursesAssetUrl(node.path));
             if (!response.ok) throw new Error('Failed to open text file');
             const raw = await response.text();
             if (extension === '.md') {
@@ -2555,6 +2555,10 @@ function isCoursesImageExt(extension) {
     return ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.bmp', '.avif'].includes((extension || '').toLowerCase());
 }
 
+function getCoursesAssetUrl(path) {
+    return path.split('/').map((segment) => encodeURIComponent(segment)).join('/');
+}
+
 function showCoursesPdf(path) {
     hideCoursesState();
     COURSES_EXPLORER.textViewer.style.display = 'none';
@@ -2565,7 +2569,7 @@ function showCoursesPdf(path) {
         hideCoursesLoading();
         showCoursesState('Unable to load PDF preview.');
     };
-    COURSES_EXPLORER.pdfViewer.src = `${encodeURI(path)}#toolbar=1&navpanes=1&scrollbar=1`;
+    COURSES_EXPLORER.pdfViewer.src = `${getCoursesAssetUrl(path)}#toolbar=1&navpanes=1&scrollbar=1`;
 }
 
 function showCoursesText(html) {
@@ -2583,7 +2587,7 @@ function showCoursesImage(path, altText) {
     COURSES_EXPLORER.textViewer.style.display = 'block';
     COURSES_EXPLORER.textViewer.innerHTML =
         `<div class="courses-image-preview">` +
-        `<img class="courses-image-preview-img" src="${encodeURI(path)}" alt="${escapeCoursesAttr(altText || 'Image preview')}" loading="lazy" />` +
+        `<img class="courses-image-preview-img" src="${getCoursesAssetUrl(path)}" alt="${escapeCoursesAttr(altText || 'Image preview')}" loading="lazy" />` +
         `</div>`;
 
     const imageEl = COURSES_EXPLORER.textViewer.querySelector('.courses-image-preview-img');
